@@ -338,7 +338,7 @@ dotenv.config();
 const { Pool } = pkg;
 
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 // Pour ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -355,10 +355,9 @@ app.use(express.static(path.join(__dirname, "public")));
 // Connexion à Neon PostgreSQL
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl:
-    process.env.NODE_ENV === "production"
-      ? { rejectUnauthorized: false }
-      : false,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 // Test de connexion à la base de données
@@ -366,9 +365,14 @@ const initializeDatabase = async () => {
   try {
     const client = await pool.connect();
     console.log("✅ Connecté à la base de données Neon");
+
+    // Test query
+    const result = await client.query("SELECT NOW()");
+    console.log("✅ Test query réussi:", result.rows[0]);
+
     client.release();
   } catch (err) {
-    console.error("❌ Erreur de connexion à la base de données :", err);
+    console.error("❌ Erreur de connexion à la base de données :", err.message);
   }
 };
 
@@ -383,9 +387,30 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
+// Health check (important pour Render)
+app.get("/health", async (req, res) => {
+  try {
+    // Tester la connexion à la base de données
+    await pool.query("SELECT 1");
+    res.status(200).json({
+      status: "OK",
+      message: "Serveur et base de données fonctionnent",
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "ERROR",
+      message: "Problème avec la base de données",
+      error: error.message,
+    });
+  }
+});
+
 // Récupérer tous les paris
 app.get("/api/paris", async (req, res) => {
   try {
+    console.log("📥 Requête pour récupérer tous les paris");
+
     const result = await pool.query(`
       SELECT 
         p.*,
@@ -396,10 +421,15 @@ app.get("/api/paris", async (req, res) => {
       GROUP BY p.idBet
       ORDER BY p.creationDate DESC
     `);
+
+    console.log(`✅ ${result.rows.length} paris récupérés`);
     res.json(result.rows);
   } catch (err) {
-    console.error("Erreur /api/paris:", err);
-    res.status(500).json({ error: "Erreur lors de la récupération des paris" });
+    console.error("❌ Erreur /api/paris:", err);
+    res.status(500).json({
+      error: "Erreur lors de la récupération des paris",
+      details: err.message,
+    });
   }
 });
 
@@ -414,6 +444,8 @@ app.post("/api/admin/login", async (req, res) => {
         .json({ message: "Nom d'utilisateur et mot de passe requis" });
     }
 
+    console.log(`🔐 Tentative de connexion admin: ${username}`);
+
     // Vérifier les identifiants admin
     const result = await pool.query(
       `SELECT idUser, userName, userPassword FROM users WHERE userName = $1 AND idUser = 1`,
@@ -421,6 +453,7 @@ app.post("/api/admin/login", async (req, res) => {
     );
 
     if (result.rows.length === 0) {
+      console.log("❌ Nom d'utilisateur admin incorrect");
       return res.status(401).json({ message: "Identifiants incorrects" });
     }
 
@@ -429,15 +462,17 @@ app.post("/api/admin/login", async (req, res) => {
     // TEMPORAIRE - Comparaison simple
     const tempPassword = "admin123";
     if (password !== tempPassword) {
+      console.log("❌ Mot de passe admin incorrect");
       return res.status(401).json({ message: "Identifiants incorrects" });
     }
 
+    console.log("✅ Connexion admin réussie");
     res.json({
       message: "Connexion admin réussie",
       adminId: admin.iduser,
     });
   } catch (err) {
-    console.error("Erreur connexion admin:", err);
+    console.error("❌ Erreur connexion admin:", err);
     res.status(500).json({ message: "Erreur lors de la connexion" });
   }
 });
@@ -447,6 +482,8 @@ app.post("/api/paris", async (req, res) => {
   try {
     const { title, description, deadline, optionA, optionB, creatorId } =
       req.body;
+
+    console.log("📝 Création d'un nouveau pari:", { title, creatorId });
 
     // Vérifier que seul l'admin peut créer des paris
     if (creatorId !== 1) {
@@ -468,9 +505,10 @@ app.post("/api/paris", async (req, res) => {
       ]
     );
 
+    console.log("✅ Pari créé avec ID:", result.rows[0].idbet);
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    console.error("Erreur création pari:", err);
+    console.error("❌ Erreur création pari:", err);
     res
       .status(500)
       .json({ error: "Erreur lors de la création du pari: " + err.message });
@@ -483,6 +521,8 @@ app.put("/api/paris/:id", async (req, res) => {
     const { id } = req.params;
     const { title, description, deadline, optionA, optionB } = req.body;
 
+    console.log(`✏️ Mise à jour du pari ${id}`);
+
     const result = await pool.query(
       `UPDATE pari SET title = $1, description = $2, deadline = $3, optionA = $4, optionB = $5 
        WHERE idBet = $6 RETURNING *`,
@@ -493,9 +533,10 @@ app.put("/api/paris/:id", async (req, res) => {
       return res.status(404).json({ error: "Pari non trouvé" });
     }
 
+    console.log("✅ Pari mis à jour");
     res.json(result.rows[0]);
   } catch (err) {
-    console.error("Erreur mise à jour pari:", err);
+    console.error("❌ Erreur mise à jour pari:", err);
     res
       .status(500)
       .json({ error: "Erreur lors de la mise à jour du pari: " + err.message });
@@ -506,6 +547,9 @@ app.put("/api/paris/:id", async (req, res) => {
 app.delete("/api/paris/:id", async (req, res) => {
   try {
     const { id } = req.params;
+
+    console.log(`🗑️ Suppression du pari ${id}`);
+
     const result = await pool.query(
       `DELETE FROM pari WHERE idBet = $1 RETURNING *`,
       [id]
@@ -515,9 +559,10 @@ app.delete("/api/paris/:id", async (req, res) => {
       return res.status(404).json({ error: "Pari non trouvé" });
     }
 
+    console.log("✅ Pari supprimé");
     res.json(result.rows[0]);
   } catch (err) {
-    console.error("Erreur suppression pari:", err);
+    console.error("❌ Erreur suppression pari:", err);
     res
       .status(500)
       .json({
@@ -532,6 +577,10 @@ app.post("/api/paris/:id/vote", async (req, res) => {
   try {
     const { id } = req.params;
     const { userId, choix } = req.body;
+
+    console.log(
+      `🗳️ Vote pour le pari ${id} par l'utilisateur ${userId}: ${choix}`
+    );
 
     if (!userId) {
       return res.status(400).json({ message: "ID utilisateur requis" });
@@ -587,6 +636,7 @@ app.post("/api/paris/:id/vote", async (req, res) => {
 
     await client.query("COMMIT");
 
+    console.log("✅ Vote enregistré avec succès");
     res.status(201).json({
       message: "Vote enregistré",
       vote: insertVote.rows[0],
@@ -597,7 +647,7 @@ app.post("/api/paris/:id/vote", async (req, res) => {
       await client.query("ROLLBACK");
       client.release();
     }
-    console.error("Erreur vote:", err);
+    console.error("❌ Erreur vote:", err);
     res.status(500).json({
       message: "Erreur serveur lors de l'enregistrement du vote",
       error: err.message,
@@ -618,27 +668,29 @@ app.get("/api/user/votes", async (req, res) => {
       return res.status(400).json({ error: "User ID requis" });
     }
 
+    console.log(`📊 Récupération des votes pour l'utilisateur ${userId}`);
+
     const result = await pool.query(
       `SELECT betId, choix FROM vote WHERE userId = $1`,
       [userId]
     );
 
+    console.log(`✅ ${result.rows.length} votes récupérés`);
     res.json(result.rows);
   } catch (err) {
-    console.error("Erreur récupération votes:", err);
+    console.error("❌ Erreur récupération votes:", err);
     res.status(500).json({ error: "Erreur lors de la récupération des votes" });
   }
 });
 
-// Health check route
-app.get("/health", (req, res) => {
-  res.status(200).json({ status: "OK", message: "Server is running" });
-});
-
-// Route catch-all pour SPA - DOIT ÊTRE LA DERNIÈRE ROUTE
+// Route catch-all pour SPA
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// Export pour Vercel Serverless
-export default app;
+// Démarrer le serveur
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 Serveur démarré sur le port ${PORT}`);
+  console.log(`📍 URL: http://localhost:${PORT}`);
+  console.log(`🔍 Health check: http://localhost:${PORT}/health`);
+});
