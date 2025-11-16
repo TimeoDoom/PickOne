@@ -327,12 +327,10 @@
 // app.listen(port, () => {
 //   console.log(`Serveur en ligne sur http://localhost:${port}`);
 // });
-
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import pkg from "pg";
-import bcrypt from "bcrypt";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -342,36 +340,48 @@ const { Pool } = pkg;
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Pour ES modules - obtenir le chemin du fichier
+// Pour ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Servir les fichiers statiques du dossier 'public'
+// Servir les fichiers statiques
 app.use(express.static(path.join(__dirname, "public")));
-
-// Route pour la page principale - DOIT ÊTRE APRÈS static
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
 
 // Connexion à Neon PostgreSQL
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
+  ssl:
+    process.env.NODE_ENV === "production"
+      ? { rejectUnauthorized: false }
+      : false,
 });
 
-pool
-  .connect()
-  .then(() => console.log("Connecté à la base de données Neon"))
-  .catch((err) => console.error("Erreur de connexion :", err));
+// Test de connexion à la base de données
+const initializeDatabase = async () => {
+  try {
+    const client = await pool.connect();
+    console.log("✅ Connecté à la base de données Neon");
+    client.release();
+  } catch (err) {
+    console.error("❌ Erreur de connexion à la base de données :", err);
+  }
+};
+
+initializeDatabase();
 
 // #############################
 // --- ROUTES API ---
 // #############################
+
+// Route pour la page principale
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 
 // Récupérer tous les paris
 app.get("/api/paris", async (req, res) => {
@@ -388,6 +398,7 @@ app.get("/api/paris", async (req, res) => {
     `);
     res.json(result.rows);
   } catch (err) {
+    console.error("Erreur /api/paris:", err);
     res.status(500).json({ error: "Erreur lors de la récupération des paris" });
   }
 });
@@ -416,7 +427,6 @@ app.post("/api/admin/login", async (req, res) => {
     const admin = result.rows[0];
 
     // TEMPORAIRE - Comparaison simple
-    // REMPLACEZ par votre mot de passe admin
     const tempPassword = "admin123";
     if (password !== tempPassword) {
       return res.status(401).json({ message: "Identifiants incorrects" });
@@ -460,6 +470,7 @@ app.post("/api/paris", async (req, res) => {
 
     res.status(201).json(result.rows[0]);
   } catch (err) {
+    console.error("Erreur création pari:", err);
     res
       .status(500)
       .json({ error: "Erreur lors de la création du pari: " + err.message });
@@ -484,6 +495,7 @@ app.put("/api/paris/:id", async (req, res) => {
 
     res.json(result.rows[0]);
   } catch (err) {
+    console.error("Erreur mise à jour pari:", err);
     res
       .status(500)
       .json({ error: "Erreur lors de la mise à jour du pari: " + err.message });
@@ -505,9 +517,12 @@ app.delete("/api/paris/:id", async (req, res) => {
 
     res.json(result.rows[0]);
   } catch (err) {
+    console.error("Erreur suppression pari:", err);
     res
       .status(500)
-      .json({ error: "Erreur lors de la suppression d'un pari" + err.message });
+      .json({
+        error: "Erreur lors de la suppression d'un pari: " + err.message,
+      });
   }
 });
 
@@ -582,6 +597,7 @@ app.post("/api/paris/:id/vote", async (req, res) => {
       await client.query("ROLLBACK");
       client.release();
     }
+    console.error("Erreur vote:", err);
     res.status(500).json({
       message: "Erreur serveur lors de l'enregistrement du vote",
       error: err.message,
@@ -614,12 +630,15 @@ app.get("/api/user/votes", async (req, res) => {
   }
 });
 
+// Health check route
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "OK", message: "Server is running" });
+});
+
 // Route catch-all pour SPA - DOIT ÊTRE LA DERNIÈRE ROUTE
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// Lancer le serveur
-app.listen(port, () => {
-  console.log(`Serveur en ligne sur le port ${port}`);
-});
+// Export pour Vercel Serverless
+export default app;
