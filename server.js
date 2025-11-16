@@ -234,11 +234,9 @@ app.delete("/api/paris/:id", async (req, res) => {
     res.json(result.rows[0]);
   } catch (err) {
     console.error("❌ Erreur suppression pari:", err);
-    res
-      .status(500)
-      .json({
-        error: "Erreur lors de la suppression d'un pari: " + err.message,
-      });
+    res.status(500).json({
+      error: "Erreur lors de la suppression d'un pari: " + err.message,
+    });
   }
 });
 
@@ -355,7 +353,7 @@ app.get("/api/user/votes", async (req, res) => {
 });
 
 // Route catch-all pour SPA
-app.get("*", (req, res) => {
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
