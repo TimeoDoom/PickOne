@@ -109,35 +109,32 @@ app.post("/api/admin/login", async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    if (!username || !password) {
-      return res
-        .status(400)
-        .json({ message: "Nom d'utilisateur et mot de passe requis" });
-    }
-
-    console.log(`🔐 Tentative de connexion admin: ${username}`);
-
-    // Vérifier les identifiants admin
-    const result = await pool.query(
-      `SELECT idUser, userName, userPassword FROM users WHERE userName = $1 AND idUser = 1`,
-      [username]
-    );
+    // 1. Vérifier si l'admin existe
+    const query = `
+      SELECT idUser, userPassword 
+      FROM users 
+      WHERE username = $1
+    `;
+    const result = await pool.query(query, [username]);
 
     if (result.rows.length === 0) {
-      console.log("❌ Nom d'utilisateur admin incorrect");
+      console.log("❌ Admin introuvable");
       return res.status(401).json({ message: "Identifiants incorrects" });
     }
 
     const admin = result.rows[0];
 
-    // TEMPORAIRE - Comparaison simple
-    const tempPassword = "admin123";
-    if (password !== tempPassword) {
+    // 2. Comparer mot de passe avec hash
+    const isValid = await bcrypt.compare(password, admin.userpassword);
+
+    if (!isValid) {
       console.log("❌ Mot de passe admin incorrect");
       return res.status(401).json({ message: "Identifiants incorrects" });
     }
 
+    // 3. OK
     console.log("✅ Connexion admin réussie");
+
     res.json({
       message: "Connexion admin réussie",
       adminId: admin.iduser,
