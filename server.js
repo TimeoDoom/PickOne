@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import pkg from "pg";
 import path from "path";
 import { fileURLToPath } from "url";
+import bcrypt from "bcrypt";
 
 dotenv.config();
 const { Pool } = pkg;
