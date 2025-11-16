@@ -3,8 +3,12 @@ nav {
   align-items: center;
   justify-content: space-between;
 
+  img {
+    height: 55px;
+  }
+
   div {
-    .admin-login {
+    .connection-button {
       font-size: 18px;
       padding: 10px 20px;
       background-color: #20a4f3;
@@ -312,8 +316,16 @@ nav {
 }
 
 footer {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   margin-top: 30px;
+  img {
+    height: 25px;
+    display: inline-block;
+    vertical-align: middle;
+  }
 }
 
 // voted
@@ -340,7 +352,35 @@ footer {
   box-shadow: 0 8px 20px rgba(76, 175, 80, 0.18);
 }
 
-.cancel-admin-pass {
+.admin-interactions {
+  display: flex;
+  gap: 10px;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .edit-bet {
+    padding: 8px 18px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    background: #20a4f3;
+    color: #fff;
+  }
+
+  .delete-bet {
+    padding: 8px 18px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    background: #ff3366;
+    color: #fff;
+  }
+}
+
+.close-overlay {
   padding: 8px 18px;
   border-radius: 12px;
   border: none;
@@ -348,4 +388,60 @@ footer {
   font-size: 16px;
   background: #ff3366;
   color: #fff;
+}
+
+/* Styles pour les cartes déjà votées */
+.bet-card.voted {
+  opacity: 0.8;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 2px solid #dee2e6;
+  position: relative;
+}
+
+.bet-card.voted::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.7);
+  z-index: 1;
+}
+
+.bet-card.voted > * {
+  position: relative;
+  z-index: 2;
+}
+
+.voted-badge {
+  background: #28a745;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: bold;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+/* Désactiver les boutons de vote */
+.bet-options button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.bet-options button.disabled:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Indicateur visuel supplémentaire */
+.bet-card.voted .bet-title {
+  color: #6c757d;
+}
+
+.bet-card.voted .bet-desc-view {
+  color: #868e96;
 }

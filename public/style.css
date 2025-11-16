@@ -3,7 +3,10 @@ nav {
   align-items: center;
   justify-content: space-between;
 }
-nav div .admin-login {
+nav img {
+  height: 55px;
+}
+nav div .connection-button {
   font-size: 18px;
   padding: 10px 20px;
   background-color: #20a4f3;
@@ -275,8 +278,16 @@ nav div .add-bet {
 }
 
 footer {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   margin-top: 30px;
+}
+footer img {
+  height: 25px;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .bet-grid .bet-card.voted {
@@ -304,7 +315,33 @@ footer {
   box-shadow: 0 8px 20px rgba(76, 175, 80, 0.18);
 }
 
-.cancel-admin-pass {
+.admin-interactions {
+  display: flex;
+  gap: 10px;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.admin-interactions .edit-bet {
+  padding: 8px 18px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  background: #20a4f3;
+  color: #fff;
+}
+.admin-interactions .delete-bet {
+  padding: 8px 18px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  background: #ff3366;
+  color: #fff;
+}
+
+.close-overlay {
   padding: 8px 18px;
   border-radius: 12px;
   border: none;
