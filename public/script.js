@@ -6,7 +6,7 @@ window.adminId = null;
 
 const addBetButton = document.querySelector(".add-bet");
 const connectionButton = document.querySelector(".connection-button");
-connectionButton.textContent = "Connexion Admin";
+connectionButton.textContent = "Connexion / Inscription";
 const betGrid = document.querySelector(".bet-grid");
 
 // Cacher le bouton d'ajout par défaut
@@ -18,11 +18,15 @@ addBetFormOverlay.classList.add("overlay");
 addBetFormOverlay.innerHTML = `
   <div class="overlay-content">
     <h2 id="overlay-title">Ajouter un nouveau pari</h2>
-    <input class="bet-title" type="text" placeholder="Nom du pari" />
-    <textarea class="bet-desc" placeholder="Description du pari"></textarea>
+    <input class="bet-title" type="text" placeholder="Nom du pari" maxlength="255" />
+    <textarea class="bet-desc" placeholder="Description du pari" maxlength="1000"></textarea>
     <label>Options de pari : (facultatif)</label>
-    <input class="persoOui" type="text" placeholder="oui" />
-    <input class="persoNon" type="text" placeholder="non"/>
+    <input class="persoOui" type="text" placeholder="oui" maxlength="100" />
+    <input class="persoNon" type="text" placeholder="non" maxlength="100" />
+    <select class="category">
+      <option value="paris">Paris</option>
+      <option value="dilemme">Dilemmes</option>
+    </select>
     <div style="display:flex;gap:8px;margin-top:8px;">
       <input class="bet-date" type="date" />
       <input class="bet-time" type="time" value="12:00" />
@@ -40,8 +44,8 @@ connectionOverlay.classList.add("overlay");
 connectionOverlay.innerHTML = `
   <div class="overlay-content">
     <h2>Connexion Admin</h2>
-    <input class="conn-username" type="text" placeholder="Nom d'utilisateur" />
-    <input class="conn-password" type="password" placeholder="Mot de passe" />
+    <input class="conn-username" type="text" placeholder="Nom d'utilisateur" maxlength="50" />
+    <input class="conn-password" type="password" placeholder="Mot de passe" maxlength="100" />
     <p class="conn-error" style="display:none;color:red;margin-top:8px;"></p>
     <div style="margin-top:12px;display:flex;gap:8px;justify-content:center;">
       <button class="submit-admin-pass">Se connecter</button>
@@ -132,6 +136,24 @@ function validateFormInputs(title, dateStr) {
   return true;
 }
 
+// ---------- Génération UUID sécurisée ----------
+function generateUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
+function getOrCreateUserId() {
+  let userId = localStorage.getItem('secureUserId');
+  if (!userId || !/^[a-f0-9-]{36}$/.test(userId)) {
+    userId = generateUUID();
+    localStorage.setItem('secureUserId', userId);
+  }
+  return userId;
+}
+
 // ---------- UI admin (boutons sur les cartes) ----------
 function setAdminButtonsOnCard(card) {
   const adminDiv = card.querySelector(".admin-interactions");
@@ -149,16 +171,33 @@ function disableAdminInteractions() {
     .querySelectorAll(".admin-interactions")
     .forEach((d) => (d.innerHTML = ""));
 }
-function toggleConnectionUI() {
+
+async function toggleConnectionUI() {
   if (connected) {
-    connectionButton.textContent = "Déconnexion Admin";
+    connectionButton.textContent = "Mon compte";
     addBetButton.style.display = "block";
     enableAdminInteractions();
   } else {
-    connectionButton.textContent = "Connexion Admin";
+    connectionButton.textContent = "Connexion / Inscription";
     addBetButton.style.display = "none";
     disableAdminInteractions();
     window.adminId = null;
+    
+    // Vérifier le statut de connexion au chargement
+    try {
+      const res = await fetch("/api/admin/status");
+      if (res.ok) {
+        const data = await res.json();
+        if (data.isAuthenticated) {
+          connected = true;
+          connectionButton.textContent = "Déconnexion";
+          addBetButton.style.display = "block";
+          enableAdminInteractions();
+        }
+      }
+    } catch (error) {
+      console.error("Erreur vérification statut:", error);
+    }
   }
 }
 
@@ -254,6 +293,7 @@ async function verifyAdminLogin(username, password) {
     const res = await fetch("/api/admin/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: 'include', // Important pour les sessions
       body: JSON.stringify({ username, password }),
     });
 
@@ -266,6 +306,24 @@ async function verifyAdminLogin(username, password) {
     }
   } catch (err) {
     return { success: false, error: "Erreur de connexion" };
+  }
+}
+
+// ---------- Déconnexion admin ----------
+async function adminLogout() {
+  try {
+    const res = await fetch("/api/admin/logout", {
+      method: "POST",
+      credentials: 'include'
+    });
+    
+    if (res.ok) {
+      connected = false;
+      window.adminId = null;
+      toggleConnectionUI();
+    }
+  } catch (error) {
+    console.error("Erreur déconnexion:", error);
   }
 }
 
@@ -297,11 +355,10 @@ connectionOverlay
     hideOverlay(connectionOverlay);
   });
 
-connectionButton.addEventListener("click", () => {
+connectionButton.addEventListener("click", async () => {
   // si déjà connecté => logout
   if (connected) {
-    connected = false;
-    toggleConnectionUI();
+    await adminLogout();
     return;
   }
   // sinon ouvrir overlay connexion
@@ -324,6 +381,19 @@ connectionOverlay
       return;
     }
 
+    // Validation côté client basique
+    if (username.length < 3 || username.length > 50) {
+      err.textContent = "Nom d'utilisateur invalide";
+      err.style.display = "block";
+      return;
+    }
+
+    if (password.length < 6) {
+      err.textContent = "Le mot de passe doit faire au moins 6 caractères";
+      err.style.display = "block";
+      return;
+    }
+
     const result = await verifyAdminLogin(username, password);
 
     if (result.success) {
@@ -339,7 +409,7 @@ connectionOverlay
 
 // Submit du formulaire : création
 addBetFormOverlay.querySelector(".submit-bet").addEventListener("click", () => {
-  if (!connected || !window.adminId) {
+  if (!connected) {
     alert("Vous devez être connecté en tant qu'admin pour créer un pari");
     return;
   }
@@ -366,7 +436,7 @@ addBetFormOverlay.querySelector(".submit-bet").addEventListener("click", () => {
     );
   } else {
     // création
-    addBetInBD(title, desc, deadlineISO, optA, optB, window.adminId);
+    addBetInBD(title, desc, deadlineISO, optA, optB);
   }
 
   hideOverlay(addBetFormOverlay);
@@ -469,7 +539,7 @@ betGrid.addEventListener("click", (e) => {
   }
 });
 
-// gestion BD
+// ---------- Gestion BD sécurisée ----------
 
 async function fetchBets() {
   try {
@@ -480,19 +550,8 @@ async function fetchBets() {
 
     betGrid.innerHTML = "";
 
-    // S'assurer que l'ID utilisateur existe
-    if (!window.currentUserId) {
-      let tempUserId = localStorage.getItem("tempUserId");
-      if (!tempUserId) {
-        tempUserId =
-          "anonymous_" +
-          Date.now() +
-          "_" +
-          Math.random().toString(36).substr(2, 9);
-        localStorage.setItem("tempUserId", tempUserId);
-      }
-      window.currentUserId = tempUserId;
-    }
+    // Utiliser UUID sécurisé pour les utilisateurs anonymes
+    window.currentUserId = getOrCreateUserId();
 
     // Récupérer les paris sur lesquels l'utilisateur a voté
     const userVotes = await getUserVotes();
@@ -510,7 +569,7 @@ async function fetchBets() {
 // Fonction pour récupérer les votes de l'utilisateur
 async function getUserVotes() {
   try {
-    const res = await fetch(`/api/user/votes?userId=${window.currentUserId}`);
+    const res = await fetch(`/api/user/votes?userId=${encodeURIComponent(window.currentUserId)}`);
     if (res.ok) {
       return await res.json();
     }
@@ -521,7 +580,9 @@ async function getUserVotes() {
   }
 }
 
+// Chargement initial
 fetchBets();
+toggleConnectionUI();
 
 async function updateBetInBD(
   pariId,
@@ -557,6 +618,7 @@ async function updateBetInBD(
     const res = await fetch(`/api/paris/${pariId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
+      credentials: 'include',
       body: JSON.stringify(betData),
     });
 
@@ -565,6 +627,7 @@ async function updateBetInBD(
       const errorText = await res.text();
       throw new Error(`Erreur HTTP ${res.status}: ${errorText}`);
     }
+    
     let data;
     try {
       data = await res.json();
@@ -581,11 +644,9 @@ async function updateBetInBD(
 
 async function deleteBet(pariId) {
   try {
-    const betId = { pariId };
     const res = await fetch(`/api/paris/${pariId}`, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(betId),
+      credentials: 'include'
     });
 
     if (!res.ok) {
@@ -599,27 +660,12 @@ async function deleteBet(pariId) {
 
 async function addVote(choix, pariId) {
   try {
-    // Générer un ID utilisateur anonyme unique par navigateur
-    if (!window.currentUserId) {
-      // Vérifier si on a déjà un ID temporaire dans le localStorage
-      let tempUserId = localStorage.getItem("tempUserId");
+    // Utiliser l'UUID sécurisé
+    const userId = getOrCreateUserId();
 
-      if (!tempUserId) {
-        // Générer un nouvel ID temporaire unique
-        tempUserId =
-          "anonymous_" +
-          Date.now() +
-          "_" +
-          Math.random().toString(36).substr(2, 9);
-        localStorage.setItem("tempUserId", tempUserId);
-      }
-
-      window.currentUserId = tempUserId;
-    }
-
-    console.log("Envoi du vote anonyme:", {
+    console.log("Envoi du vote sécurisé:", {
       pariId,
-      userId: window.currentUserId,
+      userId: userId,
       choix: choix,
     });
 
@@ -627,7 +673,7 @@ async function addVote(choix, pariId) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        userId: window.currentUserId,
+        userId: userId,
         choix: choix,
       }),
     });
@@ -743,8 +789,7 @@ async function addBetInBD(
   description,
   deadlineISO,
   optionA,
-  optionB,
-  creatorId
+  optionB
 ) {
   try {
     const betData = {
@@ -753,7 +798,6 @@ async function addBetInBD(
       deadline: deadlineISO,
       optionA: optionA || "Oui",
       optionB: optionB || "Non",
-      creatorId: creatorId,
     };
 
     console.log("Envoi des données:", betData);
@@ -761,6 +805,7 @@ async function addBetInBD(
     const res = await fetch("/api/paris", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: 'include',
       body: JSON.stringify(betData),
     });
 
