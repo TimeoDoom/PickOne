@@ -1,12 +1,55 @@
+@charset "UTF-8";
 nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-nav img {
+nav .left {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+}
+nav .left img {
   height: 55px;
 }
-nav div .connection-button {
+nav .left ul {
+  list-style: none;
+  display: flex;
+  gap: 80px;
+  margin: 0;
+  padding: 0;
+  margin-top: 8px;
+}
+nav .left ul li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  color: #011627;
+  cursor: pointer;
+  padding: 8px 15px;
+  border-radius: 30px;
+}
+nav .right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+nav .right .wallet {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+nav .right .wallet h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #03a800;
+}
+nav .right .wallet span {
+  font-size: 14px;
+  color: #82dba4;
+}
+nav .right .connection-button {
   font-size: 18px;
   padding: 10px 20px;
   background-color: #20a4f3;
@@ -15,7 +58,7 @@ nav div .connection-button {
   border-radius: 5px;
   cursor: pointer;
 }
-nav div .add-bet {
+nav .right .add-bet {
   font-size: 18px;
   padding: 10px 20px;
   background-color: #2ec4b6;
@@ -278,16 +321,28 @@ nav div .add-bet {
 }
 
 footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-top: 30px;
+  padding: 12px 16px;
+  background: rgba(246, 247, 248, 0.98);
+  z-index: 1000;
+  height: 56px;
 }
 footer img {
   height: 25px;
   display: inline-block;
   vertical-align: middle;
+}
+
+/* Réserve de l'espace pour éviter que le contenu soit caché par le footer fixe */
+body {
+  padding-bottom: 64px;
 }
 
 .bet-grid .bet-card.voted {
@@ -351,11 +406,314 @@ footer img {
   color: #fff;
 }
 
-body {
-  background-color: #f6f7f8;
+/* Styles pour les cartes déjà votées */
+.bet-card.voted {
+  opacity: 0.8;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 2px solid #dee2e6;
+  position: relative;
+}
+
+.bet-card.voted::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.7);
+  z-index: 1;
+}
+
+.bet-card.voted > * {
+  position: relative;
+  z-index: 2;
+}
+
+.voted-badge {
+  background: #28a745;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: bold;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+/* Désactiver les boutons de vote */
+.bet-options button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.bet-options button.disabled:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Indicateur visuel supplémentaire */
+.bet-card.voted .bet-title {
+  color: #6c757d;
+}
+
+.bet-card.voted .bet-desc-view {
+  color: #868e96;
+}
+
+.logIn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+  overflow: hidden;
+}
+.logIn .title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  gap: 10px;
+  width: 100%;
+  text-align: center;
+}
+.logIn .title img {
+  width: 130px;
+  margin-left: 10px;
+}
+.logIn form {
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 420px;
+  align-items: center;
+  padding: 20px;
+  background-color: transparent;
+}
+.logIn form .input-field {
+  background-color: transparent;
+  width: 100%;
+}
+.logIn form .input-field input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(244, 244, 244, 0.97);
   color: #011627;
-  padding: 25px 5% 25px 5%;
-  font-family: arial;
+  border-radius: 10px;
+  border: 1.5px solid #011627;
+  padding: 0.6rem 0.8rem;
+  font-size: 15px;
+  outline: none;
+}
+.logIn form button {
+  width: 50%;
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 18px;
+  border: none;
+  background-color: #20a4f3;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 50px;
+}
+
+a {
+  color: #bcbcbc;
+  margin-top: 10px;
+}
+
+@media (max-width: 500px) {
+  .logIn {
+    overflow-y: scroll;
+  }
+}
+main.account .account-info {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+main.account .account-info img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid rgba(124, 92, 255, 0.18);
+  box-shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
+}
+main.account .account-info h1 {
+  margin: 0;
+  font-size: 40px;
+  font-weight: 700;
+  color: #e6eef8;
+  text-align: center;
+}
+main.account {
+  /* Right column */
+}
+main.account .user-bets {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+main.account .user-bets h2 {
+  margin: 6px 0 0 6px;
+  color: #e6eef8;
+  font-size: 18px;
+  font-weight: 800;
+}
+main.account .user-bets .bet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+  margin-top: 8px;
+}
+main.account .user-bets {
+  /* Small card style for bets */
+}
+main.account .user-bets .bet-grid > .bet-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.02));
+  border-radius: 12px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  min-height: 96px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+  cursor: pointer;
+}
+main.account .user-bets .bet-grid > .bet-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(2, 6, 23, 0.6);
+}
+main.account .user-bets .bet-grid > .bet-card .title {
+  font-weight: 700;
+  color: #e6eef8;
+  margin-bottom: 6px;
+}
+main.account .user-bets .bet-grid > .bet-card .meta {
+  color: #9fb0c8;
+  font-size: 13px;
+}
+main.account .user-bets .bet-grid > .bet-card .payout {
+  color: #7c5cff;
+  font-weight: 800;
+  font-size: 15px;
+}
+
+/* Responsive */
+@media (max-width: 880px) {
+  main.account {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+  nav {
+    padding: 12px 18px;
+  }
+  nav .left ul {
+    display: none;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg, #0b1d38 0%, #071928 60%, #071b2b 100%);
+  color: #e6eef8;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 32px;
+  gap: 60px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.137);
+}
+nav .left {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+nav .left img {
+  height: 50px;
+  width: auto;
+}
+nav .left ul {
+  display: flex;
+  gap: 40px;
+  margin: 0;
+  margin-top: 6px;
+  padding: 0;
+  list-style: none;
+}
+nav .left ul li {
+  color: #9fb0c8;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 160ms ease;
+  cursor: pointer;
+}
+nav .left ul li:hover {
+  color: #e6eef8;
+  background: rgba(125, 95, 255, 0.08);
+}
+nav .right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+nav .right .wallet {
+  background: rgba(255, 255, 255, 0.04);
+  padding: 8px 12px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+nav .right .wallet h3 {
+  margin: 0;
+  font-size: 12px;
+  color: #00d463;
+}
+nav .right .wallet span {
+  font-weight: 700;
+  color: #e6eef8;
+  font-size: 13px;
+}
+nav .right .add-bet {
+  background: linear-gradient(90deg, #61c1b6 5%, #20a4f3);
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 6px 20px rgba(124, 92, 255, 0.14);
+}
+nav .right .connection-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 40px;
+  border: 2px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=style.css.map */

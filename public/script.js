@@ -6,7 +6,7 @@ window.adminId = null;
 
 const addBetButton = document.querySelector(".add-bet");
 const connectionButton = document.querySelector(".connection-button");
-connectionButton.textContent = "Connexion Admin";
+connectionButton.textContent = "Connexion / Inscription";
 const betGrid = document.querySelector(".bet-grid");
 
 // Cacher le bouton d'ajout par défaut
@@ -23,6 +23,10 @@ addBetFormOverlay.innerHTML = `
     <label>Options de pari : (facultatif)</label>
     <input class="persoOui" type="text" placeholder="oui" />
     <input class="persoNon" type="text" placeholder="non"/>
+    <select class="category">
+      <option value="paris">Paris</option>
+      <option value="dilemme">Dilemmes</option>
+    </select>
     <div style="display:flex;gap:8px;margin-top:8px;">
       <input class="bet-date" type="date" />
       <input class="bet-time" type="time" value="12:00" />
@@ -151,11 +155,11 @@ function disableAdminInteractions() {
 }
 function toggleConnectionUI() {
   if (connected) {
-    connectionButton.textContent = "Déconnexion Admin";
+    connectionButton.textContent = "Mon compte";
     addBetButton.style.display = "block";
     enableAdminInteractions();
   } else {
-    connectionButton.textContent = "Connexion Admin";
+    connectionButton.textContent = "Connexion / Inscription";
     addBetButton.style.display = "none";
     disableAdminInteractions();
     window.adminId = null;

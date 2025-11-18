@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" type="image/x-icon" href="./imgs/favicon.svg" />
-    <title>PickOne</title>
+    <title>Mon compte</title>
   </head>
-
   <body>
     <nav>
       <div class="left">
@@ -20,20 +19,27 @@
       </div>
       <div class="right">
         <div class="wallet">
-          <h3>Wallet</h3>
+          <h3>Porte-Feuille</h3>
           <span>0.00 pickCoin</span>
         </div>
-        <button class="add-bet">Ajouter</button>
+        <button class="add-bet">Nouveau</button>
         <button class="connection-button"></button>
       </div>
     </nav>
 
-    <div class="bet-grid"></div>
-
-    <footer>
-      Tout droits réservés © 2025
-      <img src="./imgs/Logo.svg" alt="logo PickOne" />
-    </footer>
-    <script src="script.js"></script>
+    <main class="account">
+      <div class="account-info">
+        <img src="./imgs/profile.webp" alt="" />
+        <h1>Timéo DOOM</h1>
+      </div>
+      <div>
+        <input type="email" placeholder="timeodoom@gmail.com" />
+        <input type="password" placeholder="********" />
+      </div>
+      <div class="user-bets">
+        <h2>Mes paris</h2>
+        <div class="bet-grid"></div>
+      </div>
+    </main>
   </body>
 </html>

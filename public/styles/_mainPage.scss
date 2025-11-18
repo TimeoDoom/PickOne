@@ -3,11 +3,56 @@ nav {
   align-items: center;
   justify-content: space-between;
 
-  img {
-    height: 55px;
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 100px;
+
+    img {
+      height: 55px;
+    }
+
+    ul {
+      list-style: none;
+      display: flex;
+      gap: 80px;
+      margin: 0;
+      padding: 0;
+      margin-top: 8px;
+
+      li {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 18px;
+        color: #011627;
+        cursor: pointer;
+        padding: 8px 15px;
+        border-radius: 30px;
+      }
+    }
   }
 
-  div {
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    .wallet {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+
+      h3 {
+        margin: 0;
+        font-size: 16px;
+        color: #03a800;
+      }
+
+      span {
+        font-size: 14px;
+        color: #82dba4;
+      }
+    }
     .connection-button {
       font-size: 18px;
       padding: 10px 20px;
@@ -316,16 +361,29 @@ nav {
 }
 
 footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-top: 30px;
+  padding: 12px 16px;
+  background: rgba(246, 247, 248, 0.98);
+  z-index: 1000;
+  height: 56px;
+
   img {
     height: 25px;
     display: inline-block;
     vertical-align: middle;
   }
+}
+
+/* Réserve de l'espace pour éviter que le contenu soit caché par le footer fixe */
+body {
+  padding-bottom: 64px;
 }
 
 // voted
