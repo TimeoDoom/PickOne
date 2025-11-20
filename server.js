@@ -9,6 +9,7 @@ import helmet from "helmet";
 import session from "express-session";
 import rateLimit from "express-rate-limit";
 import Joi from "joi";
+import crypto from "crypto";
 
 dotenv.config();
 const { Pool } = pkg;
@@ -19,6 +20,13 @@ const PORT = process.env.PORT || 3000;
 // Pour ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// ==================== FONCTIONS DE SÉCURITÉ ====================
+
+// Génération de secret sécurisé
+function generateSecureSecret() {
+  return crypto.randomBytes(64).toString('hex');
+}
 
 // ==================== CONFIGURATION DE SÉCURITÉ RENFORCÉE ====================
 
@@ -49,8 +57,8 @@ app.use(helmet({
 // Configuration CORS sécurisée
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? process.env.ALLOWED_ORIGINS?.split(',') || ['https://votre-domaine.com']
-    : ['http://localhost:3000', 'http://127.0.0.1:3000'],
+    ? process.env.ALLOWED_ORIGINS?.split(',') || true 
+    : true,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -84,23 +92,16 @@ const createBetLimiter = rateLimit({
 // Sessions sécurisées
 app.use(session({
   name: 'sessionId',
-  secret: process.env.SESSION_SECRET || this.generateSecureSecret(),
+  secret: process.env.SESSION_SECRET || generateSecureSecret(),
   resave: false,
   saveUninitialized: false,
   cookie: {
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000, // 24h
-    sameSite: 'strict',
-    domain: process.env.NODE_ENV === 'production' ? 'votre-domaine.com' : undefined
-  },
-  store: new session.MemoryStore() // En production, utilisez Redis ou PostgreSQL
+    sameSite: 'strict'
+  }
 }));
-
-// Génération de secret sécurisé
-function generateSecureSecret() {
-  return require('crypto').randomBytes(64).toString('hex');
-}
 
 // Protection contre les attaques par pollution de prototypes
 app.use((req, res, next) => {
@@ -147,7 +148,6 @@ const adminAccessLogger = (req, res, next) => {
       ip: req.ip || req.connection.remoteAddress,
       method: req.method,
       url: req.url,
-      userAgent: req.get('User-Agent'),
       timestamp: new Date().toISOString()
     });
   }
@@ -191,27 +191,12 @@ const validateParams = (req, res, next) => {
 
 const pariSchema = Joi.object({
   title: Joi.string().trim().min(1).max(255).required()
-    .pattern(/^[a-zA-Z0-9À-ÿ\s\-_.,!?()]+$/)
-    .messages({
-      'string.pattern.base': 'Le titre contient des caractères non autorisés'
-    }),
-  description: Joi.string().trim().max(1000).allow('')
-    .pattern(/^[a-zA-Z0-9À-ÿ\s\-_.,!?()]*$/),
-  deadline: Joi.date().iso().greater('now').required()
-    .custom((value, helpers) => {
-      const maxDate = new Date();
-      maxDate.setFullYear(maxDate.getFullYear() + 1); // 1 an maximum
-      if (value > maxDate) {
-        return helpers.error('date.max');
-      }
-      return value;
-    }, 'Date validation')
-    .messages({
-      'date.max': 'La date ne peut pas dépasser 1 an dans le futur'
-    }),
-  optionA: Joi.string().trim().max(100).pattern(/^[a-zA-Z0-9À-ÿ\s\-_]+$/).default('Oui'),
-  optionB: Joi.string().trim().max(100).pattern(/^[a-zA-Z0-9À-ÿ\s\-_]+$/).default('Non'),
-  creatorId: Joi.number().integer().positive().forbidden() // Ne pas permettre de définir creatorId manuellement
+    .pattern(/^[a-zA-Z0-9À-ÿ\s\-_.,!?()]+$/),
+  description: Joi.string().trim().max(1000).allow(''),
+  deadline: Joi.date().iso().greater('now').required(),
+  optionA: Joi.string().trim().max(100).default('Oui'),
+  optionB: Joi.string().trim().max(100).default('Non'),
+  creatorId: Joi.number().integer().positive().forbidden()
 });
 
 const voteSchema = Joi.object({
@@ -220,10 +205,8 @@ const voteSchema = Joi.object({
 });
 
 const loginSchema = Joi.object({
-  username: Joi.string().trim().min(3).max(50).required()
-    .pattern(/^[a-zA-Z0-9_]+$/),
-  password: Joi.string().min(8).max(100).required()
-    .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
+  username: Joi.string().trim().min(3).max(50).required(),
+  password: Joi.string().min(6).max(100).required()
 });
 
 // ==================== MIDDLEWARES PERSONNALISÉS RENFORCÉS ====================
@@ -231,12 +214,12 @@ const loginSchema = Joi.object({
 // Validation des données avec logging
 const validateRequest = (schema) => {
   return (req, res, next) => {
-    const { error, value } = schema.validate(req.body, { abortEarly: false });
+    const { error, value } = schema.validate(req.body);
     if (error) {
-      console.log('❌ Validation échouée:', error.details);
+      console.log('❌ Validation échouée:', error.details[0].message);
       return res.status(400).json({ 
         error: "Données invalides", 
-        details: error.details.map(detail => detail.message) 
+        details: error.details[0].message 
       });
     }
     req.validatedData = value;
@@ -247,21 +230,9 @@ const validateRequest = (schema) => {
 // Authentification admin renforcée
 const requireAdminAuth = (req, res, next) => {
   if (!req.session.adminId || typeof req.session.adminId !== 'number') {
-    console.log('❌ Tentative d\'accès non autorisée à une route admin:', {
-      ip: req.ip,
-      url: req.url,
-      hasSession: !!req.session.adminId,
-      sessionType: typeof req.session.adminId
-    });
+    console.log('❌ Tentative d\'accès non autorisée à une route admin');
     return res.status(401).json({ error: "Authentification admin requise" });
   }
-  
-  // Vérification supplémentaire de la session
-  if (!req.sessionID || req.session.cookie.expires < new Date()) {
-    console.log('❌ Session expirée ou invalide');
-    return res.status(401).json({ error: "Session expirée" });
-  }
-  
   next();
 };
 
@@ -281,11 +252,7 @@ const checkBetOwnership = async (req, res, next) => {
     }
 
     if (result.rows[0].creatorid !== adminId) {
-      console.log('❌ Tentative de modification non autorisée:', {
-        adminId,
-        creatorId: result.rows[0].creatorid,
-        pariId: id
-      });
+      console.log('❌ Tentative de modification non autorisée');
       return res.status(403).json({ error: "Non autorisé à modifier ce pari" });
     }
 
@@ -300,89 +267,46 @@ const checkBetOwnership = async (req, res, next) => {
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? {
-    rejectUnauthorized: true,
-    ca: process.env.DB_SSL_CA
-  } : false,
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 
-// Test de connexion à la base de données avec gestion d'erreur
+// Test de connexion à la base de données
 const initializeDatabase = async () => {
-  let client;
   try {
-    client = await pool.connect();
+    const client = await pool.connect();
     console.log("✅ Connecté à la base de données Neon");
 
-    // Test query avec timeout
-    const result = await Promise.race([
-      client.query("SELECT NOW()"),
-      new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Timeout DB')), 5000)
-      )
-    ]);
-
+    const result = await client.query("SELECT NOW()");
     console.log("✅ Test query réussi:", result.rows[0]);
 
-    // Vérification de la table admin
-    const adminCheck = await client.query(`
-      SELECT EXISTS (
-        SELECT FROM information_schema.tables 
-        WHERE table_name = 'users'
-      );
-    `);
-
-    if (!adminCheck.rows[0].exists) {
-      console.warn("⚠️ Table users non trouvée");
-    }
-
+    client.release();
   } catch (err) {
     console.error("❌ Erreur de connexion à la base de données :", err.message);
-    
-    // Tentative de reconnexion
-    setTimeout(initializeDatabase, 5000);
-  } finally {
-    if (client) client.release();
   }
 };
 
 initializeDatabase();
 
-// Gestionnaire d'erreurs pour la pool
-pool.on('error', (err) => {
-  console.error('❌ Erreur inattendue sur la pool de connexions:', err);
-});
-
 // ==================== ROUTES API SÉCURISÉES ====================
 
-// Servir les fichiers statiques (après les middlewares de sécurité)
-app.use(express.static(path.join(__dirname, "public"), {
-  dotfiles: 'ignore',
-  index: false,
-  setHeaders: (res, path) => {
-    res.setHeader('X-Content-Type-Options', 'nosniff');
-  }
-}));
+// Servir les fichiers statiques
+app.use(express.static(path.join(__dirname, "public")));
 
 // Route pour la page principale
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// Health check sécurisé
+// Health check
 app.get("/health", async (req, res) => {
   try {
-    const result = await pool.query("SELECT 1 as status, NOW() as timestamp");
+    await pool.query("SELECT 1");
     res.status(200).json({
       status: "OK",
       message: "Serveur et base de données fonctionnent",
       timestamp: new Date().toISOString(),
-      environment: process.env.NODE_ENV || 'development'
     });
   } catch (error) {
-    console.error("❌ Health check failed:", error);
     res.status(500).json({
       status: "ERROR",
       message: "Problème avec la base de données"
@@ -390,20 +314,14 @@ app.get("/health", async (req, res) => {
   }
 });
 
-// Récupérer tous les paris (avec filtrage des données sensibles)
+// Récupérer tous les paris
 app.get("/api/paris", async (req, res) => {
   try {
-    console.log("📥 Requête pour récupérer tous les paris depuis IP:", req.ip);
+    console.log("📥 Requête pour récupérer tous les paris");
 
     const result = await pool.query(`
       SELECT 
-        p.idBet,
-        p.title,
-        p.description,
-        p.deadline,
-        p.optionA,
-        p.optionB,
-        p.creationDate,
+        p.*,
         COUNT(CASE WHEN v.choix = p.optionA THEN 1 END) as votesA,
         COUNT(CASE WHEN v.choix = p.optionB THEN 1 END) as votesB
       FROM pari p
@@ -413,21 +331,7 @@ app.get("/api/paris", async (req, res) => {
     `);
 
     console.log(`✅ ${result.rows.length} paris récupérés`);
-    
-    // Filtrage des données sensibles
-    const safeParis = result.rows.map(pari => ({
-      idbet: pari.idbet,
-      title: pari.title,
-      description: pari.description,
-      deadline: pari.deadline,
-      optiona: pari.optiona,
-      optionb: pari.optionb,
-      creationdate: pari.creationdate,
-      votesa: parseInt(pari.votesa) || 0,
-      votesb: parseInt(pari.votesb) || 0
-    }));
-
-    res.json(safeParis);
+    res.json(result.rows);
   } catch (err) {
     console.error("❌ Erreur /api/paris:", err);
     res.status(500).json({
@@ -436,15 +340,12 @@ app.get("/api/paris", async (req, res) => {
   }
 });
 
-// Route de connexion admin avec sécurité renforcée
+// Route de connexion admin
 app.post("/api/admin/login", authLimiter, validateRequest(loginSchema), async (req, res) => {
   try {
     const { username, password } = req.validatedData;
 
-    console.log('🔐 Tentative de connexion admin:', { username, ip: req.ip });
-
-    // Délai artificiel pour éviter le timing attack
-    await new Promise(resolve => setTimeout(resolve, 100 + Math.random() * 100));
+    console.log('🔐 Tentative de connexion admin:', username);
 
     const query = `
       SELECT idUser, userPassword 
@@ -454,38 +355,29 @@ app.post("/api/admin/login", authLimiter, validateRequest(loginSchema), async (r
     const result = await pool.query(query, [username]);
 
     if (result.rows.length === 0) {
-      console.log("❌ Tentative de connexion avec utilisateur inexistant:", username);
-      // Message générique pour éviter l'enumération d'utilisateurs
+      console.log("❌ Admin introuvable");
       return res.status(401).json({ message: "Identifiants incorrects" });
     }
 
     const admin = result.rows[0];
 
-    // Vérification du mot de passe avec bcrypt
     const isValid = await bcrypt.compare(password, admin.userpassword);
 
     if (!isValid) {
-      console.log("❌ Mot de passe incorrect pour l'admin:", username);
+      console.log("❌ Mot de passe admin incorrect");
       return res.status(401).json({ message: "Identifiants incorrects" });
     }
 
-    // Régénération de session pour prévenir les fixation attacks
     req.session.regenerate((err) => {
       if (err) {
         console.error("❌ Erreur régénération session:", err);
         return res.status(500).json({ message: "Erreur d'authentification" });
       }
 
-      // Création de session sécurisée
       req.session.adminId = admin.iduser;
       req.session.loginTime = new Date();
 
-      console.log("✅ Connexion admin réussie:", { 
-        adminId: admin.iduser, 
-        username,
-        ip: req.ip 
-      });
-
+      console.log("✅ Connexion admin réussie");
       res.json({
         message: "Connexion admin réussie",
         adminId: admin.iduser,
@@ -498,10 +390,8 @@ app.post("/api/admin/login", authLimiter, validateRequest(loginSchema), async (r
   }
 });
 
-// Déconnexion admin sécurisée
-app.post("/api/admin/logout", requireAdminAuth, (req, res) => {
-  const adminId = req.session.adminId;
-  
+// Déconnexion admin
+app.post("/api/admin/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
       console.error("❌ Erreur déconnexion:", err);
@@ -509,7 +399,6 @@ app.post("/api/admin/logout", requireAdminAuth, (req, res) => {
     }
     
     res.clearCookie('sessionId');
-    console.log("✅ Déconnexion admin réussie:", { adminId });
     res.json({ message: "Déconnexion réussie" });
   });
 });
@@ -523,15 +412,11 @@ app.get("/api/admin/status", (req, res) => {
 });
 
 // Créer un nouveau pari (admin seulement)
-app.post("/api/paris", requireAdminAuth, adminAccessLogger, createBetLimiter, validateRequest(pariSchema), async (req, res) => {
+app.post("/api/paris", requireAdminAuth, createBetLimiter, validateRequest(pariSchema), async (req, res) => {
   try {
     const { title, description, deadline, optionA, optionB } = req.validatedData;
 
-    console.log("📝 Création d'un nouveau pari par admin:", { 
-      adminId: req.session.adminId,
-      title,
-      deadline 
-    });
+    console.log("📝 Création d'un nouveau pari par admin:", req.session.adminId);
 
     const result = await pool.query(
       `INSERT INTO pari (title, description, deadline, optionA, optionB, creatorId)
@@ -555,7 +440,7 @@ app.post("/api/paris", requireAdminAuth, adminAccessLogger, createBetLimiter, va
 });
 
 // Mettre à jour un pari
-app.put("/api/paris/:id", requireAdminAuth, adminAccessLogger, validateParams, checkBetOwnership, validateRequest(pariSchema), async (req, res) => {
+app.put("/api/paris/:id", requireAdminAuth, validateParams, checkBetOwnership, validateRequest(pariSchema), async (req, res) => {
   try {
     const { id } = req.params;
     const { title, description, deadline, optionA, optionB } = req.validatedData;
@@ -565,7 +450,7 @@ app.put("/api/paris/:id", requireAdminAuth, adminAccessLogger, validateParams, c
       return res.status(400).json({ error: "ID de pari invalide" });
     }
 
-    console.log(`✏️ Mise à jour du pari ${id} par admin ${req.session.adminId}`);
+    console.log(`✏️ Mise à jour du pari ${id}`);
 
     const result = await pool.query(
       `UPDATE pari SET title = $1, description = $2, deadline = $3, optionA = $4, optionB = $5 
@@ -586,7 +471,7 @@ app.put("/api/paris/:id", requireAdminAuth, adminAccessLogger, validateParams, c
 });
 
 // Supprimer un pari
-app.delete("/api/paris/:id", requireAdminAuth, adminAccessLogger, validateParams, checkBetOwnership, async (req, res) => {
+app.delete("/api/paris/:id", requireAdminAuth, validateParams, checkBetOwnership, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -595,36 +480,19 @@ app.delete("/api/paris/:id", requireAdminAuth, adminAccessLogger, validateParams
       return res.status(400).json({ error: "ID de pari invalide" });
     }
 
-    console.log(`🗑️ Suppression du pari ${id} par admin ${req.session.adminId}`);
+    console.log(`🗑️ Suppression du pari ${id}`);
 
-    // Commencer une transaction pour supprimer votes + pari
-    const client = await pool.connect();
-    try {
-      await client.query('BEGIN');
+    const result = await pool.query(
+      `DELETE FROM pari WHERE idBet = $1 RETURNING *`,
+      [idNum]
+    );
 
-      // Supprimer d'abord les votes associés
-      await client.query('DELETE FROM vote WHERE betId = $1', [idNum]);
-
-      // Puis supprimer le pari
-      const result = await client.query(
-        `DELETE FROM pari WHERE idBet = $1 RETURNING *`,
-        [idNum]
-      );
-
-      if (result.rows.length === 0) {
-        await client.query('ROLLBACK');
-        return res.status(404).json({ error: "Pari non trouvé" });
-      }
-
-      await client.query('COMMIT');
-      console.log("✅ Pari et votes associés supprimés");
-      res.json(result.rows[0]);
-    } catch (error) {
-      await client.query('ROLLBACK');
-      throw error;
-    } finally {
-      client.release();
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Pari non trouvé" });
     }
+
+    console.log("✅ Pari supprimé");
+    res.json(result.rows[0]);
   } catch (err) {
     console.error("❌ Erreur suppression pari:", err);
     res.status(500).json({ error: "Erreur lors de la suppression d'un pari" });
@@ -643,9 +511,7 @@ app.post("/api/paris/:id/vote", validateParams, validateRequest(voteSchema), asy
       return res.status(400).json({ message: "ID de pari invalide" });
     }
 
-    // Validation renforcée de l'userId
     if (!/^[a-f0-9-]{36}$/.test(userId)) {
-      console.log('❌ UserId invalide:', userId);
       return res.status(400).json({ message: "ID utilisateur invalide" });
     }
 
@@ -654,7 +520,6 @@ app.post("/api/paris/:id/vote", validateParams, validateRequest(voteSchema), asy
     client = await pool.connect();
     await client.query("BEGIN");
 
-    // Vérifier que le pari existe et n'est pas expiré
     const pariCheck = await client.query(
       `SELECT optionA, optionB, deadline FROM pari WHERE idBet = $1`,
       [pariId]
@@ -680,7 +545,6 @@ app.post("/api/paris/:id/vote", validateParams, validateRequest(voteSchema), asy
       });
     }
 
-    // Vérifier si l'utilisateur a déjà voté
     const voteCheck = await client.query(
       `SELECT * FROM vote WHERE userId = $1 AND betId = $2`,
       [userId, pariId]
@@ -691,7 +555,6 @@ app.post("/api/paris/:id/vote", validateParams, validateRequest(voteSchema), asy
       return res.status(400).json({ message: "Vous avez déjà voté pour ce pari." });
     }
 
-    // Enregistrer le vote
     const insertVote = await client.query(
       `INSERT INTO vote (choix, userId, betId) VALUES ($1, $2, $3) RETURNING *`,
       [choix, userId, pariId]
@@ -702,11 +565,7 @@ app.post("/api/paris/:id/vote", validateParams, validateRequest(voteSchema), asy
     console.log("✅ Vote enregistré avec succès");
     res.status(201).json({
       message: "Vote enregistré",
-      vote: {
-        id: insertVote.rows[0].id,
-        choix: insertVote.rows[0].choix,
-        betId: insertVote.rows[0].betid
-      }
+      vote: insertVote.rows[0],
     });
   } catch (err) {
     if (client) {
@@ -740,14 +599,7 @@ app.get("/api/user/votes", async (req, res) => {
     );
 
     console.log(`✅ ${result.rows.length} votes récupérés`);
-    
-    // Renvoyer seulement les données nécessaires
-    const safeVotes = result.rows.map(vote => ({
-      betid: vote.betid,
-      choix: vote.choix
-    }));
-    
-    res.json(safeVotes);
+    res.json(result.rows);
   } catch (err) {
     console.error("❌ Erreur récupération votes:", err);
     res.status(500).json({ error: "Erreur lors de la récupération des votes" });
@@ -758,7 +610,6 @@ app.get("/api/user/votes", async (req, res) => {
 
 // Middleware pour routes non trouvées
 app.use((req, res) => {
-  console.log('❌ Route non trouvée:', req.method, req.url);
   res.status(404).json({ error: "Route non trouvée" });
 });
 
@@ -766,33 +617,11 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   console.error("❌ Erreur non gérée:", err);
   
-  // Ne pas exposer les détails d'erreur en production
-  if (process.env.NODE_ENV === 'production') {
-    return res.status(500).json({ error: "Erreur interne du serveur" });
-  }
-  
   if (err instanceof Joi.ValidationError) {
-    return res.status(400).json({ 
-      error: "Données invalides",
-      details: err.details 
-    });
+    return res.status(400).json({ error: "Données invalides" });
   }
   
-  res.status(500).json({ 
-    error: "Erreur interne du serveur",
-    message: err.message 
-  });
-});
-
-// Gestion des erreurs non catchées
-process.on('uncaughtException', (error) => {
-  console.error('❌ Exception non catchée:', error);
-  process.exit(1);
-});
-
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('❌ Rejet non géré:', reason);
-  process.exit(1);
+  res.status(500).json({ error: "Erreur interne du serveur" });
 });
 
 // Démarrer le serveur
@@ -801,6 +630,4 @@ app.listen(PORT, "0.0.0.0", () => {
   console.log(`📍 URL: http://localhost:${PORT}`);
   console.log(`🔍 Health check: http://localhost:${PORT}/health`);
   console.log(`🔒 Mode sécurité: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`📊 Rate limiting: Activé`);
-  console.log(`🛡️ Helmet CSP: Activé`);
 });
