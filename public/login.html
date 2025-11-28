@@ -1,33 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="icon" type="image/x-icon" href="./imgs/favicon.svg" />
-    <title>Connexion à PickOne</title>
-  </head>
-  <body class="logIn">
-    <div class="title">
-      <h1>Connexion à</h1>
-      <img src="./imgs/Logo.svg" alt="logo pickone" />
-    </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="./imgs/favicon.svg">
+    <title>Connexion - PickOne</title>
+</head>
+<body>
+    <nav>
+        <div class="left">
+            <img src="./imgs/Logo.svg" alt="logo PickOne">
+        </div>
+        <div class="right">
+            <a href="signup.html" class="auth-nav-link">S'inscrire</a>
+        </div>
+    </nav>
 
-    <form action="">
-      <div class="input-field">
-        <input placeholder="Nom utilisateur" type="text" />
-      </div>
-      <div class="input-field">
-        <input placeholder="Mot de passe" type="password" />
-      </div>
-      <button class="submit">Me connecter</button>
-    </form>
-    <a href="./signIn.html">Vous n'avez pas de compte ? Inscrivez-vous ici</a>
-    <a href="#">J'ai oublié mon mot de passe 😅</a>
+    <main class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <img src="./imgs/Logo.svg" alt="PickOne" class="auth-logo">
+                <h1>Content de vous revoir</h1>
+                <p>Connectez-vous à votre compte</p>
+            </div>
 
-    <footer>
-      Tout droits réservés © 2025
-      <img src="./imgs/Logo.svg" alt="logo PickOne" />
-    </footer>
-  </body>
+            <form class="auth-form">
+                <div class="form-group">
+                    <label for="email">Adresse email</label>
+                    <input type="email" id="email" placeholder="votre@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <div class="password-input">
+                        <input type="password" id="password" placeholder="Votre mot de passe" required>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label class="checkbox">
+                        <input type="checkbox" id="remember">
+                        <span class="checkmark"></span>
+                        Se souvenir de moi
+                    </label>
+                    <a href="#" class="forgot-password">Mot de passe oublié ?</a>
+                </div>
+
+                <button type="submit" class="auth-button primary">
+                    <span class="button-text">Se connecter</span>
+                    <span class="button-loading" style="display: none;">Connexion...</span>
+                </button>
+            </form>
+
+            <!-- <div class="auth-divider">
+                <span>ou continuer avec</span>
+            </div> -->
+
+            <!-- <div class="social-auth">
+                <button type="button" class="social-button google">
+                    <span class="social-icon">🔗</span>
+                    Google
+                </button>
+                <button type="button" class="social-button twitter">
+                    <span class="social-icon">🐦</span>
+                    Twitter
+                </button>
+                <button type="button" class="social-button metamask">
+                    <span class="social-icon">🦊</span>
+                    MetaMask
+                </button>
+            </div> -->
+
+            <div class="auth-footer">
+                <p>Nouveau sur PickOne ? <a href="signup.html" class="auth-link"><a href="./signIn.html">Créer un compte</a></a></p>
+            </div>
+        </div>
+    </main>
+
+    <script src="./scripts/verif.js"></script>
+</body>
 </html>

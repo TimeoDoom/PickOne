@@ -8,38 +8,210 @@
     <title>Mon compte</title>
   </head>
   <body>
-    <nav>
-      <div class="left">
-        <img src="./imgs/Logo.svg" alt="logo PickOne" />
-        <ul>
-          <li>Paris</li>
-          <li>Dilemmes</li>
-          <li>Tournois</li>
-        </ul>
-      </div>
-      <div class="right">
-        <div class="wallet">
-          <h3>Porte-Feuille</h3>
-          <span>0.00 pickCoin</span>
+   <nav>
+  <div class="left">
+    <img src="./imgs/Logo.svg" alt="logo PickOne" />
+    <ul class="nav-links">
+      <li>Paris</li>
+      <li>Dilemmes</li>
+      <li>Tournois</li>
+    </ul>
+  </div>
+  
+  <!-- Barre de recherche -->
+  <div class="search-container">
+    <div class="search-bar">
+      <input type="text" placeholder="Rechercher un pari, une catégorie..." class="search-input">
+      <button type="button" class="search-button">
+        <span class="search-icon">🔍</span>
+      </button>
+    </div>
+    <!-- Suggestions de recherche -->
+    <div class="search-suggestions">
+      <div class="suggestion-category">
+        <h4>Catégories populaires</h4>
+        <div class="suggestion-tags">
+          <span class="suggestion-tag">TECH</span>
+          <span class="suggestion-tag">CRYPTO</span>
+          <span class="suggestion-tag">SCIENCE</span>
+          <span class="suggestion-tag">SPORT</span>
         </div>
-        <button class="add-bet">Nouveau</button>
-        <button class="connection-button"></button>
       </div>
-    </nav>
+      <div class="suggestion-recent">
+        <h4>Recherches récentes</h4>
+        <div class="recent-searches">
+          <span class="recent-search">Bitcoin</span>
+          <span class="recent-search">IA Google</span>
+          <span class="recent-search">Mars 2024</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="right">
+    <div class="wallet">
+      <h3>Porte-Feuille</h3>
+      <span>0.00 pickCoin</span>
+    </div>
+    <button class="add-bet">Nouveau</button>
+    <button class="connection-button">
+      <a href="./account.html"></a>
+    </button>
+    
+    <!-- Menu hamburger -->
+    <button class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</nav>
+<!-- Menu mobile -->
+<div class="mobile-menu">
+  <div class="mobile-menu-content">
+    <!-- Barre de recherche mobile -->
+    <div class="mobile-search">
+      <div class="mobile-search-bar">
+        <input type="text" placeholder="Rechercher..." class="mobile-search-input">
+        <button type="button" class="mobile-search-button">
+          <span class="search-icon">🔍</span>
+        </button>
+      </div>
+    </div>
+    
+    <div class="mobile-wallet">
+      <h3>Porte-Feuille</h3>
+      <span>0.00 pickCoin</span>
+    </div>
+    
+    <ul class="mobile-nav-links">
+      <li><a href="#">Paris</a></li>
+      <li><a href="#">Dilemmes</a></li>
+      <li><a href="#">Tournois</a></li>
+    </ul>
+    
+    <button class="mobile-add-bet">Nouveau pari</button>
+    <button class="mobile-account-btn">Mon compte</button>
+  </div>
+</div>
 
     <main class="account">
       <div class="account-info">
-        <img src="./imgs/profile.webp" alt="" />
-        <h1>Timéo DOOM</h1>
+        <div class="profile-container">
+          <img src="./imgs/profile.webp" alt="Photo de profil" class="profile-image" />
+          <div class="profile-overlay">
+            <span class="edit-icon">✎</span>
+          </div>
+        </div>
+        <div class="profile-details">
+          <h1>Timéo DOOM</h1>
+          <div class="stats">
+            <div class="stat-item">
+              <span class="stat-value">24</span>
+              <span class="stat-label">Paris</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">18</span>
+              <span class="stat-label">Gagnés</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">75%</span>
+              <span class="stat-label">Ratio</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div>
-        <input type="email" placeholder="timeodoom@gmail.com" />
-        <input type="password" placeholder="********" />
-      </div>
-      <div class="user-bets">
-        <h2>Mes paris</h2>
-        <div class="bet-grid"></div>
+
+      <div class="account-sections">
+        <div class="section-card">
+          <h2 class="section-title">Informations personnelles</h2>
+          <div class="form-grid">
+            <div class="input-group">
+              <label for="email">Adresse email</label>
+              <input type="email" id="email" placeholder="timeodoom@gmail.com" />
+            </div>
+            <div class="input-group">
+              <label for="username">Nom d'utilisateur</label>
+              <input type="text" id="username" placeholder="Timéo DOOM" />
+            </div>
+            <div class="input-group">
+              <label for="password">Mot de passe</label>
+              <div class="password-input">
+                <input type="password" id="password" placeholder="********" />
+                <button class="password-toggle">👁️</button>
+              </div>
+            </div>
+          </div>
+          <button class="save-button">Enregistrer les modifications</button>
+        </div>
+
+        <div class="section-card">
+          <div class="section-header">
+            <h2 class="section-title">Mes paris</h2>
+            <div class="filter-tabs">
+              <button class="filter-tab active">Tous</button>
+              <button class="filter-tab">En cours</button>
+              <button class="filter-tab">Terminés</button>
+            </div>
+          </div>
+          <div class="user-bets">
+            <div class="bet-grid">
+              <!-- Exemple de carte de pari -->
+              <div class="bet-card">
+                <div class="bet-header">
+                  <span class="bet-status active">En cours</span>
+                  <span class="bet-date">12/03/2024</span>
+                </div>
+                <h3 class="bet-title">L'IA battra-t-elle les humains aux échecs d'ici 2025 ?</h3>
+                <div class="bet-meta">
+                  <span class="bet-amount">Mise: 50 pickCoins</span>
+                  <span class="bet-payout">Gain potentiel: 120 pickCoins</span>
+                </div>
+                <div class="bet-progress">
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 65%"></div>
+                  </div>
+                  <div class="progress-labels">
+                    <span>Oui: 65%</span>
+                    <span>Non: 35%</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bet-card">
+                <div class="bet-header">
+                  <span class="bet-status won">Gagné</span>
+                  <span class="bet-date">08/03/2024</span>
+                </div>
+                <h3 class="bet-title">Bitcoin atteindra 100k$ en 2024</h3>
+                <div class="bet-meta">
+                  <span class="bet-amount">Mise: 30 pickCoins</span>
+                  <span class="bet-payout won">Gain: 75 pickCoins</span>
+                </div>
+                <div class="bet-result">
+                  <span class="result-badge">Résultat: OUI ✓</span>
+                </div>
+              </div>
+
+              <div class="bet-card">
+                <div class="bet-header">
+                  <span class="bet-status lost">Perdu</span>
+                  <span class="bet-date">01/03/2024</span>
+                </div>
+                <h3 class="bet-title">La France gagnera la coupe du monde 2024</h3>
+                <div class="bet-meta">
+                  <span class="bet-amount">Mise: 20 pickCoins</span>
+                  <span class="bet-payout lost">Perte: 20 pickCoins</span>
+                </div>
+                <div class="bet-result">
+                  <span class="result-badge lost">Résultat: NON ✗</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
+    <script src="./scripts/nav.js"></script>
   </body>
 </html>

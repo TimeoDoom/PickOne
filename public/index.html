@@ -1,39 +1,247 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" type="image/x-icon" href="./imgs/favicon.svg" />
-    <title>PickOne</title>
+    <title>PickOne - Accueil</title>
   </head>
-
   <body>
+    <a href="./signIn.html">Page de création de compte</a>
     <nav>
       <div class="left">
         <img src="./imgs/Logo.svg" alt="logo PickOne" />
-        <ul>
+        <ul class="nav-links">
           <li>Paris</li>
           <li>Dilemmes</li>
           <li>Tournois</li>
         </ul>
       </div>
+
+      <!-- Barre de recherche -->
+      <div class="search-container">
+        <div class="search-bar">
+          <input
+            type="text"
+            placeholder="Rechercher un pari, une catégorie..."
+            class="search-input"
+          />
+          <button type="button" class="search-button">
+            <span class="search-icon">🔍</span>
+          </button>
+        </div>
+        <!-- Suggestions de recherche -->
+        <div class="search-suggestions">
+          <div class="suggestion-category">
+            <h4>Catégories populaires</h4>
+            <div class="suggestion-tags">
+              <span class="suggestion-tag">TECH</span>
+              <span class="suggestion-tag">CRYPTO</span>
+              <span class="suggestion-tag">SCIENCE</span>
+              <span class="suggestion-tag">SPORT</span>
+            </div>
+          </div>
+          <div class="suggestion-recent">
+            <h4>Recherches récentes</h4>
+            <div class="recent-searches">
+              <span class="recent-search">Bitcoin</span>
+              <span class="recent-search">IA Google</span>
+              <span class="recent-search">Mars 2024</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="right">
         <div class="wallet">
-          <h3>Wallet</h3>
+          <h3>Porte-Feuille</h3>
           <span>0.00 pickCoin</span>
         </div>
-        <button class="add-bet">Ajouter</button>
-        <button class="connection-button"></button>
+        <button class="add-bet">Nouveau</button>
+        <button class="connection-button">
+          <a href="./account.html"></a>
+        </button>
+
+        <!-- Menu hamburger -->
+        <button class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
     </nav>
 
-    <div class="bet-grid"></div>
+    <!-- Menu mobile -->
+    <div class="mobile-menu">
+      <div class="mobile-menu-content">
+        <!-- Barre de recherche mobile -->
+        <div class="mobile-search">
+          <div class="mobile-search-bar">
+            <input
+              type="text"
+              placeholder="Rechercher..."
+              class="mobile-search-input"
+            />
+            <button type="button" class="mobile-search-button">
+              <span class="search-icon">🔍</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="mobile-wallet">
+          <h3>Porte-Feuille</h3>
+          <span>0.00 pickCoin</span>
+        </div>
+
+        <ul class="mobile-nav-links">
+          <li><a href="#">Paris</a></li>
+          <li><a href="#">Dilemmes</a></li>
+          <li><a href="#">Tournois</a></li>
+        </ul>
+
+        <button class="mobile-add-bet">Nouveau pari</button>
+        <button class="mobile-account-btn">Mon compte</button>
+      </div>
+    </div>
+
+    <section class="hero-section">
+      <h1>Pariez sur l'avenir</h1>
+      <p>
+        Rejoignez la communauté et testez votre intuition sur les tendances
+        tech, crypto et bien plus encore
+      </p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="number">12.4K</span>
+          <span class="label">Paris actifs</span>
+        </div>
+        <div class="stat">
+          <span class="number">98%</span>
+          <span class="label">Taux de satisfaction</span>
+        </div>
+      </div>
+    </section>
+
+    <main class="main-content">
+      <div class="content-header">
+        <h2>Paris tendance</h2>
+        <a href="#" class="view-all">Voir tout</a>
+      </div>
+
+      <div class="bet-grid">
+        <!-- Carte 1 -->
+        <div class="bet-card featured">
+          <div class="bet-header">
+            <span class="bet-category">TECH</span>
+            <span class="bet-time">⏱️ 2j restants</span>
+          </div>
+          <h3 class="bet-title">
+            L'IA de Google battra-t-elle GPT-4 d'ici fin 2024 ?
+          </h3>
+          <div class="bet-stats">
+            <div class="stat">
+              <span class="value">12.5K</span>
+              <span class="label">Mise totale</span>
+            </div>
+            <div class="stat">
+              <span class="value">1.8K</span>
+              <span class="label">Parieurs</span>
+            </div>
+          </div>
+          <div class="bet-progress">
+            <div class="progress-info">
+              <span class="option yes">OUI - 68%</span>
+              <span class="option no">NON - 32%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 68%"></div>
+            </div>
+          </div>
+          <div class="bet-actions">
+            <button class="bet-button yes">Parier OUI</button>
+            <button class="bet-button no">Parier NON</button>
+            <button class="bet-button details">Détails</button>
+          </div>
+        </div>
+
+        <!-- Carte 2 -->
+        <div class="bet-card ending-soon">
+          <div class="bet-header">
+            <span class="bet-category">CRYPTO</span>
+            <span class="bet-time">⏱️ 6h restants</span>
+          </div>
+          <h3 class="bet-title">Bitcoin dépassera-t-il 70k$ cette semaine ?</h3>
+          <div class="bet-stats">
+            <div class="stat">
+              <span class="value">₿8.2K</span>
+              <span class="label">Mise totale</span>
+            </div>
+            <div class="stat">
+              <span class="value">956</span>
+              <span class="label">Parieurs</span>
+            </div>
+          </div>
+          <div class="bet-progress">
+            <div class="progress-info">
+              <span class="option yes">OUI - 42%</span>
+              <span class="option no">NON - 58%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 42%"></div>
+            </div>
+          </div>
+          <div class="bet-actions">
+            <button class="bet-button yes">Parier OUI</button>
+            <button class="bet-button no">Parier NON</button>
+            <button class="bet-button details">Détails</button>
+          </div>
+        </div>
+
+        <!-- Carte 3 -->
+        <div class="bet-card">
+          <div class="bet-header">
+            <span class="bet-category">SCIENCE</span>
+            <span class="bet-time">⏱️ 5j restants</span>
+          </div>
+          <h3 class="bet-title">
+            Trouvera-t-on de l'eau liquide sur Mars en 2024 ?
+          </h3>
+          <div class="bet-stats">
+            <div class="stat">
+              <span class="value">₿5.7K</span>
+              <span class="label">Mise totale</span>
+            </div>
+            <div class="stat">
+              <span class="value">723</span>
+              <span class="label">Parieurs</span>
+            </div>
+          </div>
+          <div class="bet-progress">
+            <div class="progress-info">
+              <span class="option yes">OUI - 25%</span>
+              <span class="option no">NON - 75%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 25%"></div>
+            </div>
+          </div>
+          <div class="bet-actions">
+            <button class="bet-button yes">Parier OUI</button>
+            <button class="bet-button no">Parier NON</button>
+            <button class="bet-button details">Détails</button>
+          </div>
+        </div>
+      </div>
+    </main>
 
     <footer>
-      Tout droits réservés © 2025
-      <img src="./imgs/Logo.svg" alt="logo PickOne" />
+      <img src="./imgs/Logo.svg" alt="PickOne Logo" />
+      <span>© 2024 PickOne. Tous droits réservés.</span>
     </footer>
-    <script src="script.js"></script>
+
+    <script src="./scripts/nav.js"></script>
+    <script src="./script.js"></script>
+    <script src="./scripts/signIn.js"></script>
   </body>
 </html>

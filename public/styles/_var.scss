@@ -1,8 +1,15 @@
-$bg: #1a2639;
-$card: #0f1724;
-$surface: #0b1220;
+// _var.scss
+$bg: #0f172a;
+$card: #1e293b;
+$surface: #0f1724;
 $accent: #7c5cff;
 $accent-2: #00d4a8;
-$text: #e6eef8;
-$muted: #9fb0c8;
+$text: #f1f5f9;
+$muted: #94a3b8;
 $glass: rgba(255, 255, 255, 0.04);
+
+// Nouvelles couleurs pour les états
+$success: #2ec4b6;
+$warning: #ffb800;
+$error: #ff3366;
+$info: #20a4f3;
