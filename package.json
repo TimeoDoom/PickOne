@@ -1,16 +1,15 @@
 {
-  "name": "pick-one",
-  "version": "0.0.1",
-  "description": "",
+  "name": "pickone-app",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Application de paris sécurisée",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "build": "echo 'No build step required'",
+    "hash-password": "node hashPassword.js"
   },
-  "keywords": [],
-  "author": "Timéo DOOM",
-  "license": "ISC",
-  "type": "module",
   "dependencies": {
     "@fastify/static": "^8.3.0",
     "bcrypt": "^6.0.0",
