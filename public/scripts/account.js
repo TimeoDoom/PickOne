@@ -1,4 +1,4 @@
-import { validateEmail, usernameValidation, pwdValidation } from "./functions";
+import { validateEmail, usernameValidation } from "./functions.js";
 
 const userNameElem = document.querySelector(".user-name");
 const nbBetElem = document.querySelector(".nb-bet");
@@ -7,7 +7,28 @@ const ratioElem = document.querySelector(".ratio");
 const ratio = "75%"; // calculer vrai valeur
 const mailInput = document.getElementById("email");
 const userNameInput = document.getElementById("username");
-const pwdInput = document.getElementById("password");
+
+const cancelBtn = document.querySelector(".cancel");
+const saveBtn = document.querySelector(".save-button");
+
+let notEditable = true;
+mailInput.disabled = notEditable;
+userNameInput.disabled = notEditable;
+cancelBtn.style.display = "none";
+
+saveBtn.addEventListener("click", () => {
+  cancelBtn.style.display = "flex";
+  notEditable = false;
+  mailInput.disabled = notEditable;
+  userNameInput.disabled = notEditable;
+});
+
+cancelBtn.addEventListener("click", () => {
+  cancelBtn.style.display = "none";
+  notEditable = true;
+  mailInput.disabled = notEditable;
+  userNameInput.disabled = notEditable;
+});
 
 async function getCurrentUser() {
   const res = await fetch("/api/auth/data", { credentials: "include" });
@@ -27,9 +48,6 @@ getCurrentUser().then((user) => {
   nbBetWon.textContent = user.nb_paris_gagnes;
   ratioElem.textContent = ratio;
 
-  if(validateEmail(mailInput.value)) {
-    
-  }
-
-
+  mailInput.value = user.email;
+  userNameInput.value = user.username;
 });

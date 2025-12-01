@@ -1003,8 +1003,12 @@ main.account .account-sections .section-card .form-grid .input-group textarea {
   resize: vertical;
   min-height: 80px;
 }
-main.account .account-sections .section-card .save-button {
-  background: linear-gradient(135deg, #7c5cff 0%, #00d4a8 100%);
+main.account .account-sections .section-card .btn-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}
+main.account .account-sections .section-card .btn-container .button {
   color: white;
   border: none;
   padding: 12px 30px;
@@ -1015,8 +1019,17 @@ main.account .account-sections .section-card .save-button {
   transition: all 0.3s ease;
   box-shadow: 0 6px 20px rgba(124, 92, 255, 0.3);
 }
-main.account .account-sections .section-card .save-button:hover {
+main.account .account-sections .section-card .btn-container .button:hover {
   transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(124, 92, 255, 0.4);
+}
+main.account .account-sections .section-card .btn-container .cancel {
+  background: #e32051;
+}
+main.account .account-sections .section-card .btn-container .save-button {
+  background: linear-gradient(135deg, #7c5cff 0%, #00d4a8 100%);
+}
+main.account .account-sections .section-card .btn-container .save-button:hover {
   box-shadow: 0 8px 25px rgba(124, 92, 255, 0.4);
 }
 main.account {
@@ -1446,13 +1459,13 @@ nav .right .hamburger span {
   transform-origin: center;
 }
 nav .right .hamburger.active span:nth-child(1) {
-  transform: rotate(45deg) translate(8px, 8px);
+  transform: rotate(-45deg) translate(-11px, 4px);
 }
 nav .right .hamburger.active span:nth-child(2) {
   opacity: 0;
 }
 nav .right .hamburger.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(8px, -8px);
+  transform: rotate(45deg) translate(-8px, 0px);
 }
 
 .mobile-menu {

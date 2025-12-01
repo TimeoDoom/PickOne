@@ -1,4 +1,4 @@
-import { validateEmail, usernameValidation, pwdValidation } from "./functions";
+import { validateEmail, usernameValidation } from "./functions.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const emailInput = document.getElementById("email");
@@ -28,6 +28,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function comparePasswords(password, confirmPassword) {
     return password === confirmPassword;
+  }
+
+  function pwdValidation(passwordInput) {
+    const pwdLength = /.{8,}/;
+    const pwdSpecialChar = /[!@#$%^&*(),.?":{}|<>]/;
+    const pwdUppercase = /[A-Z]/;
+
+    let isValid = true;
+
+    if (!pwdLength.test(passwordInput)) {
+      pwdlengthError.style.color = "#ff3636";
+      isValid = false;
+    } else {
+      pwdlengthError.style.color = "#4CAF50";
+    }
+
+    if (!pwdSpecialChar.test(passwordInput)) {
+      pwdSpecialCharError.style.color = "#ff3636";
+      isValid = false;
+    } else {
+      pwdSpecialCharError.style.color = "#4CAF50";
+    }
+
+    if (!pwdUppercase.test(passwordInput)) {
+      pwdUppercaseError.style.color = "#ff3636";
+      isValid = false;
+    } else {
+      pwdUppercaseError.style.color = "#4CAF50";
+    }
+
+    return isValid;
   }
 
   if (emailInput) {
