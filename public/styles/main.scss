@@ -263,7 +263,7 @@ nav {
       font-weight: 500;
       box-shadow: 0 6px 20px rgba(124, 92, 255, 0.14);
       transition: all 0.3s ease;
-      
+
       &:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 25px rgba(124, 92, 255, 0.25);
@@ -282,7 +282,7 @@ nav {
       );
       cursor: pointer;
       transition: all 0.3s ease;
-      
+
       &:hover {
         border-color: rgba(124, 92, 255, 0.3);
       }
@@ -299,7 +299,7 @@ nav {
       border: none;
       cursor: pointer;
       padding: 0;
-      
+
       span {
         width: 100%;
         height: 3px;
@@ -308,16 +308,16 @@ nav {
         transition: all 0.3s ease;
         transform-origin: center;
       }
-      
+
       &.active {
         span:nth-child(1) {
           transform: rotate(45deg) translate(8px, 8px);
         }
-        
+
         span:nth-child(2) {
           opacity: 0;
         }
-        
+
         span:nth-child(3) {
           transform: rotate(-45deg) translate(8px, -8px);
         }
@@ -338,17 +338,17 @@ nav {
   z-index: 999;
   transform: translateX(-100%);
   transition: transform 0.3s ease;
-  
+
   &.active {
     transform: translateX(0);
   }
-  
+
   .mobile-menu-content {
     padding: 100px 30px 40px;
     height: 100%;
     display: flex;
     flex-direction: column;
-    
+
     // Barre de recherche mobile
     .mobile-search {
       padding: 0 0 20px;
@@ -394,35 +394,35 @@ nav {
         }
       }
     }
-    
+
     .mobile-wallet {
       background: $glass;
       padding: 16px;
       border-radius: 12px;
       text-align: center;
       margin-bottom: 30px;
-      
+
       h3 {
         margin: 0 0 8px 0;
         font-size: 14px;
         color: #00d463;
       }
-      
+
       span {
         font-weight: 700;
         color: $text;
         font-size: 18px;
       }
     }
-    
+
     .mobile-nav-links {
       list-style: none;
       padding: 0;
       margin: 0 0 30px 0;
-      
+
       li {
         margin-bottom: 12px;
-        
+
         a {
           display: block;
           padding: 16px;
@@ -432,7 +432,7 @@ nav {
           border-radius: 12px;
           transition: all 0.3s ease;
           background: rgba(255, 255, 255, 0.03);
-          
+
           &:hover {
             background: rgba(124, 92, 255, 0.1);
             transform: translateX(10px);
@@ -440,8 +440,9 @@ nav {
         }
       }
     }
-    
+
     .mobile-add-bet {
+      text-align: center;
       background: linear-gradient(90deg, #61c1b6 5%, #20a4f3);
       border: none;
       color: white;
@@ -451,14 +452,17 @@ nav {
       cursor: pointer;
       margin-bottom: 12px;
       transition: all 0.3s ease;
-      
+      text-decoration: none;
+
       &:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 25px rgba(124, 92, 255, 0.3);
       }
     }
-    
+
     .mobile-account-btn {
+      text-decoration: none;
+      text-align: center;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
       color: $text;
@@ -467,7 +471,7 @@ nav {
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      
+
       &:hover {
         background: rgba(255, 255, 255, 0.1);
         border-color: rgba(124, 92, 255, 0.3);
@@ -481,11 +485,11 @@ nav {
   nav {
     padding: 18px 24px;
     gap: 40px;
-    
+
     .left .nav-links {
       gap: 25px;
     }
-    
+
     .search-container {
       flex: 0 1 300px;
       margin: 0 15px;
@@ -497,29 +501,29 @@ nav {
   nav {
     padding: 15px 20px;
     gap: 20px;
-    
+
     .left {
       .nav-links {
         display: none;
       }
     }
-    
+
     .search-container {
       display: none; // Cacher la barre de recherche desktop sur mobile
     }
-    
+
     .right {
       .wallet,
       .add-bet {
         display: none;
       }
-      
+
       .hamburger {
         display: flex;
       }
     }
   }
-  
+
   // Afficher la barre de recherche dans le menu mobile
   .mobile-search {
     display: block;
@@ -529,24 +533,24 @@ nav {
 @media (max-width: 480px) {
   nav {
     padding: 12px 16px;
-    
+
     .left img {
       height: 40px;
     }
-    
+
     .right .connection-button {
       width: 40px;
       height: 40px;
     }
   }
-  
+
   .mobile-menu .mobile-menu-content {
     padding: 80px 20px 30px;
   }
-  
+
   .mobile-search {
     padding: 0 0 15px;
-    
+
     .mobile-search-bar .mobile-search-input {
       font-size: 14px;
     }
@@ -601,4 +605,14 @@ a {
   &:hover {
     text-decoration: underline;
   }
+}
+
+.error-notif {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  color: #ff3366;
+  border-radius: 10px;
+  border: 2px solid #ff3366;
+  background-color: #0b1d38;
 }

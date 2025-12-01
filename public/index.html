@@ -8,10 +8,11 @@
     <title>PickOne - Accueil</title>
   </head>
   <body>
-    <a href="./signIn.html">Page de création de compte</a>
     <nav>
       <div class="left">
-        <img src="./imgs/Logo.svg" alt="logo PickOne" />
+        <a href="index.html"
+          ><img src="./imgs/Logo.svg" alt="logo PickOne"
+        /></a>
         <ul class="nav-links">
           <li>Paris</li>
           <li>Dilemmes</li>
@@ -58,10 +59,8 @@
           <h3>Porte-Feuille</h3>
           <span>0.00 pickCoin</span>
         </div>
-        <button class="add-bet">Nouveau</button>
-        <button class="connection-button">
-          <a href="./account.html"></a>
-        </button>
+        <button class="add-bet"></button>
+        <a class="connection-button account-btn"></a>
 
         <!-- Menu hamburger -->
         <button class="hamburger">
@@ -100,8 +99,8 @@
           <li><a href="#">Tournois</a></li>
         </ul>
 
-        <button class="mobile-add-bet">Nouveau pari</button>
-        <button class="mobile-account-btn">Mon compte</button>
+        <a href="" class="mobile-add-bet add-bet"></a>
+        <a class="mobile-account-btn account-btn">Mon compte</a>
       </div>
     </div>
 
@@ -241,7 +240,7 @@
     </footer>
 
     <script src="./scripts/nav.js"></script>
-    <script src="./script.js"></script>
+    <script src="./scripts/script.js"></script>
     <script src="./scripts/signIn.js"></script>
   </body>
 </html>

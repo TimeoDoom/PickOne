@@ -1555,6 +1555,7 @@ nav .right .hamburger.active span:nth-child(3) {
   transform: translateX(10px);
 }
 .mobile-menu .mobile-menu-content .mobile-add-bet {
+  text-align: center;
   background: linear-gradient(90deg, #61c1b6 5%, #20a4f3);
   border: none;
   color: white;
@@ -1564,12 +1565,15 @@ nav .right .hamburger.active span:nth-child(3) {
   cursor: pointer;
   margin-bottom: 12px;
   transition: all 0.3s ease;
+  text-decoration: none;
 }
 .mobile-menu .mobile-menu-content .mobile-add-bet:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(124, 92, 255, 0.3);
 }
 .mobile-menu .mobile-menu-content .mobile-account-btn {
+  text-decoration: none;
+  text-align: center;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: #f1f5f9;
@@ -1689,6 +1693,16 @@ a {
 }
 a:hover {
   text-decoration: underline;
+}
+
+.error-notif {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  color: #ff3366;
+  border-radius: 10px;
+  border: 2px solid #ff3366;
+  background-color: #0b1d38;
 }
 
 /*# sourceMappingURL=style.css.map */

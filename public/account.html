@@ -8,114 +8,127 @@
     <title>Mon compte</title>
   </head>
   <body>
-   <nav>
-  <div class="left">
-    <img src="./imgs/Logo.svg" alt="logo PickOne" />
-    <ul class="nav-links">
-      <li>Paris</li>
-      <li>Dilemmes</li>
-      <li>Tournois</li>
-    </ul>
-  </div>
-  
-  <!-- Barre de recherche -->
-  <div class="search-container">
-    <div class="search-bar">
-      <input type="text" placeholder="Rechercher un pari, une catégorie..." class="search-input">
-      <button type="button" class="search-button">
-        <span class="search-icon">🔍</span>
-      </button>
-    </div>
-    <!-- Suggestions de recherche -->
-    <div class="search-suggestions">
-      <div class="suggestion-category">
-        <h4>Catégories populaires</h4>
-        <div class="suggestion-tags">
-          <span class="suggestion-tag">TECH</span>
-          <span class="suggestion-tag">CRYPTO</span>
-          <span class="suggestion-tag">SCIENCE</span>
-          <span class="suggestion-tag">SPORT</span>
+    <nav>
+      <div class="left">
+        <a href="index.html"
+          ><img src="./imgs/Logo.svg" alt="logo PickOne"
+        /></a>
+        <ul class="nav-links">
+          <li>Paris</li>
+          <li>Dilemmes</li>
+          <li>Tournois</li>
+        </ul>
+      </div>
+
+      <!-- Barre de recherche -->
+      <div class="search-container">
+        <div class="search-bar">
+          <input
+            type="text"
+            placeholder="Rechercher un pari, une catégorie..."
+            class="search-input"
+          />
+          <button type="button" class="search-button">
+            <span class="search-icon">🔍</span>
+          </button>
+        </div>
+        <!-- Suggestions de recherche -->
+        <div class="search-suggestions">
+          <div class="suggestion-category">
+            <h4>Catégories populaires</h4>
+            <div class="suggestion-tags">
+              <span class="suggestion-tag">TECH</span>
+              <span class="suggestion-tag">CRYPTO</span>
+              <span class="suggestion-tag">SCIENCE</span>
+              <span class="suggestion-tag">SPORT</span>
+            </div>
+          </div>
+          <div class="suggestion-recent">
+            <h4>Recherches récentes</h4>
+            <div class="recent-searches">
+              <span class="recent-search">Bitcoin</span>
+              <span class="recent-search">IA Google</span>
+              <span class="recent-search">Mars 2024</span>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="suggestion-recent">
-        <h4>Recherches récentes</h4>
-        <div class="recent-searches">
-          <span class="recent-search">Bitcoin</span>
-          <span class="recent-search">IA Google</span>
-          <span class="recent-search">Mars 2024</span>
+
+      <div class="right">
+        <div class="wallet">
+          <h3>Porte-Feuille</h3>
+          <span>0.00 pickCoin</span>
         </div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="right">
-    <div class="wallet">
-      <h3>Porte-Feuille</h3>
-      <span>0.00 pickCoin</span>
-    </div>
-    <button class="add-bet">Nouveau</button>
-    <button class="connection-button">
-      <a href="./account.html"></a>
-    </button>
-    
-    <!-- Menu hamburger -->
-    <button class="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-  </div>
-</nav>
-<!-- Menu mobile -->
-<div class="mobile-menu">
-  <div class="mobile-menu-content">
-    <!-- Barre de recherche mobile -->
-    <div class="mobile-search">
-      <div class="mobile-search-bar">
-        <input type="text" placeholder="Rechercher..." class="mobile-search-input">
-        <button type="button" class="mobile-search-button">
-          <span class="search-icon">🔍</span>
+        <button class="add-bet"></button>
+        <a class="connection-button account-btn"></a>
+
+        <!-- Menu hamburger -->
+        <button class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
       </div>
+    </nav>
+
+    <!-- Menu mobile -->
+    <div class="mobile-menu">
+      <div class="mobile-menu-content">
+        <!-- Barre de recherche mobile -->
+        <div class="mobile-search">
+          <div class="mobile-search-bar">
+            <input
+              type="text"
+              placeholder="Rechercher..."
+              class="mobile-search-input"
+            />
+            <button type="button" class="mobile-search-button">
+              <span class="search-icon">🔍</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="mobile-wallet">
+          <h3>Porte-Feuille</h3>
+          <span>0.00 pickCoin</span>
+        </div>
+
+        <ul class="mobile-nav-links">
+          <li><a href="#">Paris</a></li>
+          <li><a href="#">Dilemmes</a></li>
+          <li><a href="#">Tournois</a></li>
+        </ul>
+
+        <a href="" class="mobile-add-bet add-bet"></a>
+        <a class="mobile-account-btn account-btn">Mon compte</a>
+      </div>
     </div>
-    
-    <div class="mobile-wallet">
-      <h3>Porte-Feuille</h3>
-      <span>0.00 pickCoin</span>
-    </div>
-    
-    <ul class="mobile-nav-links">
-      <li><a href="#">Paris</a></li>
-      <li><a href="#">Dilemmes</a></li>
-      <li><a href="#">Tournois</a></li>
-    </ul>
-    
-    <button class="mobile-add-bet">Nouveau pari</button>
-    <button class="mobile-account-btn">Mon compte</button>
-  </div>
-</div>
 
     <main class="account">
       <div class="account-info">
         <div class="profile-container">
-          <img src="./imgs/profile.webp" alt="Photo de profil" class="profile-image" />
+          <img
+            src="./imgs/profile.webp"
+            alt="Photo de profil"
+            class="profile-image"
+          />
           <div class="profile-overlay">
             <span class="edit-icon">✎</span>
           </div>
         </div>
         <div class="profile-details">
-          <h1>Timéo DOOM</h1>
+          <h1 class="user-name"></h1>
           <div class="stats">
             <div class="stat-item">
-              <span class="stat-value">24</span>
+              <span class="stat-value nb-bet"></span>
               <span class="stat-label">Paris</span>
             </div>
             <div class="stat-item">
-              <span class="stat-value">18</span>
+              <span class="stat-value won-bet">18</span>
               <span class="stat-label">Gagnés</span>
             </div>
             <div class="stat-item">
-              <span class="stat-value">75%</span>
+              <span class="stat-value ratio"></span>
               <span class="stat-label">Ratio</span>
             </div>
           </div>
@@ -128,21 +141,23 @@
           <div class="form-grid">
             <div class="input-group">
               <label for="email">Adresse email</label>
-              <input type="email" id="email" placeholder="timeodoom@gmail.com" />
+              <input type="email" id="email" />
             </div>
             <div class="input-group">
               <label for="username">Nom d'utilisateur</label>
-              <input type="text" id="username" placeholder="Timéo DOOM" />
+              <input type="text" id="username" />
             </div>
             <div class="input-group">
               <label for="password">Mot de passe</label>
               <div class="password-input">
-                <input type="password" id="password" placeholder="********" />
+                <input type="password" id="password" />
                 <button class="password-toggle">👁️</button>
               </div>
             </div>
           </div>
+          <button>Annuler</button>
           <button class="save-button">Enregistrer les modifications</button>
+          <button class="">Modifier</button>
         </div>
 
         <div class="section-card">
@@ -162,7 +177,9 @@
                   <span class="bet-status active">En cours</span>
                   <span class="bet-date">12/03/2024</span>
                 </div>
-                <h3 class="bet-title">L'IA battra-t-elle les humains aux échecs d'ici 2025 ?</h3>
+                <h3 class="bet-title">
+                  L'IA battra-t-elle les humains aux échecs d'ici 2025 ?
+                </h3>
                 <div class="bet-meta">
                   <span class="bet-amount">Mise: 50 pickCoins</span>
                   <span class="bet-payout">Gain potentiel: 120 pickCoins</span>
@@ -198,7 +215,9 @@
                   <span class="bet-status lost">Perdu</span>
                   <span class="bet-date">01/03/2024</span>
                 </div>
-                <h3 class="bet-title">La France gagnera la coupe du monde 2024</h3>
+                <h3 class="bet-title">
+                  La France gagnera la coupe du monde 2024
+                </h3>
                 <div class="bet-meta">
                   <span class="bet-amount">Mise: 20 pickCoins</span>
                   <span class="bet-payout lost">Perte: 20 pickCoins</span>
@@ -213,5 +232,7 @@
       </div>
     </main>
     <script src="./scripts/nav.js"></script>
+    <script src="./scripts/account.js"></script>
+    <script src="./scripts/script.js"></script>
   </body>
 </html>
