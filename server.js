@@ -242,6 +242,190 @@ app.get(
     }
   }
 );
+app.post(
+  "/api/auth/data/update",
+  { preHandler: [app.authenticate] },
+  async (req, rep) => {
+    const { username, email } = req.body;
+    const userId = req.user.id;
+
+    console.log(
+      "Tentative de mise à jour pour l'utilisateur:",
+      userId,
+      "avec:",
+      { username, email }
+    );
+
+    try {
+      // Vérifier que l'email n'est pas déjà utilisé par un autre utilisateur
+      if (email) {
+        const emailCheck = await pool.query(
+          "SELECT idUser FROM users WHERE email = $1 AND idUser != $2",
+          [email, userId]
+        );
+
+        if (emailCheck.rows.length > 0) {
+          console.log("Email déjà utilisé");
+          return rep.send({
+            success: false,
+            error: "Cet email est déjà utilisé par un autre compte",
+          });
+        }
+      }
+
+      // Vérifier que le nom d'utilisateur n'est pas déjà utilisé par un autre utilisateur
+      if (username) {
+        const usernameCheck = await pool.query(
+          "SELECT idUser FROM users WHERE userName = $1 AND idUser != $2",
+          [username, userId]
+        );
+
+        if (usernameCheck.rows.length > 0) {
+          console.log("Nom d'utilisateur déjà utilisé");
+          return rep.send({
+            success: false,
+            error: "Ce nom d'utilisateur est déjà pris",
+          });
+        }
+      }
+
+      // Construire la requête dynamiquement
+      const updates = [];
+      const values = [];
+      let paramCount = 1;
+
+      if (email) {
+        updates.push(`email = $${paramCount}`);
+        values.push(email);
+        paramCount++;
+      }
+
+      if (username) {
+        updates.push(`username = $${paramCount}`);
+        values.push(username);
+        paramCount++;
+      }
+
+      // Si rien à mettre à jour
+      if (updates.length === 0) {
+        return rep.send({
+          success: false,
+          error: "Aucune donnée à mettre à jour",
+        });
+      }
+
+      // Ajouter l'ID de l'utilisateur
+      values.push(userId);
+
+      const query = `
+        UPDATE users 
+        SET ${updates.join(", ")} 
+        WHERE idUser = $${paramCount}
+        RETURNING idUser, email, username
+      `;
+
+      console.log("Requête SQL:", query, "Valeurs:", values);
+
+      const result = await pool.query(query, values);
+
+      if (result.rowCount === 0) {
+        return rep.send({
+          success: false,
+          error: "Utilisateur non trouvé",
+        });
+      }
+
+      console.log("Mise à jour réussie:", result.rows[0]);
+
+      return rep.send({
+        success: true,
+        user: result.rows[0],
+      });
+    } catch (err) {
+      console.error("Erreur lors de la mise à jour:", err);
+      return rep.status(500).send({
+        success: false,
+        error: "Erreur serveur lors de la mise à jour",
+      });
+    }
+  }
+);
+
+// Nouvel endpoint pour le changement de mot de passe
+app.post(
+  "/api/auth/update-password",
+  { preHandler: [app.authenticate] },
+  async (req, rep) => {
+    const { currentPassword, newPassword } = req.body;
+    const userId = req.user.id;
+
+    console.log(
+      "Tentative de changement de mot de passe pour l'utilisateur:",
+      userId
+    );
+
+    try {
+      // Récupérer le mot de passe actuel
+      const res = await pool.query(
+        "SELECT userPassword FROM users WHERE idUser = $1",
+        [userId]
+      );
+
+      if (res.rows.length === 0) {
+        return rep.send({
+          success: false,
+          error: "Utilisateur non trouvé",
+        });
+      }
+
+      // Vérifier le mot de passe actuel
+      const valid = await bcrypt.compare(
+        currentPassword,
+        res.rows[0].userpassword
+      );
+
+      if (!valid) {
+        return rep.send({
+          success: false,
+          error: "Mot de passe actuel incorrect",
+        });
+      }
+
+      // Validation du nouveau mot de passe
+      if (!newPassword || newPassword.length < 6) {
+        return rep.send({
+          success: false,
+          error: "Le nouveau mot de passe doit contenir au moins 6 caractères",
+        });
+      }
+
+      // Hasher le nouveau mot de passe
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+      // Mettre à jour le mot de passe
+      await pool.query("UPDATE users SET userPassword = $1 WHERE idUser = $2", [
+        hashedPassword,
+        userId,
+      ]);
+
+      console.log(
+        "Mot de passe changé avec succès pour l'utilisateur:",
+        userId
+      );
+
+      return rep.send({
+        success: true,
+        message: "Mot de passe changé avec succès",
+      });
+    } catch (err) {
+      console.error("Erreur lors du changement de mot de passe:", err);
+      return rep.status(500).send({
+        success: false,
+        error: "Erreur serveur lors du changement de mot de passe",
+      });
+    }
+  }
+);
 
 // Déconnexion
 app.post("/api/logout", async (req, reply) => {

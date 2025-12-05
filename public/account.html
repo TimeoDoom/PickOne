@@ -6,6 +6,20 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" type="image/x-icon" href="./imgs/favicon.svg" />
     <title>Mon compte</title>
+    <style>
+      /* Styles pour les icônes oeil */
+      .eye-icon {
+        transition: all 0.3s ease;
+      }
+
+      .eye-icon.visible {
+        color: #7c5cff;
+      }
+
+      .eye-icon.hidden {
+        color: #94a3b8;
+      }
+    </style>
   </head>
   <body>
     <nav>
@@ -141,101 +155,135 @@
           <div class="form-grid">
             <div class="input-group">
               <label for="email">Adresse email</label>
-              <input type="email" id="email" />
+              <input type="email" id="email" disabled />
             </div>
             <div class="input-group">
               <label for="username">Nom d'utilisateur</label>
-              <input type="text" id="username" />
-            </div>
-            <div class="input-group">
-              <label for="password">Ancien mot de passe</label>
-              <div class="password-input">
-                <input type="password" id="password" />
-                <button class="password-toggle">👁️</button>
-              </div>
-              <label for="password">Nouveau mot de passe</label>
-              <div class="password-input">
-                <input type="password" id="password" />
-                <button class="password-toggle">👁️</button>
-              </div>
+              <input type="text" id="username" disabled />
             </div>
           </div>
           <div class="btn-container">
-            <button class="button cancel">Annuler</button>
-            <button class="button save-button">Modifier</button>
+            <button class="button cancel" style="display: none">Annuler</button>
+            <button class="button save-button" style="display: none">
+              Sauvegarder
+            </button>
+            <button class="button edit-button">Modifier</button>
+            <button class="button edit-pwd-button">
+              Modifier mon mot de passe
+            </button>
           </div>
         </div>
-
-        <!-- <div class="section-card">
-          <div class="section-header">
-            <h2 class="section-title">Mes paris</h2>
-            <div class="filter-tabs">
-              <button class="filter-tab active">Tous</button>
-              <button class="filter-tab">En cours</button>
-              <button class="filter-tab">Terminés</button>
-            </div>
-          </div>
-          <div class="user-bets">
-            <div class="bet-grid">
-              <div class="bet-card">
-                <div class="bet-header">
-                  <span class="bet-status active">En cours</span>
-                  <span class="bet-date">12/03/2024</span>
-                </div>
-                <h3 class="bet-title">
-                  L'IA battra-t-elle les humains aux échecs d'ici 2025 ?
-                </h3>
-                <div class="bet-meta">
-                  <span class="bet-amount">Mise: 50 pickCoins</span>
-                  <span class="bet-payout">Gain potentiel: 120 pickCoins</span>
-                </div>
-                <div class="bet-progress">
-                  <div class="progress-bar">
-                    <div class="progress-fill" style="width: 65%"></div>
-                  </div>
-                  <div class="progress-labels">
-                    <span>Oui: 65%</span>
-                    <span>Non: 35%</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="bet-card">
-                <div class="bet-header">
-                  <span class="bet-status won">Gagné</span>
-                  <span class="bet-date">08/03/2024</span>
-                </div>
-                <h3 class="bet-title">Bitcoin atteindra 100k$ en 2024</h3>
-                <div class="bet-meta">
-                  <span class="bet-amount">Mise: 30 pickCoins</span>
-                  <span class="bet-payout won">Gain: 75 pickCoins</span>
-                </div>
-                <div class="bet-result">
-                  <span class="result-badge">Résultat: OUI ✓</span>
-                </div>
-              </div>
-
-              <div class="bet-card">
-                <div class="bet-header">
-                  <span class="bet-status lost">Perdu</span>
-                  <span class="bet-date">01/03/2024</span>
-                </div>
-                <h3 class="bet-title">
-                  La France gagnera la coupe du monde 2024
-                </h3>
-                <div class="bet-meta">
-                  <span class="bet-amount">Mise: 20 pickCoins</span>
-                  <span class="bet-payout lost">Perte: 20 pickCoins</span>
-                </div>
-                <div class="bet-result">
-                  <span class="result-badge lost">Résultat: NON ✗</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
+      </div>
     </main>
+
+    <!-- Modal pour modifier le mot de passe -->
+    <div id="pwd-modal" class="modal">
+      <div class="modal-content">
+        <h2>Modifier mon mot de passe</h2>
+        <div id="pwd-message" class="modal-message"></div>
+
+        <div class="input-group">
+          <label for="current-password">Mot de passe actuel</label>
+          <div class="password-input">
+            <input type="password" id="current-password" />
+            <button
+              type="button"
+              class="password-toggle"
+              data-target="current-password"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="eye-icon hidden"
+              >
+                <path
+                  d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"
+                />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="new-password">Nouveau mot de passe</label>
+          <div class="password-input">
+            <input type="password" id="new-password" />
+            <button
+              type="button"
+              class="password-toggle"
+              data-target="new-password"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="eye-icon hidden"
+              >
+                <path
+                  d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"
+                />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
+          </div>
+          <div class="input-hint">
+            Minimum 8 caractères avec chiffres et lettres
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="confirm-password"
+            >Confirmer le nouveau mot de passe</label
+          >
+          <div class="password-input">
+            <input type="password" id="confirm-password" />
+            <button
+              type="button"
+              class="password-toggle"
+              data-target="confirm-password"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="eye-icon hidden"
+              >
+                <path
+                  d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"
+                />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="modal-buttons">
+          <button class="button cancel-modal">Annuler</button>
+          <button class="button save-password">
+            <span class="button-text">Enregistrer</span>
+            <span class="button-loading" style="display: none">...</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script src="./scripts/nav.js"></script>
     <script src="./scripts/account.js" type="module"></script>
     <script src="./scripts/script.js"></script>

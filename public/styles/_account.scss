@@ -1,3 +1,4 @@
+// _account.scss - Version améliorée
 @use "./var" as *;
 
 main.account {
@@ -11,6 +12,9 @@ main.account {
   box-sizing: border-box;
   text-align: center;
 
+  // =========================
+  // ACCOUNT INFO
+  // =========================
   .account-info {
     display: flex;
     align-items: center;
@@ -50,10 +54,7 @@ main.account {
 
       .profile-overlay {
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        inset: 0;
         background: rgba(124, 92, 255, 0.8);
         border-radius: 50%;
         display: flex;
@@ -74,7 +75,7 @@ main.account {
       text-align: left;
 
       h1 {
-        margin: 0 0 20px 0;
+        margin: 0 0 20px;
         font-size: 36px;
         font-weight: 700;
         color: $text;
@@ -108,6 +109,9 @@ main.account {
     }
   }
 
+  // =========================
+  // ACCOUNT SECTIONS
+  // =========================
   .account-sections {
     display: flex;
     flex-direction: column;
@@ -209,6 +213,11 @@ main.account {
             &::placeholder {
               color: $muted;
             }
+
+            &:disabled {
+              cursor: not-allowed;
+              opacity: 0.6;
+            }
           }
 
           .password-input {
@@ -227,12 +236,22 @@ main.account {
               border: none;
               color: $muted;
               cursor: pointer;
-              padding: 4px;
-              border-radius: 4px;
-              transition: color 0.3s ease;
+              padding: 6px;
+              border-radius: 6px;
+              transition: all 0.3s ease;
+              display: flex;
+              align-items: center;
+              justify-content: center;
 
               &:hover {
                 color: $text;
+                background: rgba(255, 255, 255, 0.05);
+              }
+
+              svg {
+                width: 20px;
+                height: 20px;
+                stroke-width: 2;
               }
             }
           }
@@ -247,42 +266,74 @@ main.account {
       .btn-container {
         display: flex;
         justify-content: flex-end;
-        gap: 20px;
+        gap: 15px;
+        flex-wrap: wrap;
 
         .button {
-          // background: linear-gradient(135deg, $accent 0%, $accent-2 100%);
-          color: white;
-          border: none;
-          padding: 12px 30px;
+          padding: 12px 28px;
           border-radius: 12px;
-          font-size: 16px;
+          font-size: 15px;
           font-weight: 600;
           cursor: pointer;
           transition: all 0.3s ease;
-          box-shadow: 0 6px 20px rgba(124, 92, 255, 0.3);
+          border: none;
+          color: white;
+          position: relative;
+          overflow: hidden;
 
-          &:hover {
+          &:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(124, 92, 255, 0.4);
           }
-        }
 
-        .cancel {
-          background: #e32051;
-        }
+          &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+          }
 
-        .save-button {
-          background: linear-gradient(135deg, $accent 0%, $accent-2 100%);
+          &.cancel {
+            background: linear-gradient(135deg, #ff3366, #ff6b6b);
+            box-shadow: 0 6px 20px rgba(255, 51, 102, 0.3);
 
-          &:hover {
-            box-shadow: 0 8px 25px rgba(124, 92, 255, 0.4);
+            &:hover:not(:disabled) {
+              box-shadow: 0 8px 25px rgba(255, 51, 102, 0.4);
+            }
+          }
+
+          &.save-button {
+            background: linear-gradient(135deg, $accent 0%, $accent-2 100%);
+            box-shadow: 0 6px 20px rgba(124, 92, 255, 0.3);
+
+            &:hover:not(:disabled) {
+              box-shadow: 0 8px 25px rgba(124, 92, 255, 0.4);
+            }
+          }
+
+          &.edit-button {
+            background: linear-gradient(135deg, #4a6fa5, #20a4f3);
+            box-shadow: 0 6px 20px rgba(32, 164, 243, 0.3);
+
+            &:hover:not(:disabled) {
+              box-shadow: 0 8px 25px rgba(32, 164, 243, 0.4);
+            }
+          }
+
+          &.edit-pwd-button {
+            background: linear-gradient(135deg, #6c757d, #94a3b8);
+            box-shadow: 0 6px 20px rgba(148, 163, 184, 0.3);
+
+            &:hover:not(:disabled) {
+              box-shadow: 0 8px 25px rgba(148, 163, 184, 0.4);
+            }
           }
         }
       }
     }
   }
 
-  /* Right column - Bets section */
+  // =========================
+  // USER BETS
+  // =========================
   .user-bets {
     width: 100%;
 
@@ -327,12 +378,10 @@ main.account {
             background: rgba(32, 164, 243, 0.2);
             color: #20a4f3;
           }
-
           &.won {
             background: rgba(46, 196, 182, 0.2);
             color: #2ec4b6;
           }
-
           &.lost {
             background: rgba(255, 51, 102, 0.2);
             color: #ff3366;
@@ -349,7 +398,7 @@ main.account {
         font-size: 16px;
         font-weight: 600;
         color: $text;
-        margin: 0 0 12px 0;
+        margin: 0 0 12px;
         line-height: 1.4;
       }
 
@@ -367,7 +416,6 @@ main.account {
             color: #2ec4b6;
             font-weight: 600;
           }
-
           &.lost {
             color: #ff3366;
             font-weight: 600;
@@ -419,7 +467,253 @@ main.account {
   }
 }
 
-/* Responsive */
+// =========================
+// MODAL POPUP STYLE AMÉLIORÉ
+// =========================
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  background: rgba(2, 6, 10, 0.85);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+
+  &.active {
+    display: flex;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &:not(.active) {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .modal-content {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.03) 0%,
+      rgba(255, 255, 255, 0.01) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    padding: 40px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 25px 50px rgba(2, 6, 23, 0.6);
+    backdrop-filter: blur(20px);
+    animation: modalSlideIn 0.4s ease-out;
+
+    h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: $text;
+      margin: 0 0 30px 0;
+      text-align: center;
+      background: linear-gradient(135deg, $text 0%, $accent 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .modal-message {
+      padding: 12px 16px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      font-size: 14px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+
+      &.success {
+        background: rgba(46, 196, 182, 0.1);
+        border-color: rgba(46, 196, 182, 0.2);
+        color: #2ec4b6;
+      }
+
+      &.error {
+        background: rgba(255, 51, 102, 0.1);
+        border-color: rgba(255, 51, 102, 0.2);
+        color: #ff3366;
+      }
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: $text;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .password-input {
+        position: relative;
+
+        input {
+          width: 100%;
+          padding: 14px 50px 14px 16px;
+          border: 1.5px solid rgba(255, 255, 255, 0.08);
+          border-radius: 12px;
+          background: rgba(255, 255, 255, 0.03);
+          color: $text;
+          font-size: 14px;
+          transition: all 0.3s ease;
+
+          &:focus {
+            outline: none;
+            border-color: $accent;
+            box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.1);
+          }
+        }
+
+        .password-toggle {
+          position: absolute;
+          right: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          background: none;
+          border: none;
+          color: $muted;
+          cursor: pointer;
+          padding: 8px;
+          border-radius: 8px;
+          transition: all 0.3s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &:hover {
+            color: $text;
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-50%) scale(1.1);
+          }
+
+          svg {
+            width: 22px;
+            height: 22px;
+            stroke-width: 2;
+            transition: all 0.3s ease;
+          }
+
+          &.visible svg {
+            color: $accent;
+          }
+        }
+      }
+
+      .input-hint {
+        font-size: 12px;
+        color: $muted;
+        margin-top: 6px;
+        margin-left: 2px;
+      }
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: flex-end;
+      margin-top: 30px;
+
+      .button {
+        padding: 14px 32px;
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+        color: white;
+        position: relative;
+        overflow: hidden;
+
+        &:hover:not(:disabled) {
+          transform: translateY(-2px);
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none !important;
+        }
+
+        &.cancel-modal {
+          background: linear-gradient(135deg, #6c757d, #94a3b8);
+          box-shadow: 0 6px 20px rgba(148, 163, 184, 0.3);
+
+          &:hover:not(:disabled) {
+            box-shadow: 0 8px 25px rgba(148, 163, 184, 0.4);
+          }
+        }
+
+        &.save-password {
+          background: linear-gradient(135deg, $accent, $accent-2);
+          box-shadow: 0 6px 20px rgba(124, 92, 255, 0.3);
+
+          &:hover:not(:disabled) {
+            box-shadow: 0 8px 25px rgba(124, 92, 255, 0.4);
+          }
+
+          .button-text,
+          .button-loading {
+            transition: opacity 0.3s ease;
+          }
+
+          .button-loading {
+            display: none;
+            animation: pulse 1.5s ease-in-out infinite;
+          }
+
+          &.loading {
+            .button-text {
+              display: none;
+            }
+
+            .button-loading {
+              display: inline-block;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Animation pour le modal
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+// =========================
+// RESPONSIVE
+// =========================
 @media (max-width: 880px) {
   main.account {
     padding: 20px;
@@ -431,52 +725,74 @@ main.account {
       gap: 25px;
       padding: 30px 20px;
 
-      .profile-details {
-        text-align: center;
-
-        .stats {
-          justify-content: center;
-        }
+      .profile-details .stats {
+        justify-content: center;
       }
     }
 
-    .account-sections {
-      .section-card {
-        padding: 20px;
+    .account-sections .section-card {
+      padding: 20px;
 
-        .section-header {
-          flex-direction: column;
-          gap: 15px;
-          align-items: stretch;
+      .section-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
 
-          .filter-tabs {
-            justify-content: center;
-          }
+        .filter-tabs {
+          justify-content: center;
         }
+      }
 
-        .form-grid {
-          grid-template-columns: 1fr;
-        }
+      .form-grid {
+        grid-template-columns: 1fr;
       }
     }
 
     .user-bets .bet-grid {
       grid-template-columns: 1fr;
     }
+
+    .modal {
+      padding: 15px;
+
+      .modal-content {
+        padding: 30px 25px;
+        border-radius: 20px;
+
+        h2 {
+          font-size: 24px;
+          margin-bottom: 25px;
+        }
+
+        .modal-buttons {
+          flex-direction: column;
+
+          .button {
+            width: 100%;
+            text-align: center;
+          }
+        }
+      }
+    }
   }
 }
 
 @media (max-width: 480px) {
   main.account {
-    .account-info {
-      .profile-details {
-        .stats {
-          gap: 20px;
+    .account-info .profile-details .stats {
+      gap: 20px;
 
-          .stat-item .stat-value {
-            font-size: 24px;
-          }
-        }
+      .stat-item .stat-value {
+        font-size: 24px;
+      }
+    }
+
+    .modal .modal-content {
+      padding: 25px 20px;
+      border-radius: 18px;
+
+      h2 {
+        font-size: 22px;
       }
     }
   }
