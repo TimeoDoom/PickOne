@@ -102,7 +102,7 @@ app.get("/api/users/email/:email", async (request, reply) => {
 app.get("/api/users/username/:username", async (request, reply) => {
   const { username } = request.params;
   try {
-    const res = await pool.query("SELECT 1 FROM users WHERE userName=$1", [
+    const res = await pool.query("SELECT 1 FROM users WHERE username=$1", [
       username,
     ]);
     return { exists: res.rows.length > 0 };
@@ -111,14 +111,19 @@ app.get("/api/users/username/:username", async (request, reply) => {
   }
 });
 
-// Inscription
+// ✅ INSCRIPTION - Correct
 app.post("/api/registerUser", async (req, reply) => {
   const { email, pseudo, mdp } = req.body;
 
-  // hash du mdp
+  if (!email || !pseudo || !mdp) {
+    return reply.status(400).send({
+      success: false,
+      error: "Email, pseudo et mot de passe requis",
+    });
+  }
+
   const hashed = await bcrypt.hash(mdp, 10);
 
-  // insert
   const result = await pool.query(
     "INSERT INTO users (email, username, userpassword) VALUES ($1, $2, $3) RETURNING iduser, username, email",
     [email, pseudo, hashed]
@@ -126,13 +131,11 @@ app.post("/api/registerUser", async (req, reply) => {
 
   const user = result.rows[0];
 
-  // création du token (utilise app.jwt fourni par fastify-jwt)
   const token = app.jwt.sign(
-    { id: user.iduser, email: user.email || email, username: user.username },
-    { expiresIn: "7d" }
+    { id: user.iduser, email, username: user.username },
+    { expiresIn: "1h" }
   );
 
-  // cookie de session + renvoyer le token en JSON pour compatibilité client
   reply
     .setCookie("token", token, {
       httpOnly: true,
@@ -144,49 +147,66 @@ app.post("/api/registerUser", async (req, reply) => {
     .send({ success: true, token });
 });
 
-// Connexion
+// ✅ CONNEXION - Correct
 app.post("/api/login", async (request, reply) => {
   const { email, password } = request.body;
 
   try {
+    if (!email || !password) {
+      return reply.status(400).send({
+        success: false,
+        error: "Email et mot de passe requis",
+      });
+    }
+
+    // ✅ Sans alias 'u.' - requête simple
     const res = await pool.query(
-      "SELECT iduser, userpassword, username, COALESCE(coins, 0) as coins FROM users WHERE email=$1",
+      "SELECT iduser, userpassword, username, wallet FROM users WHERE email = $1",
       [email]
     );
 
     if (res.rows.length === 0) {
-      return reply
-        .status(401)
-        .send({ success: false, error: "Email ou mot de passe incorrect" });
+      return reply.status(401).send({
+        success: false,
+        error: "Email ou mot de passe incorrect",
+      });
     }
 
     const user = res.rows[0];
 
     const valid = await bcrypt.compare(password, user.userpassword);
     if (!valid) {
-      return reply
-        .status(401)
-        .send({ success: false, error: "Email ou mot de passe incorrect" });
+      return reply.status(401).send({
+        success: false,
+        error: "Email ou mot de passe incorrect",
+      });
     }
 
     const token = app.jwt.sign(
-      { id: user.iduser, email, username: user.username, coins: user.coins },
+      {
+        id: user.iduser,
+        email,
+        username: user.username,
+        wallet: user.wallet,
+      },
       { expiresIn: "1h" }
     );
 
-    // Cookie sécurisé
     reply.setCookie("token", token, {
       httpOnly: true,
-      secure: false, // mettre true en prod (https)
+      secure: false,
       sameSite: "strict",
       path: "/",
       maxAge: 3600,
     });
 
-    // Renvoyer le token aussi en JSON pour permettre aux clients JS de le stocker
     return reply.send({ success: true, token });
   } catch (err) {
-    return reply.status(500).send({ success: false, error: "Erreur serveur" });
+    console.error("❌ ERREUR LOGIN:", err.message);
+    return reply.status(500).send({
+      success: false,
+      error: "Erreur serveur : " + err.message,
+    });
   }
 });
 
@@ -195,7 +215,12 @@ app.get(
   "/api/auth/me",
   { preHandler: [app.authenticate] },
   async (req, reply) => {
-    return { id: req.user.id, email: req.user.email, name: req.user.username };
+    return {
+      id: req.user.id,
+      email: req.user.email,
+      username: req.user.username,
+      wallet: req.user.wallet,
+    };
   }
 );
 
@@ -205,40 +230,34 @@ app.get(
   { preHandler: [app.authenticate] },
   async (req, reply) => {
     try {
+      // ✅ CORRECTION : Vérifier que la requête est correcte
       const res = await pool.query(
         `SELECT 
-            u.idUser,
-            u.userName,
-            u.email,
-            u.userPassword,
-
-            COUNT(DISTINCT p.idBet) AS nb_paris_crees,
-
-            COUNT(DISTINCT CASE 
-                WHEN p2.isClosed = TRUE 
-                AND v.choix = CASE 
-                    WHEN p2.winningOption = 'A' THEN p2.optionA
-                    WHEN p2.winningOption = 'B' THEN p2.optionB
-                END
-                THEN p2.idBet
-            END) AS nb_paris_gagnes
-
-        FROM users u
-        LEFT JOIN pari p ON p.creatorId = u.idUser
-        LEFT JOIN vote v ON v.userId = u.idUser
-        LEFT JOIN pari p2 ON p2.idBet = v.betId
-
-        WHERE u.idUser = $1
-
-        GROUP BY u.idUser, u.userName, u.email, u.userPassword;
-        `,
+          iduser,
+          username,
+          email,
+          wallet,
+          nb_paris_crees,
+          nb_paris_gagnes
+        FROM users
+        WHERE iduser = $1`,
         [req.user.id]
       );
 
-      return reply.send(res.rows[0] || {});
+      if (res.rows.length === 0) {
+        return reply.status(404).send({
+          success: false,
+          error: "Utilisateur non trouvé",
+        });
+      }
+
+      return reply.send(res.rows[0]);
     } catch (err) {
-      console.error(err);
-      return reply.status(500).send({ error: "Erreur serveur" });
+      console.error("❌ ERREUR GET AUTH/DATA:", err.message);
+      return reply.status(500).send({
+        success: false,
+        error: "Erreur serveur : " + err.message,
+      });
     }
   }
 );
@@ -246,26 +265,17 @@ app.post(
   "/api/auth/data/update",
   { preHandler: [app.authenticate] },
   async (req, rep) => {
-    const { username, email } = req.body;
+    const { userName, email } = req.body;
     const userId = req.user.id;
 
-    console.log(
-      "Tentative de mise à jour pour l'utilisateur:",
-      userId,
-      "avec:",
-      { username, email }
-    );
-
     try {
-      // Vérifier que l'email n'est pas déjà utilisé par un autre utilisateur
       if (email) {
         const emailCheck = await pool.query(
-          "SELECT idUser FROM users WHERE email = $1 AND idUser != $2",
+          "SELECT iduser FROM users WHERE email = $1 AND iduser != $2",
           [email, userId]
         );
 
         if (emailCheck.rows.length > 0) {
-          console.log("Email déjà utilisé");
           return rep.send({
             success: false,
             error: "Cet email est déjà utilisé par un autre compte",
@@ -273,15 +283,13 @@ app.post(
         }
       }
 
-      // Vérifier que le nom d'utilisateur n'est pas déjà utilisé par un autre utilisateur
-      if (username) {
+      if (userName) {
         const usernameCheck = await pool.query(
-          "SELECT idUser FROM users WHERE userName = $1 AND idUser != $2",
-          [username, userId]
+          "SELECT iduser FROM users WHERE username = $1 AND iduser != $2",
+          [userName, userId]
         );
 
         if (usernameCheck.rows.length > 0) {
-          console.log("Nom d'utilisateur déjà utilisé");
           return rep.send({
             success: false,
             error: "Ce nom d'utilisateur est déjà pris",
@@ -289,7 +297,6 @@ app.post(
         }
       }
 
-      // Construire la requête dynamiquement
       const updates = [];
       const values = [];
       let paramCount = 1;
@@ -300,13 +307,12 @@ app.post(
         paramCount++;
       }
 
-      if (username) {
+      if (userName) {
         updates.push(`username = $${paramCount}`);
-        values.push(username);
+        values.push(userName);
         paramCount++;
       }
 
-      // Si rien à mettre à jour
       if (updates.length === 0) {
         return rep.send({
           success: false,
@@ -314,17 +320,14 @@ app.post(
         });
       }
 
-      // Ajouter l'ID de l'utilisateur
       values.push(userId);
 
       const query = `
         UPDATE users 
         SET ${updates.join(", ")} 
-        WHERE idUser = $${paramCount}
-        RETURNING idUser, email, username
+        WHERE iduser = $${paramCount}
+        RETURNING iduser, email, username
       `;
-
-      console.log("Requête SQL:", query, "Valeurs:", values);
 
       const result = await pool.query(query, values);
 
@@ -334,8 +337,6 @@ app.post(
           error: "Utilisateur non trouvé",
         });
       }
-
-      console.log("Mise à jour réussie:", result.rows[0]);
 
       return rep.send({
         success: true,
@@ -367,7 +368,7 @@ app.post(
     try {
       // Récupérer le mot de passe actuel
       const res = await pool.query(
-        "SELECT userPassword FROM users WHERE idUser = $1",
+        "SELECT userpassword FROM users WHERE iduser = $1",
         [userId]
       );
 
@@ -403,7 +404,7 @@ app.post(
       const hashedPassword = await bcrypt.hash(newPassword, 10);
 
       // Mettre à jour le mot de passe
-      await pool.query("UPDATE users SET userPassword = $1 WHERE idUser = $2", [
+      await pool.query("UPDATE users SET userpassword = $1 WHERE iduser = $2", [
         hashedPassword,
         userId,
       ]);

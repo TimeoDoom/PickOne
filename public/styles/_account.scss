@@ -269,18 +269,7 @@ main.account {
         gap: 15px;
         flex-wrap: wrap;
 
-        .button {
-          padding: 12px 28px;
-          border-radius: 12px;
-          font-size: 15px;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          border: none;
-          color: white;
-          position: relative;
-          overflow: hidden;
-
+        button {
           &:hover:not(:disabled) {
             transform: translateY(-2px);
           }
@@ -475,7 +464,7 @@ main.account {
   position: fixed;
   z-index: 1000;
   inset: 0;
-  background: rgba(2, 6, 10, 0.85);
+  background: rgba(2, 6, 10, 0.565);
   backdrop-filter: blur(10px);
   display: flex;
   justify-content: center;
@@ -495,11 +484,7 @@ main.account {
   }
 
   .modal-content {
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.03) 0%,
-      rgba(255, 255, 255, 0.01) 100%
-    );
+    background: linear-gradient(180deg, #0b1d38 0%, #071928 60%, #071b2b 100%);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 24px;
     padding: 40px;
@@ -623,18 +608,7 @@ main.account {
       justify-content: flex-end;
       margin-top: 30px;
 
-      .button {
-        padding: 14px 32px;
-        border-radius: 12px;
-        font-size: 15px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border: none;
-        color: white;
-        position: relative;
-        overflow: hidden;
-
+      button {
         &:hover:not(:disabled) {
           transform: translateY(-2px);
         }
@@ -794,6 +768,28 @@ main.account {
       h2 {
         font-size: 22px;
       }
+    }
+  }
+}
+
+// Animation pour l'icône oeil dans account
+@keyframes eyeBlink {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+.password-toggle {
+  &.visible {
+    .eye-icon {
+      color: $accent;
+      animation: eyeBlink 0.5s ease;
     }
   }
 }

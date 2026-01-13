@@ -106,18 +106,14 @@
 
     <section class="hero-section">
       <h1>Pariez sur l'avenir</h1>
-      <p>
-        Rejoignez la communauté et testez votre intuition sur les tendances
-        tech, crypto et bien plus encore
-      </p>
       <div class="hero-stats">
         <div class="stat">
           <span class="number">12.4K</span>
           <span class="label">Paris actifs</span>
         </div>
         <div class="stat">
-          <span class="number">98%</span>
-          <span class="label">Taux de satisfaction</span>
+          <span class="number">1M</span>
+          <span class="label">Nombre utilisateurs</span>
         </div>
       </div>
     </section>
@@ -129,7 +125,6 @@
       </div>
 
       <div class="bet-grid">
-        <!-- Carte 1 -->
         <div class="bet-card featured">
           <div class="bet-header">
             <span class="bet-category">TECH</span>
@@ -158,77 +153,8 @@
             </div>
           </div>
           <div class="bet-actions">
-            <button class="bet-button yes">Parier OUI</button>
-            <button class="bet-button no">Parier NON</button>
-            <button class="bet-button details">Détails</button>
-          </div>
-        </div>
-
-        <!-- Carte 2 -->
-        <div class="bet-card ending-soon">
-          <div class="bet-header">
-            <span class="bet-category">CRYPTO</span>
-            <span class="bet-time">⏱️ 6h restants</span>
-          </div>
-          <h3 class="bet-title">Bitcoin dépassera-t-il 70k$ cette semaine ?</h3>
-          <div class="bet-stats">
-            <div class="stat">
-              <span class="value">₿8.2K</span>
-              <span class="label">Mise totale</span>
-            </div>
-            <div class="stat">
-              <span class="value">956</span>
-              <span class="label">Parieurs</span>
-            </div>
-          </div>
-          <div class="bet-progress">
-            <div class="progress-info">
-              <span class="option yes">OUI - 42%</span>
-              <span class="option no">NON - 58%</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 42%"></div>
-            </div>
-          </div>
-          <div class="bet-actions">
-            <button class="bet-button yes">Parier OUI</button>
-            <button class="bet-button no">Parier NON</button>
-            <button class="bet-button details">Détails</button>
-          </div>
-        </div>
-
-        <!-- Carte 3 -->
-        <div class="bet-card">
-          <div class="bet-header">
-            <span class="bet-category">SCIENCE</span>
-            <span class="bet-time">⏱️ 5j restants</span>
-          </div>
-          <h3 class="bet-title">
-            Trouvera-t-on de l'eau liquide sur Mars en 2024 ?
-          </h3>
-          <div class="bet-stats">
-            <div class="stat">
-              <span class="value">₿5.7K</span>
-              <span class="label">Mise totale</span>
-            </div>
-            <div class="stat">
-              <span class="value">723</span>
-              <span class="label">Parieurs</span>
-            </div>
-          </div>
-          <div class="bet-progress">
-            <div class="progress-info">
-              <span class="option yes">OUI - 25%</span>
-              <span class="option no">NON - 75%</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 25%"></div>
-            </div>
-          </div>
-          <div class="bet-actions">
-            <button class="bet-button yes">Parier OUI</button>
-            <button class="bet-button no">Parier NON</button>
-            <button class="bet-button details">Détails</button>
+            <button class="bet-button yes">OUI</button>
+            <button class="bet-button no">NON</button>
           </div>
         </div>
       </div>
@@ -237,9 +163,225 @@
     <footer>
       <img src="./imgs/Logo.svg" alt="PickOne Logo" />
       <span>© 2024 PickOne. Tous droits réservés.</span>
+      <!-- C'est obligatoire ! -->
       <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0">Mentions légales</a>
     </footer>
 
+    <div class="add-element-modal" id="addElementModal">
+      <div class="add-element-content">
+        <!-- En-tête de la modal -->
+        <div class="modal-header">
+          <h2>Ajouter un nouvel élément</h2>
+          <p class="modal-subtitle">
+            Remplissez les détails ci-dessous pour créer votre élément
+          </p>
+        </div>
+
+        <!-- Message d'état (succès/erreur) - caché par défaut -->
+        <div
+          class="modal-message success"
+          id="successMessage"
+          style="display: none"
+        >
+          ✓ Élément ajouté avec succès !
+        </div>
+
+        <div
+          class="modal-message error"
+          id="errorMessage"
+          style="display: none"
+        >
+          ✗ Une erreur est survenue. Veuillez réessayer.
+        </div>
+
+        <!-- Formulaire d'ajout -->
+        <form class="modal-form" id="addElementForm">
+          <!-- Champ titre -->
+          <div class="form-group">
+            <label for="elementTitle">
+              Titre de l'élément <span class="required">*</span>
+            </label>
+            <input
+              type="text"
+              id="elementTitle"
+              name="title"
+              placeholder="Ex: Nouveau pari sur l'IA"
+              required
+              maxlength="100"
+            />
+            <small id="title-error">Titre trop long</small>
+            <p class="input-hint" id="titleHint">100 caractères maximum</p>
+          </div>
+
+          <!-- Champs en ligne : Catégorie et Type -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="elementCategory">
+                Catégorie <span class="required">*</span>
+              </label>
+              <select id="elementCategory" name="category" required>
+                <option value="" disabled selected>
+                  Sélectionnez une catégorie
+                </option>
+                <option value="tech">TECH</option>
+                <option value="crypto">CRYPTO</option>
+                <option value="sport">SPORT</option>
+                <option value="science">SCIENCE</option>
+                <option value="politique">POLITIQUE</option>
+                <option value="divertissement">DIVERTISSEMENT</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="elementType">
+                Type d'élément <span class="required">*</span>
+              </label>
+              <select id="elementType" name="type" required>
+                <option value="" disabled selected>Choisissez un type</option>
+                <option value="paris">Paris</option>
+                <option value="dilemme">Dilemme</option>
+                <option value="tournoi">Tournoi</option>
+                <option value="prediction">Prédiction</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Champ date d'expiration -->
+          <div class="form-group">
+            <label for="expirationDate">
+              Date d'expiration <span class="required">*</span>
+            </label>
+            <input
+              type="date"
+              id="expirationDate"
+              name="expirationDate"
+              required
+            />
+            <p class="input-hint">L'élément expirera à minuit de cette date</p>
+            <small id="date-error"
+              >La date ne peut pas être anterieur à la date actuel</small
+            >
+          </div>
+
+          <!-- Champ mise de départ -->
+          <div class="form-group">
+            <label for="startingBet">
+              Mise de départ (en pickCoins) <span class="required">*</span>
+            </label>
+            <input
+              type="number"
+              id="startingBet"
+              name="startingBet"
+              placeholder="0.00"
+              min="0"
+              step="0.01"
+              required
+            />
+            <p class="input-hint">Minimum: 0.01 pickCoin</p>
+          </div>
+
+          <!-- Section des choix (array dynamique) -->
+          <div class="form-group">
+            <label>Choix disponibles <span class="required">*</span></label>
+            <div class="form-array" id="choicesContainer">
+              <!-- Les choix seront ajoutés dynamiquement ici -->
+              <div class="array-item">
+                <input
+                  id="betOptA"
+                  type="text"
+                  name="choice[]"
+                  placeholder="Option 1"
+                  required
+                />
+              </div>
+              <div class="array-item">
+                <input
+                  id="betOptB"
+                  type="text"
+                  name="choice[]"
+                  placeholder="Option 2"
+                  required
+                />
+              </div>
+            </div>
+
+            <button type="button" class="add-item-btn" id="addChoiceBtn">
+              <span class="plus-icon">+</span>
+              Ajouter un choix
+            </button>
+            <p class="input-hint">Minimum 2 choix, maximum 10</p>
+          </div>
+
+          <!-- Champ tags (optionnel) -->
+          <div class="form-group">
+            <label for="elementTags"> Tags (optionnel) </label>
+            <input
+              type="text"
+              id="elementTags"
+              name="tags"
+              placeholder="Ex: ia, google, 2024, gpt-4"
+            />
+            <p class="input-hint">Séparez les tags par des virgules</p>
+          </div>
+
+          <!-- Options avancées (accordeon optionnel) -->
+          <div class="form-group">
+            <label
+              style="
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+              "
+            >
+              <input
+                type="checkbox"
+                id="showAdvancedOptions"
+                style="width: auto"
+              />
+              Options avancées
+            </label>
+
+            <div id="advancedOptions" style="display: none; margin-top: 15px">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="visibility">Visibilité</label>
+                  <select id="visibility" name="visibility">
+                    <option value="public" selected>Public</option>
+                    <option value="private">Privé</option>
+                    <option value="friends">Amis uniquement</option>
+                  </select>
+                </div>
+
+                <!-- <div class="form-group">
+                  <label for="maxParticipants">Participants max</label>
+                  <input
+                    type="number"
+                    id="maxParticipants"
+                    name="maxParticipants"
+                    placeholder="Illimité"
+                    min="0"
+                  />
+                </div> -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions du formulaire -->
+          <div class="modal-actions">
+            <button type="button" class="cancel-btn" id="cancelBtn">
+              Annuler
+            </button>
+            <button type="submit" class="submit-btn" id="submitBtn">
+              <span class="button-text">Créer l'élément</span>
+              <span class="button-loading">Chargement...</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="./scripts/newBet.js"></script>
     <script src="./scripts/nav.js"></script>
     <script src="./scripts/script.js"></script>
     <script src="./scripts/signIn.js" type="module"></script>

@@ -1,7 +1,7 @@
 @charset "UTF-8";
 .hero-section {
-  padding: 80px 40px;
   text-align: center;
+  padding: 1px 40px 25px;
   background: linear-gradient(135deg, rgba(124, 92, 255, 0.05) 0%, rgba(32, 164, 243, 0.05) 100%);
   border-radius: 0 0 30px 30px;
   margin-bottom: 40px;
@@ -28,6 +28,9 @@
 }
 .hero-section .hero-stats .stat {
   text-align: center;
+  background-color: rgba(255, 255, 255, 0.04);
+  border-radius: 20px;
+  padding: 10px 20px;
 }
 .hero-section .hero-stats .stat .number {
   font-size: 36px;
@@ -216,36 +219,6 @@
   color: white;
   transform: translateY(-2px);
 }
-.bet-grid .bet-card.featured {
-  border: 2px solid rgba(124, 92, 255, 0.3);
-}
-.bet-grid .bet-card.featured::after {
-  content: "⭐ POPULAIRE";
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: linear-gradient(135deg, #7c5cff, #00d4a8);
-  color: white;
-  padding: 4px 8px;
-  border-radius: 8px;
-  font-size: 10px;
-  font-weight: 700;
-}
-.bet-grid .bet-card.ending-soon {
-  border: 2px solid rgba(255, 51, 102, 0.3);
-}
-.bet-grid .bet-card.ending-soon::after {
-  content: "⏰ BIENTÔT TERMINÉ";
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: linear-gradient(135deg, #ff3366, #ff6b6b);
-  color: white;
-  padding: 4px 8px;
-  border-radius: 8px;
-  font-size: 10px;
-  font-weight: 700;
-}
 
 .overlay {
   position: fixed;
@@ -295,7 +268,8 @@
   font-weight: 600;
   color: #f1f5f9;
 }
-.overlay-content .form-group input, .overlay-content .form-group textarea {
+.overlay-content .form-group input,
+.overlay-content .form-group textarea {
   width: 100%;
   padding: 12px 16px;
   border: 1.5px solid rgba(255, 255, 255, 0.1);
@@ -305,7 +279,8 @@
   font-size: 14px;
   transition: all 0.3s ease;
 }
-.overlay-content .form-group input:focus, .overlay-content .form-group textarea:focus {
+.overlay-content .form-group input:focus,
+.overlay-content .form-group textarea:focus {
   outline: none;
   border-color: #7c5cff;
   box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.1);
@@ -506,16 +481,43 @@
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #94a3b8;
   cursor: pointer;
-  padding: 6px;
+  padding: 8px;
   border-radius: 6px;
   transition: all 0.3s ease;
-  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .auth-card .auth-form .form-group .password-input .password-toggle:hover {
-  color: #f1f5f9;
   background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-50%) scale(1.1);
+}
+.auth-card .auth-form .form-group .password-input .password-toggle svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2;
+  transition: all 0.3s ease;
+}
+.auth-card .auth-form .form-group .password-input .password-toggle .eye-icon.hidden {
+  color: #94a3b8;
+}
+.auth-card .auth-form .form-group .password-input .password-toggle .eye-icon.visible {
+  color: #7c5cff;
+}
+@keyframes eyeBlink {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+.auth-card .auth-form .form-group .password-input .password-toggle.visible .eye-icon {
+  color: #7c5cff;
+  animation: eyeBlink 0.5s ease;
 }
 .auth-card .auth-form .form-options {
   display: flex;
@@ -664,15 +666,15 @@
   transform: scale(1.1);
 }
 .auth-card .social-auth .social-button.google:hover {
-  border-color: #DB4437;
+  border-color: #db4437;
   box-shadow: 0 4px 12px rgba(219, 68, 55, 0.2);
 }
 .auth-card .social-auth .social-button.twitter:hover {
-  border-color: #1DA1F2;
+  border-color: #1da1f2;
   box-shadow: 0 4px 12px rgba(29, 161, 242, 0.2);
 }
 .auth-card .social-auth .social-button.metamask:hover {
-  border-color: #F6851B;
+  border-color: #f6851b;
   box-shadow: 0 4px 12px rgba(246, 133, 27, 0.2);
 }
 .auth-card .auth-footer {
@@ -1020,52 +1022,40 @@ main.account .account-sections .section-card .btn-container {
   gap: 15px;
   flex-wrap: wrap;
 }
-main.account .account-sections .section-card .btn-container .button {
-  padding: 12px 28px;
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: none;
-  color: white;
-  position: relative;
-  overflow: hidden;
-}
-main.account .account-sections .section-card .btn-container .button:hover:not(:disabled) {
+main.account .account-sections .section-card .btn-container button:hover:not(:disabled) {
   transform: translateY(-2px);
 }
-main.account .account-sections .section-card .btn-container .button:disabled {
+main.account .account-sections .section-card .btn-container button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none !important;
 }
-main.account .account-sections .section-card .btn-container .button.cancel {
+main.account .account-sections .section-card .btn-container button.cancel {
   background: linear-gradient(135deg, #ff3366, #ff6b6b);
   box-shadow: 0 6px 20px rgba(255, 51, 102, 0.3);
 }
-main.account .account-sections .section-card .btn-container .button.cancel:hover:not(:disabled) {
+main.account .account-sections .section-card .btn-container button.cancel:hover:not(:disabled) {
   box-shadow: 0 8px 25px rgba(255, 51, 102, 0.4);
 }
-main.account .account-sections .section-card .btn-container .button.save-button {
+main.account .account-sections .section-card .btn-container button.save-button {
   background: linear-gradient(135deg, #7c5cff 0%, #00d4a8 100%);
   box-shadow: 0 6px 20px rgba(124, 92, 255, 0.3);
 }
-main.account .account-sections .section-card .btn-container .button.save-button:hover:not(:disabled) {
+main.account .account-sections .section-card .btn-container button.save-button:hover:not(:disabled) {
   box-shadow: 0 8px 25px rgba(124, 92, 255, 0.4);
 }
-main.account .account-sections .section-card .btn-container .button.edit-button {
+main.account .account-sections .section-card .btn-container button.edit-button {
   background: linear-gradient(135deg, #4a6fa5, #20a4f3);
   box-shadow: 0 6px 20px rgba(32, 164, 243, 0.3);
 }
-main.account .account-sections .section-card .btn-container .button.edit-button:hover:not(:disabled) {
+main.account .account-sections .section-card .btn-container button.edit-button:hover:not(:disabled) {
   box-shadow: 0 8px 25px rgba(32, 164, 243, 0.4);
 }
-main.account .account-sections .section-card .btn-container .button.edit-pwd-button {
+main.account .account-sections .section-card .btn-container button.edit-pwd-button {
   background: linear-gradient(135deg, #6c757d, #94a3b8);
   box-shadow: 0 6px 20px rgba(148, 163, 184, 0.3);
 }
-main.account .account-sections .section-card .btn-container .button.edit-pwd-button:hover:not(:disabled) {
+main.account .account-sections .section-card .btn-container button.edit-pwd-button:hover:not(:disabled) {
   box-shadow: 0 8px 25px rgba(148, 163, 184, 0.4);
 }
 main.account .user-bets {
@@ -1183,7 +1173,7 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   position: fixed;
   z-index: 1000;
   inset: 0;
-  background: rgba(2, 6, 10, 0.85);
+  background: rgba(2, 6, 10, 0.565);
   backdrop-filter: blur(10px);
   display: flex;
   justify-content: center;
@@ -1201,7 +1191,7 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   visibility: hidden;
 }
 .modal .modal-content {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  background: linear-gradient(180deg, #0b1d38 0%, #071928 60%, #071b2b 100%);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 24px;
   padding: 40px;
@@ -1311,52 +1301,40 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   justify-content: flex-end;
   margin-top: 30px;
 }
-.modal .modal-content .modal-buttons .button {
-  padding: 14px 32px;
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: none;
-  color: white;
-  position: relative;
-  overflow: hidden;
-}
-.modal .modal-content .modal-buttons .button:hover:not(:disabled) {
+.modal .modal-content .modal-buttons button:hover:not(:disabled) {
   transform: translateY(-2px);
 }
-.modal .modal-content .modal-buttons .button:disabled {
+.modal .modal-content .modal-buttons button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none !important;
 }
-.modal .modal-content .modal-buttons .button.cancel-modal {
+.modal .modal-content .modal-buttons button.cancel-modal {
   background: linear-gradient(135deg, #6c757d, #94a3b8);
   box-shadow: 0 6px 20px rgba(148, 163, 184, 0.3);
 }
-.modal .modal-content .modal-buttons .button.cancel-modal:hover:not(:disabled) {
+.modal .modal-content .modal-buttons button.cancel-modal:hover:not(:disabled) {
   box-shadow: 0 8px 25px rgba(148, 163, 184, 0.4);
 }
-.modal .modal-content .modal-buttons .button.save-password {
+.modal .modal-content .modal-buttons button.save-password {
   background: linear-gradient(135deg, #7c5cff, #00d4a8);
   box-shadow: 0 6px 20px rgba(124, 92, 255, 0.3);
 }
-.modal .modal-content .modal-buttons .button.save-password:hover:not(:disabled) {
+.modal .modal-content .modal-buttons button.save-password:hover:not(:disabled) {
   box-shadow: 0 8px 25px rgba(124, 92, 255, 0.4);
 }
-.modal .modal-content .modal-buttons .button.save-password .button-text,
-.modal .modal-content .modal-buttons .button.save-password .button-loading {
+.modal .modal-content .modal-buttons button.save-password .button-text,
+.modal .modal-content .modal-buttons button.save-password .button-loading {
   transition: opacity 0.3s ease;
 }
-.modal .modal-content .modal-buttons .button.save-password .button-loading {
+.modal .modal-content .modal-buttons button.save-password .button-loading {
   display: none;
   animation: pulse 1.5s ease-in-out infinite;
 }
-.modal .modal-content .modal-buttons .button.save-password.loading .button-text {
+.modal .modal-content .modal-buttons button.save-password.loading .button-text {
   display: none;
 }
-.modal .modal-content .modal-buttons .button.save-password.loading .button-loading {
+.modal .modal-content .modal-buttons button.save-password.loading .button-loading {
   display: inline-block;
 }
 
@@ -1444,6 +1422,444 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   }
   main.account .modal .modal-content h2 {
     font-size: 22px;
+  }
+}
+@keyframes eyeBlink {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+.password-toggle.visible .eye-icon {
+  color: #7c5cff;
+  animation: eyeBlink 0.5s ease;
+}
+
+.add-element-modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  inset: 0;
+  background: rgba(2, 6, 10, 0.565);
+  backdrop-filter: blur(10px);
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.add-element-modal.active {
+  display: flex;
+  opacity: 1;
+  visibility: visible;
+}
+.add-element-modal:not(.active) {
+  opacity: 1;
+  visibility: visible;
+}
+.add-element-modal .add-element-content {
+  background: linear-gradient(180deg, #0b1d38 0%, #071928 60%, #071b2b 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 28px;
+  padding: 45px;
+  width: 100%;
+  max-width: 550px;
+  max-height: 90vh;
+  box-shadow: 0 30px 60px rgba(2, 6, 23, 0.7);
+  backdrop-filter: blur(25px);
+  animation: modalSlideIn 0.4s ease-out;
+  overflow-y: auto;
+  position: relative;
+  /* Custom scrollbar cohérent avec le site */
+}
+.add-element-modal .add-element-content::-webkit-scrollbar {
+  width: 10px;
+}
+.add-element-modal .add-element-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  margin: 15px 0;
+}
+.add-element-modal .add-element-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, rgba(124, 92, 255, 0.4), rgba(32, 164, 243, 0.4));
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+.add-element-modal .add-element-content::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, rgba(124, 92, 255, 0.6), rgba(32, 164, 243, 0.6));
+}
+.add-element-modal .add-element-content .modal-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+.add-element-modal .add-element-content .modal-header h2 {
+  font-size: 32px;
+  font-weight: 800;
+  color: #f1f5f9;
+  margin: 0 0 10px 0;
+  background: linear-gradient(135deg, #f1f5f9 0%, #7c5cff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.add-element-modal .add-element-content .modal-header .modal-subtitle {
+  color: #94a3b8;
+  font-size: 14px;
+  margin: 0;
+}
+.add-element-modal .add-element-content .modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.add-element-modal .add-element-content .modal-form .form-group {
+  text-align: left;
+}
+.add-element-modal .add-element-content .modal-form .form-group label {
+  display: block;
+  margin-bottom: 10px;
+  color: #f1f5f9;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.2px;
+}
+.add-element-modal .add-element-content .modal-form .form-group label .required {
+  color: #ff3366;
+  margin-left: 4px;
+}
+.add-element-modal .add-element-content .modal-form .form-group input,
+.add-element-modal .add-element-content .modal-form .form-group select,
+.add-element-modal .add-element-content .modal-form .form-group textarea {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #f1f5f9;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+.add-element-modal .add-element-content .modal-form .form-group input:focus,
+.add-element-modal .add-element-content .modal-form .form-group select:focus,
+.add-element-modal .add-element-content .modal-form .form-group textarea:focus {
+  outline: none;
+  border-color: #7c5cff;
+  box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+}
+.add-element-modal .add-element-content .modal-form .form-group input::placeholder,
+.add-element-modal .add-element-content .modal-form .form-group select::placeholder,
+.add-element-modal .add-element-content .modal-form .form-group textarea::placeholder {
+  color: rgba(148, 163, 184, 0.6);
+}
+.add-element-modal .add-element-content .modal-form .form-group input:disabled,
+.add-element-modal .add-element-content .modal-form .form-group select:disabled,
+.add-element-modal .add-element-content .modal-form .form-group textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.add-element-modal .add-element-content .modal-form .form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.5;
+}
+.add-element-modal .add-element-content .modal-form .form-group select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 18px;
+  padding-right: 50px;
+  cursor: pointer;
+}
+.add-element-modal .add-element-content .modal-form .form-group select:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.add-element-modal .add-element-content .modal-form .form-group .input-hint {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 8px;
+  margin-left: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.add-element-modal .add-element-content .modal-form .form-group .input-hint.success {
+  color: #2ec4b6;
+}
+.add-element-modal .add-element-content .modal-form .form-group .input-hint.error {
+  color: #ff3366;
+}
+.add-element-modal .add-element-content .modal-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+@media (max-width: 480px) {
+  .add-element-modal .add-element-content .modal-form .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+.add-element-modal .add-element-content .modal-form .form-array .array-item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  animation: fadeIn 0.3s ease-out;
+}
+.add-element-modal .add-element-content .modal-form .form-array .array-item input {
+  flex: 1;
+}
+.add-element-modal .add-element-content .modal-form .form-array .array-item .remove-item {
+  background: rgba(255, 51, 102, 0.12);
+  color: #ff3366;
+  border: 1.5px solid #ff3366;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 20px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.add-element-modal .add-element-content .modal-form .form-array .array-item .remove-item:hover {
+  background: #ff3366;
+  color: white;
+  transform: scale(1.05);
+}
+.add-element-modal .add-element-content .modal-form .form-array .add-item-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: rgba(124, 92, 255, 0.12);
+  color: #7c5cff;
+  border: 1.5px solid #7c5cff;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 8px;
+  font-size: 14px;
+  width: 100%;
+}
+.add-element-modal .add-element-content .modal-form .form-array .add-item-btn:hover {
+  background: #7c5cff;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(124, 92, 255, 0.3);
+}
+.add-element-modal .add-element-content .modal-form .form-array .add-item-btn .plus-icon {
+  font-size: 20px;
+  font-weight: 700;
+}
+.add-element-modal .add-element-content .modal-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  margin-top: 35px;
+  padding-top: 25px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.add-element-modal .add-element-content .modal-actions button {
+  padding: 14px 32px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  min-width: 120px;
+}
+.add-element-modal .add-element-content .modal-actions button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+.add-element-modal .add-element-content .modal-actions button:active:not(:disabled) {
+  transform: translateY(0);
+}
+.add-element-modal .add-element-content .modal-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+.add-element-modal .add-element-content .modal-actions button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+.add-element-modal .add-element-content .modal-actions button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+.add-element-modal .add-element-content .modal-actions button .button-text,
+.add-element-modal .add-element-content .modal-actions button .button-loading {
+  transition: opacity 0.3s ease;
+}
+.add-element-modal .add-element-content .modal-actions button .button-loading {
+  display: none;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+.add-element-modal .add-element-content .modal-actions button.loading .button-text {
+  display: none;
+}
+.add-element-modal .add-element-content .modal-actions button.loading .button-loading {
+  display: inline-block;
+}
+.add-element-modal .add-element-content .modal-actions .cancel-btn {
+  background: linear-gradient(135deg, #6c757d, #94a3b8);
+  box-shadow: 0 6px 20px rgba(148, 163, 184, 0.3);
+}
+.add-element-modal .add-element-content .modal-actions .cancel-btn:hover:not(:disabled) {
+  box-shadow: 0 8px 25px rgba(148, 163, 184, 0.4);
+}
+.add-element-modal .add-element-content .modal-actions .submit-btn {
+  background: linear-gradient(135deg, #7c5cff, #00d4a8);
+  box-shadow: 0 6px 20px rgba(124, 92, 255, 0.3);
+}
+.add-element-modal .add-element-content .modal-actions .submit-btn:hover:not(:disabled) {
+  box-shadow: 0 8px 25px rgba(124, 92, 255, 0.4);
+}
+.add-element-modal .modal-message {
+  padding: 14px 18px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  font-size: 14px;
+  text-align: center;
+  animation: slideDown 0.3s ease-out;
+  border: 1px solid transparent;
+}
+.add-element-modal .modal-message.success {
+  background: rgba(46, 196, 182, 0.12);
+  border-color: rgba(46, 196, 182, 0.2);
+  color: #2ec4b6;
+}
+.add-element-modal .modal-message.error {
+  background: rgba(255, 51, 102, 0.12);
+  border-color: rgba(255, 51, 102, 0.2);
+  color: #ff3366;
+}
+.add-element-modal .modal-message.info {
+  background: rgba(32, 164, 243, 0.12);
+  border-color: rgba(32, 164, 243, 0.2);
+  color: #20a4f3;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@media (max-width: 768px) {
+  .add-element-modal {
+    padding: 15px;
+  }
+  .add-element-modal .add-element-content {
+    padding: 35px 25px;
+    border-radius: 24px;
+    max-height: 95vh;
+  }
+  .add-element-modal .add-element-content .modal-header h2 {
+    font-size: 28px;
+  }
+  .add-element-modal .add-element-content .modal-form {
+    gap: 18px;
+  }
+  .add-element-modal .add-element-content .modal-actions {
+    flex-direction: column;
+  }
+  .add-element-modal .add-element-content .modal-actions button {
+    width: 100%;
+    text-align: center;
+  }
+  .add-element-modal .modal-close {
+    top: 15px;
+    right: 15px;
+    width: 38px;
+    height: 38px;
+  }
+}
+@media (max-width: 480px) {
+  .add-element-modal {
+    padding: 10px;
+  }
+  .add-element-modal .add-element-content {
+    padding: 30px 20px;
+    border-radius: 20px;
+  }
+  .add-element-modal .add-element-content .modal-header h2 {
+    font-size: 24px;
+  }
+  .add-element-modal .add-element-content .modal-form .form-group label {
+    font-size: 14px;
+  }
+  .add-element-modal .add-element-content .modal-form .form-group input,
+  .add-element-modal .add-element-content .modal-form .form-group select,
+  .add-element-modal .add-element-content .modal-form .form-group textarea {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  .add-element-modal .add-element-content .modal-actions button {
+    padding: 12px 24px;
+    font-size: 15px;
+  }
+  .add-element-modal .modal-close {
+    top: 12px;
+    right: 12px;
+    width: 34px;
+    height: 34px;
   }
 }
 * {
@@ -1915,7 +2331,6 @@ nav .right .hamburger.active span:nth-child(3) {
   }
 }
 footer {
-  position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -1973,6 +2388,26 @@ a:hover {
   border-radius: 10px;
   border: 2px solid #ff3366;
   background-color: #0b1d38;
+}
+
+button {
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+small {
+  color: #ff3366;
+  margin-top: 5px;
+  margin-left: 6px;
+  display: none;
 }
 
 /*# sourceMappingURL=style.css.map */

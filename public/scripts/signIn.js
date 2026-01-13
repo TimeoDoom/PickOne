@@ -1,17 +1,49 @@
 import { validateEmail, usernameValidation } from "./functions.js";
 
+function initPasswordToggles() {
+  const toggles = document.querySelectorAll(".password-toggle");
+
+  toggles.forEach((toggle) => {
+    toggle.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const targetId = toggle.getAttribute("data-target");
+      const input = document.getElementById(targetId);
+      const icon = toggle.querySelector(".eye-icon");
+
+      if (input && icon) {
+        const newType = input.type === "password" ? "text" : "password";
+        input.type = newType;
+
+        if (newType === "text") {
+          icon.classList.remove("hidden");
+          icon.classList.add("visible");
+          toggle.classList.add("visible");
+
+          icon.style.animation = "eyeBlink 0.5s ease";
+          setTimeout(() => {
+            icon.style.animation = "";
+          }, 500);
+        } else {
+          icon.classList.remove("visible");
+          icon.classList.add("hidden");
+          toggle.classList.remove("visible");
+        }
+      }
+    });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const emailInput = document.getElementById("email");
   const passwordInput = document.getElementById("password");
   const userpseudo = document.getElementById("username");
-  const signInButton = document.querySelector(".auth-button");
 
   const confirmPasswordInput = document.getElementById("confirmPassword");
-  const memUserLogIn = document.querySelector("input[type='checkbox']");
   const mailError = document.querySelector(".mail-erreur");
   const pwdError = document.querySelector(".pwd-error");
   const usernameError = document.querySelector(".username-erreur");
-  const tooglePwd = document.querySelector(".password-toggle");
 
   const passwordErros = document.querySelector(".password-strength");
   const pwdlengthError = passwordErros
@@ -25,6 +57,8 @@ document.addEventListener("DOMContentLoaded", () => {
     : { style: {} };
 
   if (pwdError) pwdError.style.display = "none";
+
+  initPasswordToggles();
 
   function comparePasswords(password, confirmPassword) {
     return password === confirmPassword;
@@ -134,14 +168,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const toggles = document.querySelectorAll(".password-toggle");
-  toggles.forEach((toggle) => {
-    toggle.addEventListener("click", (e) => {
-      const input = e.target.previousElementSibling;
-      if (input) input.type = input.type === "password" ? "text" : "password";
-    });
-  });
-
   async function registerUser(email, pseudo, mdp) {
     const res = await fetch("/api/registerUser", {
       method: "POST",
@@ -180,44 +206,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function showErrorNotification(message) {
-    // Supprimer les notifications existantes
-    const existingNotif = document.querySelector(".error-notif");
-    if (existingNotif) {
-      existingNotif.remove();
-    }
-
-    const notif = document.createElement("div");
-    notif.classList.add("error-notif");
-
-    notif.innerHTML = `
-      <p><strong>Erreur lors de l'inscription</strong></p>
-      <p>${message}</p>
-    `;
-
-    notif.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #ff3636;
-      color: white;
-      padding: 15px;
-      border-radius: 5px;
-      z-index: 1000;
-      max-width: 300px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    `;
-
-    document.body.appendChild(notif);
-
-    // Supprimer la notification après 5 secondes
-    setTimeout(() => {
-      if (notif.parentNode) {
-        notif.parentNode.removeChild(notif);
-      }
-    }, 5000);
-  }
-
   const authForm = document.querySelector(".auth-form");
   if (authForm) {
     authForm.addEventListener("submit", async (e) => {
@@ -228,16 +216,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const emailVal = emailInput?.value?.trim() || "";
       const userVal = userpseudo?.value?.trim() || "";
 
-      // Vérifier s'il y a des erreurs affichées
       const hasErrors =
         (mailError && mailError.style.display === "flex") ||
         (usernameError && usernameError.style.display === "flex") ||
         (pwdError && pwdError.style.display === "flex");
 
       if (hasErrors) {
-        showErrorNotification(
-          "Veuillez corriger les erreurs avant de soumettre"
-        );
         return;
       }
 
@@ -246,24 +230,18 @@ document.addEventListener("DOMContentLoaded", () => {
           pwdError.style.display = "flex";
           pwdError.textContent = "Les mots de passe ne correspondent pas";
         }
-        showErrorNotification("Les mots de passe ne correspondent pas");
         return;
       }
 
       if (!validateEmail(emailVal)) {
-        showErrorNotification("Format d'email invalide");
         return;
       }
 
       if (!usernameValidation(userVal)) {
-        showErrorNotification("Nom d'utilisateur non valide");
         return;
       }
 
       if (!pwdValidation(pwd)) {
-        showErrorNotification(
-          "Le mot de passe ne respecte pas les critères de sécurité"
-        );
         return;
       }
 
@@ -276,7 +254,6 @@ document.addEventListener("DOMContentLoaded", () => {
           throw new Error(result.error || "Erreur inconnue");
         }
       } catch (err) {
-        showErrorNotification(err.message);
         console.error("Erreur inscription :", err);
       }
     });

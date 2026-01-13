@@ -56,13 +56,35 @@
                 id="password"
                 placeholder="Créez un mot de passe"
               />
-              <button type="button" class="password-toggle">👁️</button>
+              <button
+                type="button"
+                class="password-toggle"
+                data-target="password"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="eye-icon hidden"
+                >
+                  <path
+                    d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"
+                  />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </button>
             </div>
             <div class="password-strength">
               <p style="margin-left: 6px">
-                Le mot de passe doit faire 8 caratères
+                Le mot de passe doit faire 8 caractères
               </p>
-              <p style="margin-left: 6px">Au moins un caratère spécial</p>
+              <p style="margin-left: 6px">Au moins un caractère spécial</p>
               <p style="margin-left: 6px">Au moins une majuscule</p>
             </div>
           </div>
@@ -75,7 +97,29 @@
                 id="confirmPassword"
                 placeholder="Retapez votre mot de passe"
               />
-              <button type="button" class="password-toggle">👁️</button>
+              <button
+                type="button"
+                class="password-toggle"
+                data-target="confirmPassword"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="eye-icon hidden"
+                >
+                  <path
+                    d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"
+                  />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </button>
             </div>
             <div class="pwd-error">
               <p style="color: rgb(255, 54, 54); margin-left: 6px">
@@ -105,9 +149,7 @@
         <div class="auth-footer">
           <p>
             Déjà un compte ?
-            <a href="login.html" class="auth-link"
-              ><a href="./login.html">Se connecter</a></a
-            >
+            <a href="./login.html" class="auth-link">Se connecter</a>
           </p>
         </div>
       </div>

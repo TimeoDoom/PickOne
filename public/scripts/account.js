@@ -10,6 +10,7 @@ const cancelBtn = document.querySelector(".cancel");
 const saveBtn = document.querySelector(".save-button");
 const editBtn = document.querySelector(".edit-button");
 const editPwdBtn = document.querySelector(".edit-pwd-button");
+const logoutBtn = document.querySelector(".logout-button");
 
 // Éléments du modal mot de passe
 const pwdModal = document.getElementById("pwd-modal");
@@ -35,20 +36,25 @@ function initPasswordToggles() {
   toggles.forEach((toggle) => {
     toggle.addEventListener("click", (e) => {
       e.preventDefault();
+      e.stopPropagation();
+
       const targetId = toggle.getAttribute("data-target");
       const input = document.getElementById(targetId);
       const icon = toggle.querySelector(".eye-icon");
 
       if (input && icon) {
-        // Basculer le type d'input
         const newType = input.type === "password" ? "text" : "password";
         input.type = newType;
 
-        // Basculer l'icône
         if (newType === "text") {
           icon.classList.remove("hidden");
           icon.classList.add("visible");
           toggle.classList.add("visible");
+
+          icon.style.animation = "eyeBlink 0.5s ease";
+          setTimeout(() => {
+            icon.style.animation = "";
+          }, 500);
         } else {
           icon.classList.remove("visible");
           icon.classList.add("hidden");
@@ -59,7 +65,6 @@ function initPasswordToggles() {
   });
 }
 
-// Fonction pour afficher/masquer le modal
 function showModal() {
   pwdModal.classList.add("active");
   pwdModal.style.display = "flex";
@@ -72,7 +77,6 @@ function hideModal() {
   document.body.style.overflow = "";
 }
 
-// Fonction pour afficher un message dans le modal
 function showPwdMessage(text, type = "error") {
   if (pwdMessage) {
     pwdMessage.textContent = text;
@@ -92,15 +96,11 @@ function hidePwdMessage() {
   }
 }
 
-async function getCurrentUser() {
-  const res = await fetch("/api/auth/data", { credentials: "include" });
-  if (!res.ok) return null;
-  return await res.json();
-}
-
 async function updateUserdata(data) {
-  console.log("Envoi des données au serveur:", data);
+  // ❌ ERREUR : mauvaise route
+  // const res = await fetch("/api/auth/update", {
 
+  // ✅ CORRECTION : utiliser la bonne route
   const res = await fetch("/api/auth/data/update", {
     method: "POST",
     credentials: "include",
@@ -110,9 +110,16 @@ async function updateUserdata(data) {
     body: JSON.stringify(data),
   });
 
-  const result = await res.json();
-  console.log("Réponse du serveur:", result);
-  return result;
+  return await res.json();
+}
+
+async function getCurrentUser() {
+  // ✅ Cette route est correcte
+  const res = await fetch("/api/auth/data", {
+    credentials: "include",
+  });
+  if (!res.ok) return null;
+  return await res.json();
 }
 
 async function updatePassword(currentPassword, newPassword) {
@@ -130,19 +137,14 @@ async function updatePassword(currentPassword, newPassword) {
 
 // Bouton "Modifier" - Active le mode édition
 editBtn.addEventListener("click", () => {
-  console.log("Activation du mode édition");
-
   mailInput.disabled = false;
   userNameInput.disabled = false;
 
-  // Afficher les boutons sauvegarder/annuler
   saveBtn.style.display = "inline-block";
   cancelBtn.style.display = "inline-block";
 
-  // Cacher le bouton modifier
   editBtn.style.display = "none";
 
-  // Focus sur le premier champ
   mailInput.focus();
 });
 
@@ -151,9 +153,6 @@ saveBtn.addEventListener("click", async () => {
   const newMail = mailInput.value.trim();
   const newUserName = userNameInput.value.trim();
 
-  console.log("Tentative de sauvegarde:", { newMail, newUserName });
-
-  // Validation basique
   if (!newMail || !newUserName) {
     alert("Tous les champs sont requis");
     return;
@@ -164,23 +163,20 @@ saveBtn.addEventListener("click", async () => {
     return;
   }
 
-  // Afficher un indicateur de chargement
   const originalText = saveBtn.textContent;
   saveBtn.textContent = "Sauvegarde...";
   saveBtn.disabled = true;
 
   const result = await updateUserdata({
     email: newMail,
-    username: newUserName,
+    userName: newUserName,
   });
 
   if (result.success) {
-    // Mettre à jour l'affichage
     userNameElem.textContent = newUserName;
     currentUser.email = newMail;
     currentUser.username = newUserName;
 
-    // Désactiver les champs et réinitialiser les boutons
     mailInput.disabled = true;
     userNameInput.disabled = true;
     cancelBtn.style.display = "none";
@@ -192,7 +188,6 @@ saveBtn.addEventListener("click", async () => {
 
     alert("Profil mis à jour avec succès !");
   } else {
-    // Afficher l'erreur
     alert(result.error || "Erreur lors de la mise à jour");
     saveBtn.textContent = originalText;
     saveBtn.disabled = false;
@@ -201,17 +196,12 @@ saveBtn.addEventListener("click", async () => {
 
 // Bouton "Annuler" - Annule les modifications
 cancelBtn.addEventListener("click", () => {
-  console.log("Annulation des modifications");
-
-  // Réinitialiser les valeurs
   mailInput.value = currentUser.email;
   userNameInput.value = currentUser.username;
 
-  // Désactiver les champs
   mailInput.disabled = true;
   userNameInput.disabled = true;
 
-  // Réinitialiser les boutons
   cancelBtn.style.display = "none";
   saveBtn.style.display = "none";
   editBtn.style.display = "inline-block";
@@ -219,25 +209,20 @@ cancelBtn.addEventListener("click", () => {
   saveBtn.disabled = false;
 });
 
-// Gestion du modal mot de passe
 editPwdBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  console.log("Ouverture du modal mot de passe");
 
-  // Réinitialiser les champs
   currentPwdInput.value = "";
   newPwdInput.value = "";
   confirmPwdInput.value = "";
   hidePwdMessage();
 
-  // Réinitialiser les icônes oeil
   const icons = document.querySelectorAll(".eye-icon");
   icons.forEach((icon) => {
     icon.classList.remove("visible");
     icon.classList.add("hidden");
   });
 
-  // Afficher le modal
   showModal();
 });
 
@@ -246,14 +231,12 @@ cancelModalBtn.addEventListener("click", (e) => {
   hideModal();
 });
 
-// Fermer le modal avec la touche Échap
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && pwdModal.classList.contains("active")) {
     hideModal();
   }
 });
 
-// Fermer le modal si on clique en dehors
 pwdModal.addEventListener("click", (e) => {
   if (e.target === pwdModal) {
     hideModal();
@@ -267,7 +250,6 @@ savePasswordBtn.addEventListener("click", async (e) => {
   const newPassword = newPwdInput.value;
   const confirmPassword = confirmPwdInput.value;
 
-  // Validation
   if (!currentPassword || !newPassword || !confirmPassword) {
     showPwdMessage("Tous les champs sont requis", "error");
     return;
@@ -294,7 +276,6 @@ savePasswordBtn.addEventListener("click", async (e) => {
     return;
   }
 
-  // Afficher un indicateur de chargement
   savePasswordBtn.classList.add("loading");
   savePasswordBtn.disabled = true;
 
@@ -303,10 +284,8 @@ savePasswordBtn.addEventListener("click", async (e) => {
   if (result.success) {
     showPwdMessage("Mot de passe changé avec succès !", "success");
 
-    // Fermer le modal après 2 secondes
     setTimeout(() => {
       hideModal();
-      // Réinitialiser les champs
       currentPwdInput.value = "";
       newPwdInput.value = "";
       confirmPwdInput.value = "";
@@ -318,29 +297,23 @@ savePasswordBtn.addEventListener("click", async (e) => {
     );
   }
 
-  // Réinitialiser le bouton
   savePasswordBtn.classList.remove("loading");
   savePasswordBtn.disabled = false;
 });
 
-// Chargement des données utilisateur
 getCurrentUser().then((user) => {
   if (!user) {
-    // Rediriger vers la page de connexion si non connecté
     window.location.href = "login.html";
     return;
   }
 
   currentUser = user;
 
-  console.log("Utilisateur chargé:", user);
-
-  // Mettre à jour l'affichage
+  // ✅ Utiliser les bons noms de colonnes de la BD (minuscules)
   userNameElem.textContent = user.username || "Utilisateur";
   nbBetElem.textContent = user.nb_paris_crees || 0;
   nbBetWon.textContent = user.nb_paris_gagnes || 0;
 
-  // Calculer le ratio si possible
   if (user.nb_paris_crees > 0) {
     const ratio = Math.round(
       (user.nb_paris_gagnes / user.nb_paris_crees) * 100
@@ -350,10 +323,27 @@ getCurrentUser().then((user) => {
     ratioElem.textContent = "0%";
   }
 
-  // Remplir les champs
   mailInput.value = user.email || "";
   userNameInput.value = user.username || "";
 
-  // Initialiser les toggles mot de passe
   initPasswordToggles();
+});
+
+// Bouton de déconnexion
+logoutBtn.addEventListener("click", async () => {
+  try {
+    const res = await fetch("/api/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+
+    if (res.ok) {
+      window.location.href = "login.html";
+    } else {
+      alert("Erreur lors de la déconnexion");
+    }
+  } catch (err) {
+    console.error("Erreur de déconnexion:", err);
+    alert("Erreur lors de la déconnexion");
+  }
 });
