@@ -1,0 +1,493 @@
+// _betProgress.scss - Styles pour l'affichage amélioré des votes
+@use "./var" as *;
+
+// ============================
+// SECTION PROGRESS DANS LA CARTE
+// ============================
+
+.bet-progress {
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+    .total-votes {
+      font-size: 13px;
+      font-weight: 600;
+      color: $muted;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  .progress-options {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .option-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .option-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+
+      .option-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: $text;
+      }
+
+      .option-percent {
+        font-size: 18px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 8px;
+        min-width: 55px;
+        text-align: center;
+      }
+    }
+
+    .option-bar {
+      width: 100%;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+
+      .option-fill {
+        height: 100%;
+        border-radius: 6px;
+        transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        background: linear-gradient(90deg, 
+          rgba(255, 255, 255, 0.1), 
+          rgba(255, 255, 255, 0.15)
+        );
+
+        // Animation de brillance
+        &::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent
+          );
+          animation: shimmer 2s infinite;
+        }
+      }
+    }
+
+    .option-votes {
+      font-size: 12px;
+      color: $muted;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    // Styles spécifiques pour "yes"
+    &.yes {
+      .option-percent {
+        background: rgba(46, 196, 182, 0.15);
+        color: #2ec4b6;
+        border: 1px solid rgba(46, 196, 182, 0.3);
+      }
+
+      .option-fill {
+        background: linear-gradient(90deg, #2ec4b6, #20a4f3);
+        box-shadow: 0 2px 8px rgba(46, 196, 182, 0.3);
+      }
+    }
+
+    // Styles spécifiques pour "no"
+    &.no {
+      .option-percent {
+        background: rgba(255, 51, 102, 0.15);
+        color: #ff3366;
+        border: 1px solid rgba(255, 51, 102, 0.3);
+      }
+
+      .option-fill {
+        background: linear-gradient(90deg, #ff3366, #ff6b9d);
+        box-shadow: 0 2px 8px rgba(255, 51, 102, 0.3);
+      }
+    }
+  }
+}
+
+// Animation de brillance
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+// ============================
+// MODAL - AFFICHAGE DÉTAILLÉ
+// ============================
+
+.modal {
+  .bet-options {
+    margin-top: 30px;
+
+    h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: $text;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .options-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .option-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 20px;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+      }
+
+      &.winner {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 215, 0, 0.1),
+          rgba(255, 215, 0, 0.05)
+        );
+        border: 2px solid rgba(255, 215, 0, 0.4);
+        box-shadow: 0 4px 20px rgba(255, 215, 0, 0.2);
+
+        &::before {
+          content: '🏆';
+          position: absolute;
+          top: -10px;
+          right: 20px;
+          font-size: 24px;
+        }
+      }
+
+      .option-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+
+        h4 {
+          font-size: 16px;
+          font-weight: 700;
+          color: $text;
+          margin: 0;
+        }
+
+        .option-percent-large {
+          font-size: 28px;
+          font-weight: 800;
+          color: $accent;
+          background: linear-gradient(135deg, $accent, $accent-2);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+      }
+
+      .option-stats {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+
+        .vote-count {
+          font-size: 14px;
+          font-weight: 600;
+          color: $muted;
+          background: rgba(255, 255, 255, 0.05);
+          padding: 6px 12px;
+          border-radius: 8px;
+        }
+      }
+
+      .progress-bar-large {
+        width: 100%;
+        height: 14px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        overflow: hidden;
+        position: relative;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+
+        .progress-fill-large {
+          height: 100%;
+          background: linear-gradient(90deg, $accent, $accent-2);
+          border-radius: 8px;
+          transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          padding-right: 10px;
+
+          // Label du pourcentage dans la barre
+          .progress-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+          }
+
+          // Afficher le label si la barre est assez large
+          &[style*="width: 1"],
+          &[style*="width: 2"],
+          &[style*="width: 3"],
+          &[style*="width: 4"],
+          &[style*="width: 5"],
+          &[style*="width: 6"],
+          &[style*="width: 7"],
+          &[style*="width: 8"],
+          &[style*="width: 9"] {
+            .progress-label {
+              opacity: 1;
+            }
+          }
+
+          // Effet de brillance
+          &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+              90deg,
+              transparent,
+              rgba(255, 255, 255, 0.2),
+              transparent
+            );
+            animation: progressShine 3s infinite;
+          }
+
+          // Couleur spécifique pour "yes"
+          &.yes-fill {
+            background: linear-gradient(90deg, #2ec4b6, #20a4f3);
+            box-shadow: 0 3px 12px rgba(46, 196, 182, 0.4);
+          }
+
+          // Couleur spécifique pour "no"
+          &.no-fill {
+            background: linear-gradient(90deg, #ff3366, #ff6b9d);
+            box-shadow: 0 3px 12px rgba(255, 51, 102, 0.4);
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes progressShine {
+  0% {
+    transform: translateX(-100%);
+  }
+  50%,
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+// ============================
+// VOTES RÉCENTS
+// ============================
+
+.recent-votes {
+  margin-top: 30px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: $text;
+    margin: 0 0 16px 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .votes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .vote-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+    font-size: 14px;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .voter {
+      font-weight: 700;
+      color: $accent;
+    }
+
+    .choice {
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+
+      &.yes {
+        background: rgba(46, 196, 182, 0.15);
+        color: #2ec4b6;
+      }
+
+      &.no {
+        background: rgba(255, 51, 102, 0.15);
+        color: #ff3366;
+      }
+    }
+
+    .time {
+      margin-left: auto;
+      font-size: 12px;
+      color: $muted;
+      font-weight: 500;
+    }
+  }
+}
+
+// ============================
+// RESPONSIVE
+// ============================
+
+@media (max-width: 768px) {
+  .bet-progress {
+    padding: 14px;
+
+    .option-item {
+      .option-info {
+        .option-percent {
+          font-size: 16px;
+          min-width: 50px;
+          padding: 3px 8px;
+        }
+      }
+
+      .option-bar {
+        height: 8px;
+      }
+    }
+  }
+
+  .modal {
+    .bet-options {
+      .option-card {
+        padding: 16px;
+
+        .option-header {
+          .option-percent-large {
+            font-size: 24px;
+          }
+        }
+
+        .progress-bar-large {
+          height: 12px;
+        }
+      }
+    }
+  }
+
+  .recent-votes {
+    padding: 16px;
+
+    .vote-item {
+      padding: 10px;
+      font-size: 13px;
+      flex-wrap: wrap;
+
+      .time {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 4px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .bet-progress {
+    padding: 12px;
+
+    .progress-header {
+      .total-votes {
+        font-size: 12px;
+      }
+    }
+
+    .option-item {
+      .option-info {
+        .option-name {
+          font-size: 13px;
+        }
+
+        .option-percent {
+          font-size: 15px;
+          min-width: 45px;
+        }
+      }
+
+      .option-bar {
+        height: 7px;
+      }
+
+      .option-votes {
+        font-size: 11px;
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -14,14 +14,13 @@
           ><img src="./imgs/Logo.svg" alt="logo PickOne"
         /></a>
         <ul class="nav-links">
-          <li>Paris</li>
-          <li>Dilemmes</li>
-          <li>Tournois</li>
+          <li><a href="./index.html">Paris</a></li>
+          <li><a href="./comming-soon.html">Tournois</a></li> 
         </ul>
       </div>
 
       <!-- Barre de recherche -->
-      <div class="search-container">
+      <!-- <div class="search-container">
         <div class="search-bar">
           <input
             type="text"
@@ -29,10 +28,10 @@
             class="search-input"
           />
           <button type="button" class="search-button">
-            <span class="search-icon">🔍</span>
+            <span class="search-icon"></span>
           </button>
         </div>
-        <!-- Suggestions de recherche -->
+         Suggestions de recherche 
         <div class="search-suggestions">
           <div class="suggestion-category">
             <h4>Catégories populaires</h4>
@@ -52,15 +51,15 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="right">
-        <div class="wallet">
+        <!-- <div class="wallet">
           <h3>Porte-Feuille</h3>
-          <span>0.00 pickCoin</span>
-        </div>
+          <span id="wallet"></span>
+        </div> -->
         <button class="add-bet"></button>
-        <a class="connection-button account-btn"></a>
+        <a class="connection-button account-btn">Mon compte</a>
 
         <!-- Menu hamburger -->
         <button class="hamburger">
@@ -75,7 +74,7 @@
     <div class="mobile-menu">
       <div class="mobile-menu-content">
         <!-- Barre de recherche mobile -->
-        <div class="mobile-search">
+        <!-- <div class="mobile-search">
           <div class="mobile-search-bar">
             <input
               type="text"
@@ -86,78 +85,35 @@
               <span class="search-icon">🔍</span>
             </button>
           </div>
-        </div>
+        </div> -->
 
-        <div class="mobile-wallet">
+        <!-- <div class="mobile-wallet">
           <h3>Porte-Feuille</h3>
           <span>0.00 pickCoin</span>
-        </div>
+        </div> -->
 
-        <ul class="mobile-nav-links">
+        <!-- <ul class="mobile-nav-links">
           <li><a href="#">Paris</a></li>
           <li><a href="#">Dilemmes</a></li>
           <li><a href="#">Tournois</a></li>
-        </ul>
+        </ul> -->
 
         <a href="" class="mobile-add-bet add-bet"></a>
         <a class="mobile-account-btn account-btn">Mon compte</a>
       </div>
     </div>
 
-    <section class="hero-section">
-      <h1>Pariez sur l'avenir</h1>
-      <div class="hero-stats">
-        <div class="stat">
-          <span class="number">12.4K</span>
-          <span class="label">Paris actifs</span>
-        </div>
-        <div class="stat">
-          <span class="number">1M</span>
-          <span class="label">Nombre utilisateurs</span>
-        </div>
-      </div>
-    </section>
+    <!-- <section class="hero-section"> -->
+      <!-- <h1>Prédisez. Comparez. Progressez.</h1> -->
+    <!-- </section> -->
 
     <main class="main-content">
       <div class="content-header">
-        <h2>Paris tendance</h2>
-        <a href="#" class="view-all">Voir tout</a>
+        <!-- <a href="#" class="view-all">Voir tout</a> -->
       </div>
 
       <div class="bet-grid">
-        <div class="bet-card featured">
-          <div class="bet-header">
-            <span class="bet-category">TECH</span>
-            <span class="bet-time">⏱️ 2j restants</span>
-          </div>
-          <h3 class="bet-title">
-            L'IA de Google battra-t-elle GPT-4 d'ici fin 2024 ?
-          </h3>
-          <div class="bet-stats">
-            <div class="stat">
-              <span class="value">12.5K</span>
-              <span class="label">Mise totale</span>
-            </div>
-            <div class="stat">
-              <span class="value">1.8K</span>
-              <span class="label">Parieurs</span>
-            </div>
-          </div>
-          <div class="bet-progress">
-            <div class="progress-info">
-              <span class="option yes">OUI - 68%</span>
-              <span class="option no">NON - 32%</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 68%"></div>
-            </div>
-          </div>
-          <div class="bet-actions">
-            <button class="bet-button yes">OUI</button>
-            <button class="bet-button no">NON</button>
-          </div>
-        </div>
-      </div>
+        <!-- Les cartes de paris seront insérées ici dynamiquement -->
     </main>
 
     <footer>
@@ -172,9 +128,6 @@
         <!-- En-tête de la modal -->
         <div class="modal-header">
           <h2>Ajouter un nouvel élément</h2>
-          <p class="modal-subtitle">
-            Remplissez les détails ci-dessous pour créer votre élément
-          </p>
         </div>
 
         <!-- Message d'état (succès/erreur) - caché par défaut -->
@@ -215,7 +168,7 @@
 
           <!-- Champs en ligne : Catégorie et Type -->
           <div class="form-row">
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label for="elementCategory">
                 Catégorie <span class="required">*</span>
               </label>
@@ -230,9 +183,10 @@
                 <option value="politique">POLITIQUE</option>
                 <option value="divertissement">DIVERTISSEMENT</option>
               </select>
-            </div>
+            </div> -->
 
-            <div class="form-group">
+            <!-- Champ type d'élément -->
+            <!-- <div class="form-group">
               <label for="elementType">
                 Type d'élément <span class="required">*</span>
               </label>
@@ -243,77 +197,81 @@
                 <option value="tournoi">Tournoi</option>
                 <option value="prediction">Prédiction</option>
               </select>
-            </div>
-          </div>
+            </div> -->
 
-          <!-- Champ date d'expiration -->
-          <div class="form-group">
-            <label for="expirationDate">
-              Date d'expiration <span class="required">*</span>
-            </label>
-            <input
-              type="date"
-              id="expirationDate"
-              name="expirationDate"
-              required
-            />
-            <p class="input-hint">L'élément expirera à minuit de cette date</p>
-            <small id="date-error"
-              >La date ne peut pas être anterieur à la date actuel</small
-            >
-          </div>
-
-          <!-- Champ mise de départ -->
-          <div class="form-group">
-            <label for="startingBet">
-              Mise de départ (en pickCoins) <span class="required">*</span>
-            </label>
-            <input
-              type="number"
-              id="startingBet"
-              name="startingBet"
-              placeholder="0.00"
-              min="0"
-              step="0.01"
-              required
-            />
-            <p class="input-hint">Minimum: 0.01 pickCoin</p>
-          </div>
-
-          <!-- Section des choix (array dynamique) -->
-          <div class="form-group">
-            <label>Choix disponibles <span class="required">*</span></label>
-            <div class="form-array" id="choicesContainer">
-              <!-- Les choix seront ajoutés dynamiquement ici -->
-              <div class="array-item">
-                <input
-                  id="betOptA"
-                  type="text"
-                  name="choice[]"
-                  placeholder="Option 1"
-                  required
-                />
-              </div>
-              <div class="array-item">
-                <input
-                  id="betOptB"
-                  type="text"
-                  name="choice[]"
-                  placeholder="Option 2"
-                  required
-                />
-              </div>
+            <!-- Champ date d'expiration -->
+             <div class="form-group">
+              <label for="expirationDate">
+                Date d'expiration <span class="required">*</span>
+              </label>
+              <input
+                type="date"
+                id="expirationDate"
+                name="expirationDate"
+                required
+              />
+              <p class="input-hint">
+                L'élément expirera à minuit de cette date
+              </p>
+              <small id="date-error"
+                >La date ne peut pas être anterieur à la date actuel</small
+              >
             </div>
 
-            <button type="button" class="add-item-btn" id="addChoiceBtn">
-              <span class="plus-icon">+</span>
-              Ajouter un choix
-            </button>
-            <p class="input-hint">Minimum 2 choix, maximum 10</p>
+            <!-- Champ mise de départ -->
+            <!-- <div class="form-group">
+              <label for="startingBet">
+                Mise de départ (en pickCoins) <span class="required">*</span>
+              </label>
+              <input
+                type="number"
+                id="startingBet"
+                name="startingBet"
+                placeholder="0.00"
+                min="0"
+                step="0.01"
+                required
+              />
+              <p class="input-hint">Minimum: 0.01 pickCoin</p>
+            </div> -->
+
+            <!-- Section des choix -->
+            <div class="form-group">
+              <label>Choix disponibles <span class="required">*</span></label>
+              <div class="form-array" id="choicesContainer">
+                <!-- Les choix seront ajoutés dynamiquement ici -->
+                <div class="array-item">
+                  <input
+                    type="text"
+                    name="choice[]"
+                    placeholder="Option 1"
+                    required
+                    minlength="1"
+                    maxlength="100"
+                  />
+                </div>
+                <div class="array-item">
+                  <input
+                    type="text"
+                    name="choice[]"
+                    placeholder="Option 2"
+                    required
+                    minlength="1"
+                    maxlength="100"
+                  />
+                </div>
+              </div>
+
+              <!-- <button type="button" class="add-item-btn" id="addChoiceBtn">
+                <span class="plus-icon">+</span>
+                Ajouter un choix
+              </button> -->
+              <p class="input-hint">Minimum 2 choix, maximum 10</p>
+            </div>
           </div>
 
           <!-- Champ tags (optionnel) -->
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="elementTags"> Tags (optionnel) </label>
             <input
               type="text"
@@ -322,11 +280,11 @@
               placeholder="Ex: ia, google, 2024, gpt-4"
             />
             <p class="input-hint">Séparez les tags par des virgules</p>
-          </div>
+          </div> -->
 
           <!-- Options avancées (accordeon optionnel) -->
           <div class="form-group">
-            <label
+            <!-- <label
               style="
                 cursor: pointer;
                 display: flex;
@@ -340,9 +298,9 @@
                 style="width: auto"
               />
               Options avancées
-            </label>
+            </label> -->
 
-            <div id="advancedOptions" style="display: none; margin-top: 15px">
+            <!-- <div id="advancedOptions" style="display: none; margin-top: 15px">
               <div class="form-row">
                 <div class="form-group">
                   <label for="visibility">Visibilité</label>
@@ -353,7 +311,7 @@
                   </select>
                 </div>
 
-                <!-- <div class="form-group">
+                 <div class="form-group">
                   <label for="maxParticipants">Participants max</label>
                   <input
                     type="number"
@@ -362,9 +320,9 @@
                     placeholder="Illimité"
                     min="0"
                   />
-                </div> -->
+                </div> 
               </div>
-            </div>
+            </div> -->
           </div>
 
           <!-- Actions du formulaire -->
@@ -381,6 +339,7 @@
       </div>
     </div>
 
+    <script src="./scripts/bets.js"></script>
     <script src="./scripts/newBet.js"></script>
     <script src="./scripts/nav.js"></script>
     <script src="./scripts/script.js"></script>

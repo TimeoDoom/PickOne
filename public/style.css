@@ -6,14 +6,6 @@
   border-radius: 0 0 30px 30px;
   margin-bottom: 40px;
 }
-.hero-section h1 {
-  font-size: 48px;
-  font-weight: 800;
-  margin-bottom: 20px;
-  background: linear-gradient(135deg, #f1f5f9 0%, #7c5cff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
 .hero-section p {
   font-size: 18px;
   color: #94a3b8;
@@ -1862,6 +1854,363 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
     height: 34px;
   }
 }
+.bet-progress {
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.bet-progress .progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.bet-progress .progress-header .total-votes {
+  font-size: 13px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.bet-progress .progress-options {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.bet-progress .option-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bet-progress .option-item .option-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.bet-progress .option-item .option-info .option-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+.bet-progress .option-item .option-info .option-percent {
+  font-size: 18px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 8px;
+  min-width: 55px;
+  text-align: center;
+}
+.bet-progress .option-item .option-bar {
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+.bet-progress .option-item .option-bar .option-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.15));
+}
+.bet-progress .option-item .option-bar .option-fill::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: shimmer 2s infinite;
+}
+.bet-progress .option-item .option-votes {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 4px;
+  font-weight: 500;
+}
+.bet-progress .option-item.yes .option-percent {
+  background: rgba(46, 196, 182, 0.15);
+  color: #2ec4b6;
+  border: 1px solid rgba(46, 196, 182, 0.3);
+}
+.bet-progress .option-item.yes .option-fill {
+  background: linear-gradient(90deg, #2ec4b6, #20a4f3);
+  box-shadow: 0 2px 8px rgba(46, 196, 182, 0.3);
+}
+.bet-progress .option-item.no .option-percent {
+  background: rgba(255, 51, 102, 0.15);
+  color: #ff3366;
+  border: 1px solid rgba(255, 51, 102, 0.3);
+}
+.bet-progress .option-item.no .option-fill {
+  background: linear-gradient(90deg, #ff3366, #ff6b9d);
+  box-shadow: 0 2px 8px rgba(255, 51, 102, 0.3);
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+.modal .bet-options {
+  margin-top: 30px;
+}
+.modal .bet-options h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+.modal .bet-options .options-grid {
+  display: grid;
+  gap: 20px;
+}
+.modal .bet-options .option-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+.modal .bet-options .option-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+.modal .bet-options .option-card.winner {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+  border: 2px solid rgba(255, 215, 0, 0.4);
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.2);
+}
+.modal .bet-options .option-card.winner::before {
+  content: "🏆";
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  font-size: 24px;
+}
+.modal .bet-options .option-card .option-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.modal .bet-options .option-card .option-header h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0;
+}
+.modal .bet-options .option-card .option-header .option-percent-large {
+  font-size: 28px;
+  font-weight: 800;
+  color: #7c5cff;
+  background: linear-gradient(135deg, #7c5cff, #00d4a8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.modal .bet-options .option-card .option-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.modal .bet-options .option-card .option-stats .vote-count {
+  font-size: 14px;
+  font-weight: 600;
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+.modal .bet-options .option-card .progress-bar-large {
+  width: 100%;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.modal .bet-options .option-card .progress-bar-large .progress-fill-large {
+  height: 100%;
+  background: linear-gradient(90deg, #7c5cff, #00d4a8);
+  border-radius: 8px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+}
+.modal .bet-options .option-card .progress-bar-large .progress-fill-large .progress-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.modal .bet-options .option-card .progress-bar-large .progress-fill-large[style*="width: 1"] .progress-label, .modal .bet-options .option-card .progress-bar-large .progress-fill-large[style*="width: 2"] .progress-label, .modal .bet-options .option-card .progress-bar-large .progress-fill-large[style*="width: 3"] .progress-label, .modal .bet-options .option-card .progress-bar-large .progress-fill-large[style*="width: 4"] .progress-label, .modal .bet-options .option-card .progress-bar-large .progress-fill-large[style*="width: 5"] .progress-label, .modal .bet-options .option-card .progress-bar-large .progress-fill-large[style*="width: 6"] .progress-label, .modal .bet-options .option-card .progress-bar-large .progress-fill-large[style*="width: 7"] .progress-label, .modal .bet-options .option-card .progress-bar-large .progress-fill-large[style*="width: 8"] .progress-label, .modal .bet-options .option-card .progress-bar-large .progress-fill-large[style*="width: 9"] .progress-label {
+  opacity: 1;
+}
+.modal .bet-options .option-card .progress-bar-large .progress-fill-large::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: progressShine 3s infinite;
+}
+.modal .bet-options .option-card .progress-bar-large .progress-fill-large.yes-fill {
+  background: linear-gradient(90deg, #2ec4b6, #20a4f3);
+  box-shadow: 0 3px 12px rgba(46, 196, 182, 0.4);
+}
+.modal .bet-options .option-card .progress-bar-large .progress-fill-large.no-fill {
+  background: linear-gradient(90deg, #ff3366, #ff6b9d);
+  box-shadow: 0 3px 12px rgba(255, 51, 102, 0.4);
+}
+
+@keyframes progressShine {
+  0% {
+    transform: translateX(-100%);
+  }
+  50%, 100% {
+    transform: translateX(100%);
+  }
+}
+.recent-votes {
+  margin-top: 30px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.recent-votes h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 16px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.recent-votes .votes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.recent-votes .vote-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+.recent-votes .vote-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+.recent-votes .vote-item .voter {
+  font-weight: 700;
+  color: #7c5cff;
+}
+.recent-votes .vote-item .choice {
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+.recent-votes .vote-item .choice.yes {
+  background: rgba(46, 196, 182, 0.15);
+  color: #2ec4b6;
+}
+.recent-votes .vote-item .choice.no {
+  background: rgba(255, 51, 102, 0.15);
+  color: #ff3366;
+}
+.recent-votes .vote-item .time {
+  margin-left: auto;
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .bet-progress {
+    padding: 14px;
+  }
+  .bet-progress .option-item .option-info .option-percent {
+    font-size: 16px;
+    min-width: 50px;
+    padding: 3px 8px;
+  }
+  .bet-progress .option-item .option-bar {
+    height: 8px;
+  }
+  .modal .bet-options .option-card {
+    padding: 16px;
+  }
+  .modal .bet-options .option-card .option-header .option-percent-large {
+    font-size: 24px;
+  }
+  .modal .bet-options .option-card .progress-bar-large {
+    height: 12px;
+  }
+  .recent-votes {
+    padding: 16px;
+  }
+  .recent-votes .vote-item {
+    padding: 10px;
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+  .recent-votes .vote-item .time {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 4px;
+  }
+}
+@media (max-width: 480px) {
+  .bet-progress {
+    padding: 12px;
+  }
+  .bet-progress .progress-header .total-votes {
+    font-size: 12px;
+  }
+  .bet-progress .option-item .option-info .option-name {
+    font-size: 13px;
+  }
+  .bet-progress .option-item .option-info .option-percent {
+    font-size: 15px;
+    min-width: 45px;
+  }
+  .bet-progress .option-item .option-bar {
+    height: 7px;
+  }
+  .bet-progress .option-item .option-votes {
+    font-size: 11px;
+  }
+}
 * {
   box-sizing: border-box;
 }
@@ -1905,13 +2254,16 @@ nav .left .nav-links {
   list-style: none;
 }
 nav .left .nav-links li {
-  color: #94a3b8;
   font-weight: 600;
   letter-spacing: 0.2px;
   padding: 8px 12px;
   border-radius: 8px;
   transition: all 160ms ease;
   cursor: pointer;
+}
+nav .left .nav-links li a {
+  text-decoration: none;
+  color: #94a3b8;
 }
 nav .left .nav-links li:hover {
   color: #f1f5f9;
@@ -2101,11 +2453,6 @@ nav .right .add-bet:hover {
   box-shadow: 0 8px 25px rgba(124, 92, 255, 0.25);
 }
 nav .right .connection-button {
-  width: 44px;
-  height: 44px;
-  border-radius: 40px;
-  border: 2px solid rgba(255, 255, 255, 0.06);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -2268,6 +2615,7 @@ nav .right .hamburger.active span:nth-child(3) {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  width: 50px;
 }
 .mobile-menu .mobile-menu-content .mobile-account-btn:hover {
   background: rgba(255, 255, 255, 0.1);
@@ -2408,6 +2756,432 @@ small {
   margin-top: 5px;
   margin-left: 6px;
   display: none;
+}
+
+/* Ajoutez ce CSS à votre fichier de styles */
+.input-hint {
+  font-size: 0.85em;
+  color: #666;
+  margin-top: 4px;
+}
+
+small {
+  display: none;
+  color: #e74c3c;
+  font-size: 0.85em;
+  margin-top: 4px;
+}
+
+input.error,
+select.error {
+  border-color: #e74c3c !important;
+}
+
+.array-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.array-item input {
+  flex: 1;
+}
+
+.remove-item {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.remove-item:hover {
+  background: #c0392b;
+}
+
+.add-item-btn {
+  background: none;
+  border: 1px dashed #3498db;
+  color: #3498db;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.add-item-btn:hover {
+  background: rgba(52, 152, 219, 0.1);
+}
+
+.plus-icon {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.button-loading {
+  display: none;
+}
+
+.modal-message {
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.modal-message.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.modal-message.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.modal-header {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5em;
+  color: #333;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.close-modal:hover {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.modal-body {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.modal-footer {
+  padding: 20px;
+  border-top: 1px solid #eee;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* Bet info grid */
+.bet-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-item .label {
+  font-size: 0.85em;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.info-item .value {
+  font-weight: 600;
+  color: #333;
+}
+
+/* Options grid */
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.option-card {
+  background: white;
+  border: 2px solid #e1e1e1;
+  border-radius: 8px;
+  padding: 15px;
+  transition: all 0.3s;
+}
+
+.option-card.winner {
+  border-color: #27ae60;
+  background: #f0f9f0;
+}
+
+.option-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.option-header h4 {
+  margin: 0;
+  font-size: 1.1em;
+  color: #333;
+}
+
+.option-percent {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #2c3e50;
+}
+
+.option-stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9em;
+  color: #666;
+  margin: 10px 0;
+}
+
+/* Recent votes */
+.votes-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.vote-item {
+  padding: 8px 12px;
+  border-bottom: 1px solid #f5f5f5;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vote-item:last-child {
+  border-bottom: none;
+}
+
+.vote-item .voter {
+  font-weight: 600;
+  color: #3498db;
+}
+
+.vote-item .amount {
+  font-weight: 600;
+  color: #27ae60;
+}
+
+.vote-item .choice {
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.85em;
+}
+
+.vote-item .choice.yes {
+  background: #e8f6ef;
+  color: #27ae60;
+}
+
+.vote-item .choice.no {
+  background: #fdedec;
+  color: #e74c3c;
+}
+
+.vote-item .time {
+  margin-left: auto;
+  color: #95a5a6;
+  font-size: 0.85em;
+}
+
+/* Notification styles */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #1e293b;
+  border-radius: 8px;
+  padding: 15px 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 1001;
+  transform: translateX(120%);
+  transition: transform 0.3s ease;
+}
+
+.notification.show {
+  transform: translateX(0);
+}
+
+.notification-icon {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.notification.success .notification-icon {
+  color: #27ae60;
+}
+
+.notification.error .notification-icon {
+  color: #e74c3c;
+}
+
+.notification.info .notification-icon {
+  color: #3498db;
+}
+
+.notification-message {
+  flex: 1;
+  font-size: 0.95em;
+}
+
+.notification-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #95a5a6;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Button styles */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95em;
+  transition: all 0.2s;
+}
+
+.btn.primary {
+  background: #3498db;
+  color: white;
+}
+
+.btn.primary:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+}
+
+.btn.secondary {
+  background: #ecf0f1;
+  color: #34495e;
+}
+
+.btn.secondary:hover {
+  background: #d5dbdb;
+}
+
+.btn.danger {
+  background: #db4939;
+  color: white;
+}
+
+.btn.danger:hover {
+  background: #c0392b;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modal-content {
+    max-width: 95%;
+  }
+  .bet-info-grid {
+    grid-template-columns: 1fr;
+  }
+  .options-grid {
+    grid-template-columns: 1fr;
+  }
+  .modal-footer {
+    flex-direction: column;
+  }
+  .btn {
+    width: 100%;
+  }
+}
+.votes-count {
+  display: flex;
+  justify-content: space-between;
 }
 
 /*# sourceMappingURL=style.css.map */

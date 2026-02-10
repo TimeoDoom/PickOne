@@ -3,6 +3,7 @@
 @use "./logInSignIn";
 @use "./account";
 @use "./newBet-modal";
+@use "./betProgress";
 
 * {
   box-sizing: border-box;
@@ -11,8 +12,15 @@
 html,
 body {
   margin: 0;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial;
   background: linear-gradient(180deg, #0b1d38 0%, #071928 60%, #071b2b 100%);
   color: $text;
   -webkit-font-smoothing: antialiased;
@@ -50,13 +58,17 @@ nav {
       list-style: none;
 
       li {
-        color: $muted;
         font-weight: 600;
         letter-spacing: 0.2px;
         padding: 8px 12px;
         border-radius: 8px;
         transition: all 160ms ease;
         cursor: pointer;
+
+        a {
+          text-decoration: none;
+          color: $muted;
+        }
 
         &:hover {
           color: $text;
@@ -272,15 +284,15 @@ nav {
     }
 
     .connection-button {
-      width: 44px;
-      height: 44px;
-      border-radius: 40px;
-      border: 2px solid rgba(255, 255, 255, 0.06);
-      background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.02),
-        rgba(255, 255, 255, 0.01)
-      );
+      // width: 104px;
+      // height: 44px;
+      // border-radius: 40px;
+      // border: 2px solid rgba(255, 255, 255, 0.06);
+      // background: linear-gradient(
+      //   180deg,
+      //   rgba(255, 255, 255, 0.02),
+      //   rgba(255, 255, 255, 0.01)
+      // );
       cursor: pointer;
       transition: all 0.3s ease;
 
@@ -472,6 +484,7 @@ nav {
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
+      width: 50px;
 
       &:hover {
         background: rgba(255, 255, 255, 0.1);
@@ -585,7 +598,9 @@ textarea {
   border-radius: 10px;
   border: 1.5px solid rgba(124, 92, 255, 0.12);
   box-shadow: 0 6px 20px rgba(124, 92, 255, 0.06);
-  transition: border-color 160ms ease, box-shadow 160ms ease;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
 
   &:focus {
     border-color: rgba(124, 92, 255, 0.28);
@@ -630,10 +645,441 @@ button {
   overflow: hidden;
 }
 
-
 small {
   color: #ff3366;
   margin-top: 5px;
   margin-left: 6px;
   display: none;
+}
+
+/* Ajoutez ce CSS à votre fichier de styles */
+.input-hint {
+  font-size: 0.85em;
+  color: #666;
+  margin-top: 4px;
+}
+
+small {
+  display: none;
+  color: #e74c3c;
+  font-size: 0.85em;
+  margin-top: 4px;
+}
+
+input.error,
+select.error {
+  border-color: #e74c3c !important;
+}
+
+.array-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.array-item input {
+  flex: 1;
+}
+
+.remove-item {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.remove-item:hover {
+  background: #c0392b;
+}
+
+.add-item-btn {
+  background: none;
+  border: 1px dashed #3498db;
+  color: #3498db;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.add-item-btn:hover {
+  background: rgba(52, 152, 219, 0.1);
+}
+
+.plus-icon {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.button-loading {
+  display: none;
+}
+
+.modal-message {
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.modal-message.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.modal-message.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5em;
+  color: #333;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.close-modal:hover {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.modal-body {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.modal-footer {
+  padding: 20px;
+  border-top: 1px solid #eee;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* Bet info grid */
+.bet-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-item .label {
+  font-size: 0.85em;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.info-item .value {
+  font-weight: 600;
+  color: #333;
+}
+
+/* Options grid */
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.option-card {
+  background: white;
+  border: 2px solid #e1e1e1;
+  border-radius: 8px;
+  padding: 15px;
+  transition: all 0.3s;
+}
+
+.option-card.winner {
+  border-color: #27ae60;
+  background: #f0f9f0;
+}
+
+.option-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.option-header h4 {
+  margin: 0;
+  font-size: 1.1em;
+  color: #333;
+}
+
+.option-percent {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #2c3e50;
+}
+
+.option-stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9em;
+  color: #666;
+  margin: 10px 0;
+}
+
+/* Recent votes */
+.votes-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.vote-item {
+  padding: 8px 12px;
+  border-bottom: 1px solid #f5f5f5;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vote-item:last-child {
+  border-bottom: none;
+}
+
+.vote-item .voter {
+  font-weight: 600;
+  color: #3498db;
+}
+
+.vote-item .amount {
+  font-weight: 600;
+  color: #27ae60;
+}
+
+.vote-item .choice {
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.85em;
+}
+
+.vote-item .choice.yes {
+  background: #e8f6ef;
+  color: #27ae60;
+}
+
+.vote-item .choice.no {
+  background: #fdedec;
+  color: #e74c3c;
+}
+
+.vote-item .time {
+  margin-left: auto;
+  color: #95a5a6;
+  font-size: 0.85em;
+}
+
+/* Notification styles */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #1e293b;
+  border-radius: 8px;
+  padding: 15px 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 1001;
+  transform: translateX(120%);
+  transition: transform 0.3s ease;
+}
+
+.notification.show {
+  transform: translateX(0);
+}
+
+.notification-icon {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.notification.success .notification-icon {
+  color: #27ae60;
+}
+
+.notification.error .notification-icon {
+  color: #e74c3c;
+}
+
+.notification.info .notification-icon {
+  color: #3498db;
+}
+
+.notification-message {
+  flex: 1;
+  font-size: 0.95em;
+}
+
+.notification-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #95a5a6;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Button styles */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95em;
+  transition: all 0.2s;
+}
+
+.btn.primary {
+  background: #3498db;
+  color: white;
+}
+
+.btn.primary:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+}
+
+.btn.secondary {
+  background: #ecf0f1;
+  color: #34495e;
+}
+
+.btn.secondary:hover {
+  background: #d5dbdb;
+}
+
+.btn.danger {
+  background: #db4939;
+  color: white;
+}
+
+.btn.danger:hover {
+  background: #c0392b;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modal-content {
+    max-width: 95%;
+  }
+
+  .bet-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .options-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-footer {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+.votes-count {
+  display: flex;
+  justify-content: space-between;
 }

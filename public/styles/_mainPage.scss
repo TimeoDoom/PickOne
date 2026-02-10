@@ -1,6 +1,8 @@
 // _mainPage.scss - Version améliorée
 @use "./var" as *;
 
+
+
 .hero-section {
   text-align: center;
   padding: 1px 40px 25px;
@@ -12,15 +14,6 @@
   );
   border-radius: 0 0 30px 30px;
   margin-bottom: 40px;
-
-  h1 {
-    font-size: 48px;
-    font-weight: 800;
-    margin-bottom: 20px;
-    background: linear-gradient(135deg, $text 0%, $accent 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
 
   p {
     font-size: 18px;
