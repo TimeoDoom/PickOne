@@ -56,20 +56,22 @@ app.decorate("authenticate", async function (request, reply) {
 });
 
 // ==========================
-// 4. PostgreSQL
+// 4. PostgreSQL (Neon)
 // ==========================
 const pool = new Pool({
-  user: process.env.PGUSER,
-  host: process.env.PGHOST,
-  database: process.env.PGDATABASE,
-  password: process.env.PGPASSWORD,
-  port: process.env.PGPORT,
+  connectionString: process.env.DATABASE_URL || undefined,
+  user: process.env.DATABASE_URL ? undefined : process.env.PGUSER,
+  host: process.env.DATABASE_URL ? undefined : process.env.PGHOST,
+  database: process.env.DATABASE_URL ? undefined : process.env.PGDATABASE,
+  password: process.env.DATABASE_URL ? undefined : process.env.PGPASSWORD,
+  port: process.env.DATABASE_URL ? undefined : process.env.PGPORT,
+  ssl: { rejectUnauthorized: false },
 });
 
 pool
   .query("SELECT NOW()")
-  .then((res) => console.log("Connexion PostgreSQL OK:", res.rows[0]))
-  .catch((err) => console.error("Erreur connexion PostgreSQL:", err));
+  .then((res) => console.log("✅ Connexion Neon OK:", res.rows[0]))
+  .catch((err) => console.error("❌ Erreur connexion Neon:", err));
 
 // ==========================
 // 5. ROUTES API
