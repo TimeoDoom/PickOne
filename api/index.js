@@ -227,18 +227,14 @@ async function buildApp() {
     },
   );
 
-  app.get(
-    "/api/me",
-    { preHandler: [app.authenticate] },
-    async (req, reply) => {
-      return {
-        id: req.user.id,
-        email: req.user.email,
-        username: req.user.username,
-        wallet: req.user.wallet,
-      };
-    },
-  );
+  app.get("/api/me", { preHandler: [app.authenticate] }, async (req, reply) => {
+    return {
+      id: req.user.id,
+      email: req.user.email,
+      username: req.user.username,
+      wallet: req.user.wallet,
+    };
+  });
 
   // Recuperation de toutes les données utilisateur
   app.get(
