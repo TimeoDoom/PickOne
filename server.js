@@ -12,7 +12,7 @@ dotenv.config();
 
 const { Pool } = pkg;
 const app = Fastify({ logger: true });
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // ==========================
 // 1. Dossier public
@@ -1178,7 +1178,7 @@ app.post("/api/logout", async (req, reply) => {
 const start = async () => {
   try {
     await app.listen({ port: PORT, host: "0.0.0.0" });
-    console.log(`Fastify running at http://localhost:${PORT}`);
+    console.log(`Fastify running on port ${PORT}`);
   } catch (err) {
     app.log.error(err);
     process.exit(1);
