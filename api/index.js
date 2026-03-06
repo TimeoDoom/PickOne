@@ -938,11 +938,16 @@ async function buildApp() {
 export default async function handler(req, res) {
   try {
     const fastify = await buildApp();
-    fastify.server.emit('request', req, res);
+    fastify.server.emit("request", req, res);
   } catch (error) {
-    console.error('Fastify handler error:', error);
+    console.error("Fastify handler error:", error);
     res.statusCode = 500;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ error: 'Internal Server Error', details: error.message }));
+    res.setHeader("Content-Type", "application/json");
+    res.end(
+      JSON.stringify({
+        error: "Internal Server Error",
+        details: error.message,
+      }),
+    );
   }
 }
