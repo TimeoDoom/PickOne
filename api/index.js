@@ -23,7 +23,7 @@ let app;
 async function buildApp() {
   if (app) return app;
 
-  app = Fastify({ logger: true });
+  app = Fastify({ logger: false });
 
   // Servir les fichiers statiques
   app.register(fastifyStatic, {
@@ -935,8 +935,14 @@ async function buildApp() {
 }
 
 // Export pour Vercel
-export default async (req, res) => {
-  const app = await buildApp();
-  await app.ready();
-  app.server.emit("request", req, res);
-};
+export default async function handler(req, res) {
+  try {
+    const fastify = await buildApp();
+    fastify.server.emit('request', req, res);
+  } catch (error) {
+    console.error('Fastify handler error:', error);
+    res.statusCode = 500;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ error: 'Internal Server Error', details: error.message }));
+  }
+}
