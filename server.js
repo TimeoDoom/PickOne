@@ -70,8 +70,8 @@ const pool = new Pool({
 
 pool
   .query("SELECT NOW()")
-  .then((res) => console.log("✅ Connexion Neon OK:", res.rows[0]))
-  .catch((err) => console.error("❌ Erreur connexion Neon:", err));
+  .then((res) => console.log("Connexion Neon OK:", res.rows[0]))
+  .catch((err) => console.error("Erreur connexion Neon:", err));
 
 // ==========================
 // 5. ROUTES API
