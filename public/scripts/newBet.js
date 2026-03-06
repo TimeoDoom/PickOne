@@ -1,4 +1,3 @@
-
 // Modal variables
 const cancelBetButton = document.getElementById("cancelBtn");
 const betForm = document.getElementById("addElementModal");
@@ -35,7 +34,8 @@ let choicesIndex = 2;
 // ============================
 
 // Ouvrir la modal
-addBet.addEventListener("click", () => {
+addBet.addEventListener("click", (e) => {
+  e.preventDefault();
   betForm.style.display = "flex";
   resetForm();
 });

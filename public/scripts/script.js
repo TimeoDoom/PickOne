@@ -9,13 +9,15 @@ const accountButtons = document.querySelectorAll(".account-btn");
   if (!res.ok) {
     addBetButtons.forEach((btn) => {
       btn.textContent = "Se connecter";
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
         window.location.href = "../login.html";
       });
     });
 
     accountButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
         window.location.href = "../login.html";
       });
     });
@@ -24,19 +26,20 @@ const accountButtons = document.querySelectorAll(".account-btn");
 
     addBetButtons.forEach((btn) => {
       btn.textContent = "Nouveau";
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
         console.log("ouverture création");
       });
     });
 
     accountButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
         window.location.href = "../account.html";
       });
     });
   }
 })();
-
 
 // Wallet display
 // const walletElem = document.getElementById("wallet");
