@@ -227,6 +227,19 @@ async function buildApp() {
     },
   );
 
+  app.get(
+    "/api/me",
+    { preHandler: [app.authenticate] },
+    async (req, reply) => {
+      return {
+        id: req.user.id,
+        email: req.user.email,
+        username: req.user.username,
+        wallet: req.user.wallet,
+      };
+    },
+  );
+
   // Recuperation de toutes les données utilisateur
   app.get(
     "/api/auth/data",
@@ -516,8 +529,148 @@ async function buildApp() {
     },
   );
 
+  app.post(
+    "/api/bets/create",
+    { preHandler: [app.authenticate] },
+    async (req, reply) => {
+      const {
+        title,
+        option1,
+        option2,
+        details,
+        enddate,
+        deadline,
+        minbet,
+        startingBet,
+        betamount,
+        betAmount,
+      } = req.body;
+
+      const normalizedEnddate = enddate || deadline;
+      const normalizedMinbet = minbet ?? startingBet ?? betamount ?? betAmount;
+      const normalizedBetamount = betamount ?? betAmount ?? startingBet;
+      const userId = req.user.id;
+
+      if (
+        !title ||
+        !option1 ||
+        !option2 ||
+        !normalizedEnddate ||
+        !normalizedMinbet ||
+        !normalizedBetamount
+      ) {
+        return reply.status(400).send({
+          success: false,
+          error: "Tous les champs sont requis",
+        });
+      }
+
+      try {
+        const userRes = await pool.query(
+          "SELECT wallet FROM users WHERE iduser = $1",
+          [userId],
+        );
+
+        if (userRes.rows.length === 0) {
+          return reply.status(404).send({
+            success: false,
+            error: "Utilisateur non trouvé",
+          });
+        }
+
+        const userWallet = parseFloat(userRes.rows[0].wallet);
+        const betAmountNum = parseFloat(normalizedBetamount);
+
+        if (userWallet < betAmountNum) {
+          return reply.status(400).send({
+            success: false,
+            error: "Solde insuffisant",
+          });
+        }
+
+        const result = await pool.query(
+          `INSERT INTO pari (title, option1, option2, details, enddate, status, iduser, progress, minbet)
+         VALUES ($1, $2, $3, $4, $5, 'active', $6, 0, $7)
+         RETURNING idbet`,
+          [
+            title,
+            option1,
+            option2,
+            details,
+            normalizedEnddate,
+            userId,
+            normalizedMinbet,
+          ],
+        );
+
+        const betId = result.rows[0].idbet;
+
+        await pool.query(
+          `INSERT INTO bettor (iduser, idbet, betamount, betoption)
+         VALUES ($1, $2, $3, $4)`,
+          [userId, betId, normalizedBetamount, option1],
+        );
+
+        await pool.query(
+          `UPDATE users 
+         SET wallet = wallet - $1, nb_paris_crees = nb_paris_crees + 1
+         WHERE iduser = $2`,
+          [normalizedBetamount, userId],
+        );
+
+        return reply.send({
+          success: true,
+          message: "Pari créé avec succès",
+          betId: betId,
+        });
+      } catch (err) {
+        console.error("ERREUR CREATE BET:", err.message);
+        return reply.status(500).send({
+          success: false,
+          error: "Erreur serveur : " + err.message,
+        });
+      }
+    },
+  );
+
   // Récupérer tous les paris
   app.get("/api/bets", async (req, reply) => {
+    try {
+      const result = await pool.query(`
+        SELECT 
+          p.idbet,
+          p.title,
+          p.option1,
+          p.option2,
+          p.details,
+          p.enddate,
+          p.status,
+          p.iduser as creator_id,
+          u.username as creator_name,
+          p.progress,
+          p.minbet,
+          p.winningoption,
+          p.creationdate,
+          COALESCE(SUM(b.betamount), 0) as total_amount,
+          COUNT(DISTINCT b.iduser) as total_bettors
+        FROM pari p
+        LEFT JOIN users u ON p.iduser = u.iduser
+        LEFT JOIN bettor b ON p.idbet = b.idbet
+        GROUP BY p.idbet, u.username
+        ORDER BY p.creationdate DESC
+      `);
+
+      return reply.send(result.rows);
+    } catch (err) {
+      console.error("ERREUR GET BETS:", err.message);
+      return reply.status(500).send({
+        success: false,
+        error: "Erreur serveur : " + err.message,
+      });
+    }
+  });
+
+  app.get("/api/allBets", async (req, reply) => {
     try {
       const result = await pool.query(`
         SELECT 
@@ -712,6 +865,115 @@ async function buildApp() {
         });
       } catch (err) {
         console.error("ERREUR JOIN BET:", err.message);
+        return reply.status(500).send({
+          success: false,
+          error: "Erreur serveur : " + err.message,
+        });
+      }
+    },
+  );
+
+  app.post(
+    "/api/bets/vote",
+    { preHandler: [app.authenticate] },
+    async (req, reply) => {
+      const { betId, choice, amount, betAmount } = req.body;
+      const userId = req.user.id;
+      const normalizedAmount = amount ?? betAmount;
+
+      if (!betId || !choice) {
+        return reply.status(400).send({
+          success: false,
+          error: "Pari et choix requis",
+        });
+      }
+
+      if (!normalizedAmount || Number(normalizedAmount) <= 0) {
+        return reply.status(400).send({
+          success: false,
+          error: "Le montant du pari est requis",
+        });
+      }
+
+      try {
+        const betRes = await pool.query("SELECT * FROM pari WHERE idbet = $1", [
+          betId,
+        ]);
+
+        if (betRes.rows.length === 0) {
+          return reply.status(404).send({
+            success: false,
+            error: "Pari non trouvé",
+          });
+        }
+
+        const bet = betRes.rows[0];
+
+        if (bet.status !== "active") {
+          return reply.status(400).send({
+            success: false,
+            error: "Ce pari n'est plus actif",
+          });
+        }
+
+        const userRes = await pool.query(
+          "SELECT wallet FROM users WHERE iduser = $1",
+          [userId],
+        );
+
+        if (userRes.rows.length === 0) {
+          return reply.status(404).send({
+            success: false,
+            error: "Utilisateur non trouvé",
+          });
+        }
+
+        const userWallet = parseFloat(userRes.rows[0].wallet);
+        const voteAmount = parseFloat(normalizedAmount);
+
+        if (userWallet < voteAmount) {
+          return reply.status(400).send({
+            success: false,
+            error: "Solde insuffisant",
+          });
+        }
+
+        if (voteAmount < parseFloat(bet.minbet)) {
+          return reply.status(400).send({
+            success: false,
+            error: `Le montant minimum pour ce pari est de ${bet.minbet}€`,
+          });
+        }
+
+        const existingBet = await pool.query(
+          "SELECT * FROM bettor WHERE iduser = $1 AND idbet = $2",
+          [userId, betId],
+        );
+
+        if (existingBet.rows.length > 0) {
+          return reply.status(400).send({
+            success: false,
+            error: "Vous avez déjà parié sur ce pari",
+          });
+        }
+
+        await pool.query(
+          `INSERT INTO bettor (iduser, idbet, betamount, betoption)
+           VALUES ($1, $2, $3, $4)`,
+          [userId, betId, voteAmount, choice],
+        );
+
+        await pool.query(
+          `UPDATE users SET wallet = wallet - $1 WHERE iduser = $2`,
+          [voteAmount, userId],
+        );
+
+        return reply.send({
+          success: true,
+          message: "Pari rejoint avec succès",
+        });
+      } catch (err) {
+        console.error("ERREUR VOTE BET:", err.message);
         return reply.status(500).send({
           success: false,
           error: "Erreur serveur : " + err.message,
