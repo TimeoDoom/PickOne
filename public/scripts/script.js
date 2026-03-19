@@ -8,7 +8,10 @@ const accountButtons = document.querySelectorAll(".account-btn");
 
   if (!res.ok) {
     addBetButtons.forEach((btn) => {
-      btn.textContent = "Se connecter";
+      // N'ajouter le texte que si le bouton est vide (bouton navbar)
+      if (!btn.textContent.trim()) {
+        btn.textContent = "Se connecter";
+      }
       btn.addEventListener("click", (e) => {
         e.preventDefault();
         window.location.href = "../login.html";
@@ -25,7 +28,10 @@ const accountButtons = document.querySelectorAll(".account-btn");
     const user = await res.json();
 
     addBetButtons.forEach((btn) => {
-      btn.textContent = "Nouveau";
+      // N'ajouter le texte que si le bouton est vide (bouton navbar)
+      if (!btn.textContent.trim()) {
+        btn.textContent = "Nouveau pari";
+      }
       btn.addEventListener("click", (e) => {
         e.preventDefault();
         console.log("ouverture création");
