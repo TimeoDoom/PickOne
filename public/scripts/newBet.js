@@ -1,7 +1,7 @@
 // Modal variables
 const cancelBetButton = document.getElementById("cancelBtn");
 const betForm = document.getElementById("addElementModal");
-const addBet = document.querySelector(".add-bet");
+const addBetButtons = document.querySelectorAll(".add-bet");
 const addChoiceButton = document.getElementById("addChoiceBtn");
 const moreOptionsCheckbox = document.getElementById("showAdvancedOptions");
 const moreOptionsSection = document.getElementById("advancedOptions");
@@ -33,11 +33,13 @@ let choicesIndex = 2;
 // MODAL MANAGEMENT
 // ============================
 
-// Ouvrir la modal
-addBet.addEventListener("click", (e) => {
-  e.preventDefault();
-  betForm.style.display = "flex";
-  resetForm();
+// Ouvrir la modal (à partir de tous les boutons .add-bet)
+addBetButtons.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    betForm.style.display = "flex";
+    resetForm();
+  });
 });
 
 // Fermer la modal
