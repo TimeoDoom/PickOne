@@ -17,21 +17,24 @@ function getTimeRemaining(deadline) {
 
 // Fonction améliorée pour calculer les pourcentages des votes
 function calculatePercentages(votesA, votesB) {
-  const total = votesA + votesB;
+  // Garantir que votesA et votesB sont des nombres
+  const numVotesA = parseInt(votesA) || 0;
+  const numVotesB = parseInt(votesB) || 0;
+  const total = numVotesA + numVotesB;
 
-  // Si aucun vote, retourner 50/50 pour un affichage équilibré
+  // Si aucun vote, retourner 0/0 pour les barres et 0 pour l'affichage
   if (total === 0)
     return {
-      percentA: 50,
-      percentB: 50,
+      percentA: 0,
+      percentB: 0,
       displayA: "0",
       displayB: "0",
       total: 0,
     };
 
   // Calcul avec une décimale pour plus de précision
-  const percentA = (votesA / total) * 100;
-  const percentB = (votesB / total) * 100;
+  const percentA = (numVotesA / total) * 100;
+  const percentB = (numVotesB / total) * 100;
 
   // Affichage : si >= 10%, on affiche sans décimale, sinon avec 1 décimale
   const displayA =

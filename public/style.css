@@ -2,7 +2,11 @@
 .hero-section {
   text-align: center;
   padding: 1px 40px 25px;
-  background: linear-gradient(135deg, rgba(124, 92, 255, 0.05) 0%, rgba(32, 164, 243, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(124, 92, 255, 0.05) 0%,
+    rgba(32, 164, 243, 0.05) 100%
+  );
   border-radius: 0 0 30px 30px;
   margin-bottom: 40px;
 }
@@ -67,7 +71,11 @@
   margin-top: 0;
 }
 .bet-grid .bet-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
   border-radius: 20px;
   padding: 25px;
   border: 1px solid rgba(255, 255, 255, 0.05);
@@ -237,7 +245,11 @@
 .overlay-content {
   width: 100%;
   max-width: 600px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
   border: 1px solid rgba(255, 255, 255, 0.05);
   color: #f1f5f9;
   padding: 30px;
@@ -392,11 +404,19 @@
   align-items: center;
   min-height: calc(100vh - 80px);
   padding: 40px 20px;
-  background: linear-gradient(135deg, rgba(124, 92, 255, 0.03) 0%, rgba(32, 164, 243, 0.03) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(124, 92, 255, 0.03) 0%,
+    rgba(32, 164, 243, 0.03) 100%
+  );
 }
 
 .auth-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 24px;
   padding: 40px;
@@ -491,14 +511,25 @@
   stroke-width: 2;
   transition: all 0.3s ease;
 }
-.auth-card .auth-form .form-group .password-input .password-toggle .eye-icon.hidden {
+.auth-card
+  .auth-form
+  .form-group
+  .password-input
+  .password-toggle
+  .eye-icon.hidden {
   color: #94a3b8;
 }
-.auth-card .auth-form .form-group .password-input .password-toggle .eye-icon.visible {
+.auth-card
+  .auth-form
+  .form-group
+  .password-input
+  .password-toggle
+  .eye-icon.visible {
   color: #7c5cff;
 }
 @keyframes eyeBlink {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 1;
   }
@@ -507,7 +538,12 @@
     opacity: 0.8;
   }
 }
-.auth-card .auth-form .form-group .password-input .password-toggle.visible .eye-icon {
+.auth-card
+  .auth-form
+  .form-group
+  .password-input
+  .password-toggle.visible
+  .eye-icon {
   color: #7c5cff;
   animation: eyeBlink 0.5s ease;
 }
@@ -558,7 +594,12 @@
   border-color: #7c5cff;
   background: rgba(124, 92, 255, 0.1);
 }
-.auth-card .auth-form .form-options .checkbox input:checked + .checkmark::after {
+.auth-card
+  .auth-form
+  .form-options
+  .checkbox
+  input:checked
+  + .checkmark::after {
   opacity: 1;
 }
 .auth-card .auth-form .form-options .forgot-password {
@@ -615,7 +656,8 @@
   color: #94a3b8;
   font-size: 14px;
 }
-.auth-card .auth-divider::before, .auth-card .auth-divider::after {
+.auth-card .auth-divider::before,
+.auth-card .auth-divider::after {
   content: "";
   flex: 1;
   height: 1px;
@@ -760,7 +802,9 @@
   background: rgba(255, 255, 255, 0.1);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  transition: width 0.6s ease, height 0.6s ease;
+  transition:
+    width 0.6s ease,
+    height 0.6s ease;
 }
 
 .auth-button:hover::before {
@@ -805,7 +849,11 @@ main.account .account-info {
   align-items: center;
   gap: 40px;
   padding: 40px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.01) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.02) 0%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
   border-radius: 24px;
   border: 1px solid rgba(255, 255, 255, 0.03);
   box-shadow: 0 20px 40px rgba(2, 6, 23, 0.4);
@@ -885,7 +933,11 @@ main.account .account-sections {
   max-width: 1000px;
 }
 main.account .account-sections .section-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.01) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.02) 0%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
   border-radius: 20px;
   padding: 30px;
   border: 1px solid rgba(255, 255, 255, 0.03);
@@ -911,7 +963,12 @@ main.account .account-sections .section-card .section-header .filter-tabs {
   border-radius: 12px;
   padding: 4px;
 }
-main.account .account-sections .section-card .section-header .filter-tabs .filter-tab {
+main.account
+  .account-sections
+  .section-card
+  .section-header
+  .filter-tabs
+  .filter-tab {
   padding: 8px 16px;
   border: none;
   background: transparent;
@@ -922,12 +979,22 @@ main.account .account-sections .section-card .section-header .filter-tabs .filte
   font-size: 14px;
   font-weight: 600;
 }
-main.account .account-sections .section-card .section-header .filter-tabs .filter-tab.active {
+main.account
+  .account-sections
+  .section-card
+  .section-header
+  .filter-tabs
+  .filter-tab.active {
   background: #7c5cff;
   color: white;
   box-shadow: 0 4px 15px rgba(124, 92, 255, 0.3);
 }
-main.account .account-sections .section-card .section-header .filter-tabs .filter-tab:hover:not(.active) {
+main.account
+  .account-sections
+  .section-card
+  .section-header
+  .filter-tabs
+  .filter-tab:hover:not(.active) {
   background: rgba(255, 255, 255, 0.05);
   color: #f1f5f9;
 }
@@ -958,28 +1025,75 @@ main.account .account-sections .section-card .form-grid .input-group textarea {
   font-size: 14px;
   transition: all 0.3s ease;
 }
-main.account .account-sections .section-card .form-grid .input-group input:focus,
-main.account .account-sections .section-card .form-grid .input-group textarea:focus {
+main.account
+  .account-sections
+  .section-card
+  .form-grid
+  .input-group
+  input:focus,
+main.account
+  .account-sections
+  .section-card
+  .form-grid
+  .input-group
+  textarea:focus {
   outline: none;
   border-color: #7c5cff;
   box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.1);
 }
-main.account .account-sections .section-card .form-grid .input-group input::placeholder,
-main.account .account-sections .section-card .form-grid .input-group textarea::placeholder {
+main.account
+  .account-sections
+  .section-card
+  .form-grid
+  .input-group
+  input::placeholder,
+main.account
+  .account-sections
+  .section-card
+  .form-grid
+  .input-group
+  textarea::placeholder {
   color: #94a3b8;
 }
-main.account .account-sections .section-card .form-grid .input-group input:disabled,
-main.account .account-sections .section-card .form-grid .input-group textarea:disabled {
+main.account
+  .account-sections
+  .section-card
+  .form-grid
+  .input-group
+  input:disabled,
+main.account
+  .account-sections
+  .section-card
+  .form-grid
+  .input-group
+  textarea:disabled {
   cursor: not-allowed;
   opacity: 0.6;
 }
-main.account .account-sections .section-card .form-grid .input-group .password-input {
+main.account
+  .account-sections
+  .section-card
+  .form-grid
+  .input-group
+  .password-input {
   position: relative;
 }
-main.account .account-sections .section-card .form-grid .input-group .password-input input {
+main.account
+  .account-sections
+  .section-card
+  .form-grid
+  .input-group
+  .password-input
+  input {
   padding-right: 50px;
 }
-main.account .account-sections .section-card .form-grid .input-group .password-input .password-toggle {
+main.account
+  .account-sections
+  .section-card
+  .form-grid
+  .input-group
+  .password-input
+  .password-toggle {
   position: absolute;
   right: 12px;
   top: 50%;
@@ -995,11 +1109,24 @@ main.account .account-sections .section-card .form-grid .input-group .password-i
   align-items: center;
   justify-content: center;
 }
-main.account .account-sections .section-card .form-grid .input-group .password-input .password-toggle:hover {
+main.account
+  .account-sections
+  .section-card
+  .form-grid
+  .input-group
+  .password-input
+  .password-toggle:hover {
   color: #f1f5f9;
   background: rgba(255, 255, 255, 0.05);
 }
-main.account .account-sections .section-card .form-grid .input-group .password-input .password-toggle svg {
+main.account
+  .account-sections
+  .section-card
+  .form-grid
+  .input-group
+  .password-input
+  .password-toggle
+  svg {
   width: 20px;
   height: 20px;
   stroke-width: 2;
@@ -1014,7 +1141,11 @@ main.account .account-sections .section-card .btn-container {
   gap: 15px;
   flex-wrap: wrap;
 }
-main.account .account-sections .section-card .btn-container button:hover:not(:disabled) {
+main.account
+  .account-sections
+  .section-card
+  .btn-container
+  button:hover:not(:disabled) {
   transform: translateY(-2px);
 }
 main.account .account-sections .section-card .btn-container button:disabled {
@@ -1026,28 +1157,48 @@ main.account .account-sections .section-card .btn-container button.cancel {
   background: linear-gradient(135deg, #ff3366, #ff6b6b);
   box-shadow: 0 6px 20px rgba(255, 51, 102, 0.3);
 }
-main.account .account-sections .section-card .btn-container button.cancel:hover:not(:disabled) {
+main.account
+  .account-sections
+  .section-card
+  .btn-container
+  button.cancel:hover:not(:disabled) {
   box-shadow: 0 8px 25px rgba(255, 51, 102, 0.4);
 }
 main.account .account-sections .section-card .btn-container button.save-button {
   background: linear-gradient(135deg, #7c5cff 0%, #00d4a8 100%);
   box-shadow: 0 6px 20px rgba(124, 92, 255, 0.3);
 }
-main.account .account-sections .section-card .btn-container button.save-button:hover:not(:disabled) {
+main.account
+  .account-sections
+  .section-card
+  .btn-container
+  button.save-button:hover:not(:disabled) {
   box-shadow: 0 8px 25px rgba(124, 92, 255, 0.4);
 }
 main.account .account-sections .section-card .btn-container button.edit-button {
   background: linear-gradient(135deg, #4a6fa5, #20a4f3);
   box-shadow: 0 6px 20px rgba(32, 164, 243, 0.3);
 }
-main.account .account-sections .section-card .btn-container button.edit-button:hover:not(:disabled) {
+main.account
+  .account-sections
+  .section-card
+  .btn-container
+  button.edit-button:hover:not(:disabled) {
   box-shadow: 0 8px 25px rgba(32, 164, 243, 0.4);
 }
-main.account .account-sections .section-card .btn-container button.edit-pwd-button {
+main.account
+  .account-sections
+  .section-card
+  .btn-container
+  button.edit-pwd-button {
   background: linear-gradient(135deg, #6c757d, #94a3b8);
   box-shadow: 0 6px 20px rgba(148, 163, 184, 0.3);
 }
-main.account .account-sections .section-card .btn-container button.edit-pwd-button:hover:not(:disabled) {
+main.account
+  .account-sections
+  .section-card
+  .btn-container
+  button.edit-pwd-button:hover:not(:disabled) {
   box-shadow: 0 8px 25px rgba(148, 163, 184, 0.4);
 }
 main.account .user-bets {
@@ -1060,7 +1211,11 @@ main.account .user-bets .bet-grid {
   margin-top: 20px;
 }
 main.account .user-bets .bet-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
   border-radius: 16px;
   padding: 20px;
   border: 1px solid rgba(255, 255, 255, 0.05);
@@ -1171,7 +1326,9 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   justify-content: center;
   align-items: center;
   padding: 20px;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
 }
 .modal.active {
   display: flex;
@@ -1278,7 +1435,12 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   stroke-width: 2;
   transition: all 0.3s ease;
 }
-.modal .modal-content .input-group .password-input .password-toggle.visible svg {
+.modal
+  .modal-content
+  .input-group
+  .password-input
+  .password-toggle.visible
+  svg {
   color: #7c5cff;
 }
 .modal .modal-content .input-group .input-hint {
@@ -1326,7 +1488,11 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
 .modal .modal-content .modal-buttons button.save-password.loading .button-text {
   display: none;
 }
-.modal .modal-content .modal-buttons button.save-password.loading .button-loading {
+.modal
+  .modal-content
+  .modal-buttons
+  button.save-password.loading
+  .button-loading {
   display: inline-block;
 }
 
@@ -1417,7 +1583,8 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   }
 }
 @keyframes eyeBlink {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 1;
   }
@@ -1441,7 +1608,9 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   justify-content: center;
   align-items: center;
   padding: 20px;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
 }
 .add-element-modal.active {
   display: flex;
@@ -1476,12 +1645,20 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   margin: 15px 0;
 }
 .add-element-modal .add-element-content::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, rgba(124, 92, 255, 0.4), rgba(32, 164, 243, 0.4));
+  background: linear-gradient(
+    135deg,
+    rgba(124, 92, 255, 0.4),
+    rgba(32, 164, 243, 0.4)
+  );
   border-radius: 6px;
   transition: background 0.3s ease;
 }
 .add-element-modal .add-element-content::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, rgba(124, 92, 255, 0.6), rgba(32, 164, 243, 0.6));
+  background: linear-gradient(
+    135deg,
+    rgba(124, 92, 255, 0.6),
+    rgba(32, 164, 243, 0.6)
+  );
 }
 .add-element-modal .add-element-content .modal-header {
   text-align: center;
@@ -1517,7 +1694,12 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   font-size: 15px;
   letter-spacing: 0.2px;
 }
-.add-element-modal .add-element-content .modal-form .form-group label .required {
+.add-element-modal
+  .add-element-content
+  .modal-form
+  .form-group
+  label
+  .required {
   color: #ff3366;
   margin-left: 4px;
 }
@@ -1542,14 +1724,30 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.15);
   background: rgba(255, 255, 255, 0.06);
 }
-.add-element-modal .add-element-content .modal-form .form-group input::placeholder,
-.add-element-modal .add-element-content .modal-form .form-group select::placeholder,
-.add-element-modal .add-element-content .modal-form .form-group textarea::placeholder {
+.add-element-modal
+  .add-element-content
+  .modal-form
+  .form-group
+  input::placeholder,
+.add-element-modal
+  .add-element-content
+  .modal-form
+  .form-group
+  select::placeholder,
+.add-element-modal
+  .add-element-content
+  .modal-form
+  .form-group
+  textarea::placeholder {
   color: rgba(148, 163, 184, 0.6);
 }
 .add-element-modal .add-element-content .modal-form .form-group input:disabled,
 .add-element-modal .add-element-content .modal-form .form-group select:disabled,
-.add-element-modal .add-element-content .modal-form .form-group textarea:disabled {
+.add-element-modal
+  .add-element-content
+  .modal-form
+  .form-group
+  textarea:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -1579,10 +1777,18 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   align-items: center;
   gap: 6px;
 }
-.add-element-modal .add-element-content .modal-form .form-group .input-hint.success {
+.add-element-modal
+  .add-element-content
+  .modal-form
+  .form-group
+  .input-hint.success {
   color: #2ec4b6;
 }
-.add-element-modal .add-element-content .modal-form .form-group .input-hint.error {
+.add-element-modal
+  .add-element-content
+  .modal-form
+  .form-group
+  .input-hint.error {
   color: #ff3366;
 }
 .add-element-modal .add-element-content .modal-form .form-row {
@@ -1601,10 +1807,20 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   margin-bottom: 12px;
   animation: fadeIn 0.3s ease-out;
 }
-.add-element-modal .add-element-content .modal-form .form-array .array-item input {
+.add-element-modal
+  .add-element-content
+  .modal-form
+  .form-array
+  .array-item
+  input {
   flex: 1;
 }
-.add-element-modal .add-element-content .modal-form .form-array .array-item .remove-item {
+.add-element-modal
+  .add-element-content
+  .modal-form
+  .form-array
+  .array-item
+  .remove-item {
   background: rgba(255, 51, 102, 0.12);
   color: #ff3366;
   border: 1.5px solid #ff3366;
@@ -1620,7 +1836,12 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   font-weight: 700;
   flex-shrink: 0;
 }
-.add-element-modal .add-element-content .modal-form .form-array .array-item .remove-item:hover {
+.add-element-modal
+  .add-element-content
+  .modal-form
+  .form-array
+  .array-item
+  .remove-item:hover {
   background: #ff3366;
   color: white;
   transform: scale(1.05);
@@ -1642,13 +1863,22 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   font-size: 14px;
   width: 100%;
 }
-.add-element-modal .add-element-content .modal-form .form-array .add-item-btn:hover {
+.add-element-modal
+  .add-element-content
+  .modal-form
+  .form-array
+  .add-item-btn:hover {
   background: #7c5cff;
   color: white;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(124, 92, 255, 0.3);
 }
-.add-element-modal .add-element-content .modal-form .form-array .add-item-btn .plus-icon {
+.add-element-modal
+  .add-element-content
+  .modal-form
+  .form-array
+  .add-item-btn
+  .plus-icon {
   font-size: 20px;
   font-weight: 700;
 }
@@ -1673,10 +1903,16 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   overflow: hidden;
   min-width: 120px;
 }
-.add-element-modal .add-element-content .modal-actions button:hover:not(:disabled) {
+.add-element-modal
+  .add-element-content
+  .modal-actions
+  button:hover:not(:disabled) {
   transform: translateY(-2px);
 }
-.add-element-modal .add-element-content .modal-actions button:active:not(:disabled) {
+.add-element-modal
+  .add-element-content
+  .modal-actions
+  button:active:not(:disabled) {
   transform: translateY(0);
 }
 .add-element-modal .add-element-content .modal-actions button:disabled {
@@ -1694,7 +1930,9 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  transition: width 0.6s ease, height 0.6s ease;
+  transition:
+    width 0.6s ease,
+    height 0.6s ease;
 }
 .add-element-modal .add-element-content .modal-actions button:hover::before {
   width: 300px;
@@ -1708,24 +1946,38 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   display: none;
   animation: pulse 1.5s ease-in-out infinite;
 }
-.add-element-modal .add-element-content .modal-actions button.loading .button-text {
+.add-element-modal
+  .add-element-content
+  .modal-actions
+  button.loading
+  .button-text {
   display: none;
 }
-.add-element-modal .add-element-content .modal-actions button.loading .button-loading {
+.add-element-modal
+  .add-element-content
+  .modal-actions
+  button.loading
+  .button-loading {
   display: inline-block;
 }
 .add-element-modal .add-element-content .modal-actions .cancel-btn {
   background: linear-gradient(135deg, #6c757d, #94a3b8);
   box-shadow: 0 6px 20px rgba(148, 163, 184, 0.3);
 }
-.add-element-modal .add-element-content .modal-actions .cancel-btn:hover:not(:disabled) {
+.add-element-modal
+  .add-element-content
+  .modal-actions
+  .cancel-btn:hover:not(:disabled) {
   box-shadow: 0 8px 25px rgba(148, 163, 184, 0.4);
 }
 .add-element-modal .add-element-content .modal-actions .submit-btn {
   background: linear-gradient(135deg, #7c5cff, #00d4a8);
   box-shadow: 0 6px 20px rgba(124, 92, 255, 0.3);
 }
-.add-element-modal .add-element-content .modal-actions .submit-btn:hover:not(:disabled) {
+.add-element-modal
+  .add-element-content
+  .modal-actions
+  .submit-btn:hover:not(:disabled) {
   box-shadow: 0 8px 25px rgba(124, 92, 255, 0.4);
 }
 .add-element-modal .modal-message {
@@ -1919,7 +2171,11 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   border-radius: 6px;
   transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.15));
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.15)
+  );
 }
 .bet-progress .option-item .option-bar .option-fill::after {
   content: "";
@@ -1928,7 +2184,12 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
   animation: shimmer 2s infinite;
 }
 .bet-progress .option-item .option-votes {
@@ -1992,7 +2253,11 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   transform: translateY(-2px);
 }
 .modal .bet-options .option-card.winner {
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 215, 0, 0.1),
+    rgba(255, 215, 0, 0.05)
+  );
   border: 2px solid rgba(255, 215, 0, 0.4);
   box-shadow: 0 4px 20px rgba(255, 215, 0, 0.2);
 }
@@ -2058,7 +2323,12 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   justify-content: flex-end;
   padding-right: 10px;
 }
-.modal .bet-options .option-card .progress-bar-large .progress-fill-large .progress-label {
+.modal
+  .bet-options
+  .option-card
+  .progress-bar-large
+  .progress-fill-large
+  .progress-label {
   font-size: 11px;
   font-weight: 700;
   color: white;
@@ -2066,24 +2336,94 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   opacity: 0;
   transition: opacity 0.3s ease;
 }
-.modal .bet-options .option-card .progress-bar-large .progress-fill-large[style*="width: 1"] .progress-label, .modal .bet-options .option-card .progress-bar-large .progress-fill-large[style*="width: 2"] .progress-label, .modal .bet-options .option-card .progress-bar-large .progress-fill-large[style*="width: 3"] .progress-label, .modal .bet-options .option-card .progress-bar-large .progress-fill-large[style*="width: 4"] .progress-label, .modal .bet-options .option-card .progress-bar-large .progress-fill-large[style*="width: 5"] .progress-label, .modal .bet-options .option-card .progress-bar-large .progress-fill-large[style*="width: 6"] .progress-label, .modal .bet-options .option-card .progress-bar-large .progress-fill-large[style*="width: 7"] .progress-label, .modal .bet-options .option-card .progress-bar-large .progress-fill-large[style*="width: 8"] .progress-label, .modal .bet-options .option-card .progress-bar-large .progress-fill-large[style*="width: 9"] .progress-label {
+.modal
+  .bet-options
+  .option-card
+  .progress-bar-large
+  .progress-fill-large[style*="width: 1"]
+  .progress-label,
+.modal
+  .bet-options
+  .option-card
+  .progress-bar-large
+  .progress-fill-large[style*="width: 2"]
+  .progress-label,
+.modal
+  .bet-options
+  .option-card
+  .progress-bar-large
+  .progress-fill-large[style*="width: 3"]
+  .progress-label,
+.modal
+  .bet-options
+  .option-card
+  .progress-bar-large
+  .progress-fill-large[style*="width: 4"]
+  .progress-label,
+.modal
+  .bet-options
+  .option-card
+  .progress-bar-large
+  .progress-fill-large[style*="width: 5"]
+  .progress-label,
+.modal
+  .bet-options
+  .option-card
+  .progress-bar-large
+  .progress-fill-large[style*="width: 6"]
+  .progress-label,
+.modal
+  .bet-options
+  .option-card
+  .progress-bar-large
+  .progress-fill-large[style*="width: 7"]
+  .progress-label,
+.modal
+  .bet-options
+  .option-card
+  .progress-bar-large
+  .progress-fill-large[style*="width: 8"]
+  .progress-label,
+.modal
+  .bet-options
+  .option-card
+  .progress-bar-large
+  .progress-fill-large[style*="width: 9"]
+  .progress-label {
   opacity: 1;
 }
-.modal .bet-options .option-card .progress-bar-large .progress-fill-large::before {
+.modal
+  .bet-options
+  .option-card
+  .progress-bar-large
+  .progress-fill-large::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
   animation: progressShine 3s infinite;
 }
-.modal .bet-options .option-card .progress-bar-large .progress-fill-large.yes-fill {
+.modal
+  .bet-options
+  .option-card
+  .progress-bar-large
+  .progress-fill-large.yes-fill {
   background: linear-gradient(90deg, #2ec4b6, #20a4f3);
   box-shadow: 0 3px 12px rgba(46, 196, 182, 0.4);
 }
-.modal .bet-options .option-card .progress-bar-large .progress-fill-large.no-fill {
+.modal
+  .bet-options
+  .option-card
+  .progress-bar-large
+  .progress-fill-large.no-fill {
   background: linear-gradient(90deg, #ff3366, #ff6b9d);
   box-shadow: 0 3px 12px rgba(255, 51, 102, 0.4);
 }
@@ -2092,7 +2432,8 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
   0% {
     transform: translateX(-100%);
   }
-  50%, 100% {
+  50%,
+  100% {
     transform: translateX(100%);
   }
 }
@@ -2218,7 +2559,15 @@ main.account .user-bets .bet-card .bet-result .result-badge.lost {
 html,
 body {
   margin: 0;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial;
   background: linear-gradient(180deg, #0b1d38 0%, #071928 60%, #071b2b 100%);
   color: #f1f5f9;
   -webkit-font-smoothing: antialiased;
@@ -2332,7 +2681,11 @@ nav .search-container .search-suggestions {
   top: 100%;
   left: 0;
   right: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 12px;
   padding: 20px;
@@ -2373,8 +2726,18 @@ nav .search-container .search-suggestions .suggestion-recent .suggestion-tags {
   flex-wrap: wrap;
   gap: 8px;
 }
-nav .search-container .search-suggestions .suggestion-category .suggestion-tags .suggestion-tag,
-nav .search-container .search-suggestions .suggestion-recent .suggestion-tags .suggestion-tag {
+nav
+  .search-container
+  .search-suggestions
+  .suggestion-category
+  .suggestion-tags
+  .suggestion-tag,
+nav
+  .search-container
+  .search-suggestions
+  .suggestion-recent
+  .suggestion-tags
+  .suggestion-tag {
   background: rgba(124, 92, 255, 0.1);
   color: #7c5cff;
   padding: 6px 12px;
@@ -2384,8 +2747,18 @@ nav .search-container .search-suggestions .suggestion-recent .suggestion-tags .s
   cursor: pointer;
   transition: all 0.3s ease;
 }
-nav .search-container .search-suggestions .suggestion-category .suggestion-tags .suggestion-tag:hover,
-nav .search-container .search-suggestions .suggestion-recent .suggestion-tags .suggestion-tag:hover {
+nav
+  .search-container
+  .search-suggestions
+  .suggestion-category
+  .suggestion-tags
+  .suggestion-tag:hover,
+nav
+  .search-container
+  .search-suggestions
+  .suggestion-recent
+  .suggestion-tags
+  .suggestion-tag:hover {
   background: #7c5cff;
   color: white;
   transform: translateY(-1px);
@@ -2396,8 +2769,18 @@ nav .search-container .search-suggestions .suggestion-recent .recent-searches {
   flex-wrap: wrap;
   gap: 8px;
 }
-nav .search-container .search-suggestions .suggestion-category .recent-searches .recent-search,
-nav .search-container .search-suggestions .suggestion-recent .recent-searches .recent-search {
+nav
+  .search-container
+  .search-suggestions
+  .suggestion-category
+  .recent-searches
+  .recent-search,
+nav
+  .search-container
+  .search-suggestions
+  .suggestion-recent
+  .recent-searches
+  .recent-search {
   background: rgba(255, 255, 255, 0.05);
   color: #f1f5f9;
   padding: 6px 12px;
@@ -2408,8 +2791,18 @@ nav .search-container .search-suggestions .suggestion-recent .recent-searches .r
   transition: all 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
-nav .search-container .search-suggestions .suggestion-category .recent-searches .recent-search:hover,
-nav .search-container .search-suggestions .suggestion-recent .recent-searches .recent-search:hover {
+nav
+  .search-container
+  .search-suggestions
+  .suggestion-category
+  .recent-searches
+  .recent-search:hover,
+nav
+  .search-container
+  .search-suggestions
+  .suggestion-recent
+  .recent-searches
+  .recent-search:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(124, 92, 255, 0.3);
 }
@@ -2494,7 +2887,11 @@ nav .right .hamburger.active span:nth-child(3) {
   left: 0;
   width: 100%;
   height: 100vh;
-  background: rgba(2, 6, 23, 0.95);
+  background: linear-gradient(
+    135deg,
+    rgba(2, 6, 23, 0.95) 0%,
+    rgba(15, 30, 55, 0.97) 100%
+  );
   backdrop-filter: blur(20px);
   z-index: 999;
   transform: translateX(-100%);
@@ -2504,122 +2901,124 @@ nav .right .hamburger.active span:nth-child(3) {
   transform: translateX(0);
 }
 .mobile-menu .mobile-menu-content {
-  padding: 100px 30px 40px;
+  padding: 30px;
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
-.mobile-menu .mobile-menu-content .mobile-search {
-  padding: 0 0 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  margin-bottom: 20px;
-}
-.mobile-menu .mobile-menu-content .mobile-search .mobile-search-bar {
-  display: flex;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1.5px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 4px;
-}
-.mobile-menu .mobile-menu-content .mobile-search .mobile-search-bar .mobile-search-input {
-  flex: 1;
-  border: none;
-  background: transparent;
-  padding: 12px 16px;
-  color: #f1f5f9;
-  font-size: 16px;
-  outline: none;
-}
-.mobile-menu .mobile-menu-content .mobile-search .mobile-search-bar .mobile-search-input::placeholder {
-  color: #94a3b8;
-}
-.mobile-menu .mobile-menu-content .mobile-search .mobile-search-bar .mobile-search-button {
-  background: linear-gradient(135deg, #7c5cff, #00d4a8);
-  border: none;
-  border-radius: 8px;
-  padding: 10px 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.mobile-menu .mobile-menu-content .mobile-search .mobile-search-bar .mobile-search-button .search-icon {
-  font-size: 18px;
-  color: white;
-}
-.mobile-menu .mobile-menu-content .mobile-wallet {
-  background: rgba(255, 255, 255, 0.04);
-  padding: 16px;
-  border-radius: 12px;
-  text-align: center;
+
+/* Mobile Menu Header */
+.mobile-menu .mobile-menu-header {
+  margin-top: 60px;
   margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid rgba(124, 92, 255, 0.2);
 }
-.mobile-menu .mobile-menu-content .mobile-wallet h3 {
-  margin: 0 0 8px 0;
-  font-size: 14px;
-  color: #00d463;
-}
-.mobile-menu .mobile-menu-content .mobile-wallet span {
+.mobile-menu .mobile-menu-header h2 {
+  margin: 0;
+  font-size: 28px;
   font-weight: 700;
   color: #f1f5f9;
-  font-size: 18px;
+  background: linear-gradient(135deg, #7c5cff, #00d4a8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-.mobile-menu .mobile-menu-content .mobile-nav-links {
+
+/* Mobile Navigation */
+.mobile-menu .mobile-nav {
+  margin-bottom: 30px;
+  flex: 1;
+}
+.mobile-menu .mobile-nav-links {
   list-style: none;
   padding: 0;
-  margin: 0 0 30px 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
-.mobile-menu .mobile-menu-content .mobile-nav-links li {
-  margin-bottom: 12px;
+.mobile-menu .mobile-nav-links li {
+  margin: 0;
 }
-.mobile-menu .mobile-menu-content .mobile-nav-links li a {
+.mobile-menu .mobile-nav-links .nav-link {
   display: block;
-  padding: 16px;
+  padding: 16px 18px;
   color: #f1f5f9;
   text-decoration: none;
   font-weight: 600;
+  font-size: 16px;
   border-radius: 12px;
   transition: all 0.3s ease;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
 }
-.mobile-menu .mobile-menu-content .mobile-nav-links li a:hover {
-  background: rgba(124, 92, 255, 0.1);
-  transform: translateX(10px);
+.mobile-menu .mobile-nav-links .nav-link:hover {
+  background: rgba(124, 92, 255, 0.15);
+  border-color: rgba(124, 92, 255, 0.3);
+  transform: translateX(8px);
+  box-shadow: 0 4px 12px rgba(124, 92, 255, 0.2);
 }
-.mobile-menu .mobile-menu-content .mobile-add-bet {
-  text-align: center;
-  background: linear-gradient(90deg, #61c1b6 5%, #20a4f3);
-  border: none;
+
+/* Mobile Menu Actions */
+.mobile-menu .mobile-menu-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.mobile-menu .mobile-menu-actions .mobile-add-bet {
+  background: linear-gradient(135deg, #7c5cff, #00d4a8) !important;
   color: white;
-  padding: 16px;
+  border: none;
+  padding: 16px 20px;
   border-radius: 12px;
   font-weight: 700;
+  font-size: 16px;
   cursor: pointer;
-  margin-bottom: 12px;
   transition: all 0.3s ease;
   text-decoration: none;
+  box-shadow: 0 4px 15px rgba(124, 92, 255, 0.3);
 }
-.mobile-menu .mobile-menu-content .mobile-add-bet:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(124, 92, 255, 0.3);
+.mobile-menu .mobile-menu-actions .mobile-add-bet:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(124, 92, 255, 0.4);
 }
-.mobile-menu .mobile-menu-content .mobile-account-btn {
+.mobile-menu .mobile-menu-actions .mobile-account-btn {
+  display: block;
   text-decoration: none;
   text-align: center;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #f1f5f9;
-  padding: 16px;
+  background: rgba(124, 92, 255, 0.1);
+  color: #7c5cff;
+  padding: 16px 20px;
+  border: 2px solid #7c5cff;
   border-radius: 12px;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
-  width: 50px;
 }
-.mobile-menu .mobile-menu-content .mobile-account-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(124, 92, 255, 0.3);
+.mobile-menu .mobile-menu-actions .mobile-account-btn:hover {
+  background: #7c5cff;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(124, 92, 255, 0.3);
+}
+
+/* Mobile Menu Footer */
+.mobile-menu .mobile-menu-footer {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: auto;
+}
+.mobile-menu .mobile-menu-footer p {
+  margin: 0;
+  font-size: 14px;
+  color: #94a3b8;
+  font-weight: 500;
 }
 
 @media (max-width: 1024px) {
@@ -2704,7 +3103,9 @@ textarea {
   border-radius: 10px;
   border: 1.5px solid rgba(124, 92, 255, 0.12);
   box-shadow: 0 6px 20px rgba(124, 92, 255, 0.06);
-  transition: border-color 160ms ease, box-shadow 160ms ease;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
 }
 input:focus,
 textarea:focus {
